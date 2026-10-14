@@ -1,0 +1,512 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bereavement support · Bangkok Bank CRM prototype</title>
+<style>
+:root {
+  --navy: #10275f;
+  --blue: #174a9a;
+  --lotus: #0867e8;
+  --ink: #17243c;
+  --muted: #64728a;
+  --line: #d9e0ea;
+  --paper: #f1f4f8;
+  --surface: #fff;
+  --pale-blue: #edf4ff;
+  --teal: #087e82;
+  --teal-soft: #eaf7f5;
+  --amber: #986000;
+  --amber-soft: #fff6e4;
+  --red: #ad353c;
+  --red-soft: #fff2f1;
+  --shadow: 0 8px 24px rgba(16, 39, 95, .06);
+  --focus: 0 0 0 3px rgba(8, 103, 232, .28);
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font: 15px/1.55 "Sarabun", "Noto Sans Thai", "Leelawadee UI", sans-serif;
+}
+body.en [lang="th"], body.th [lang="en"] { display: none !important; }
+button, select, input { font: inherit; }
+button, select { cursor: pointer; }
+a { color: var(--blue); }
+:focus-visible { outline: none; box-shadow: var(--focus); border-radius: 5px; }
+.skip-link { position: absolute; left: 10px; top: -48px; z-index: 5; padding: 8px 12px; background: white; color: var(--navy); }
+.skip-link:focus { top: 8px; }
+.topbar { min-height: 62px; padding: 0 25px; display: flex; align-items: center; gap: 12px; background: var(--navy); color: white; }
+.brand { display: flex; align-items: center; gap: 9px; min-width: 275px; color: white; text-decoration: none; }
+.brand img { width: 29px; height: 36px; object-fit: contain; }
+.brand-name { font-weight: 750; letter-spacing: -.2px; }
+.brand-name small { display: block; opacity: .72; font-size: 10px; font-weight: 450; letter-spacing: .01em; }
+.prototype-pill { border-radius: 99px; padding: 3px 9px; background: #f0b644; color: #2b2b2b; font-size: 10px; font-weight: 850; letter-spacing: .08em; }
+.spacer { flex: 1; }
+.staff { text-align: right; font-size: 12px; line-height: 1.3; }
+.staff small { display: block; opacity: .7; font-size: 10px; }
+.lang { min-width: 48px; min-height: 35px; border: 1px solid rgba(255,255,255,.42); border-radius: 5px; background: transparent; color: white; font-size: 12px; font-weight: 700; }
+.nav { min-height: 42px; padding: 0 22px; display: flex; align-items: stretch; gap: 4px; background: #173e85; }
+.nav a { padding: 10px 14px 8px; border-bottom: 3px solid transparent; color: rgba(255,255,255,.86); font-size: 12px; text-decoration: none; }
+.nav a[aria-current="page"] { border-bottom-color: white; color: white; font-weight: 750; }
+main { max-width: 1370px; margin: 0 auto; padding: 23px 27px 40px; }
+.crumb { margin: 0 0 8px; color: var(--muted); font-size: 11px; }
+.title-row { display: flex; align-items: flex-start; justify-content: space-between; gap: 18px; }
+h1 { margin: 0; color: var(--navy); font-size: 27px; line-height: 1.25; letter-spacing: -.35px; }
+.subtitle { margin: 5px 0 0; color: var(--muted); font-size: 13px; }
+.scope-tag { display: inline-flex; align-items: center; gap: 6px; border: 1px solid #e2c77d; border-radius: 5px; padding: 6px 9px; background: var(--amber-soft); color: #74500d; font-size: 11px; font-weight: 800; white-space: nowrap; }
+.scope-tag span:first-child { width: 17px; height: 17px; display: inline-grid; place-items: center; border-radius: 50%; background: #bd8719; color: white; font-size: 11px; }
+.discovery-note { display: grid; grid-template-columns: 4px 1fr; gap: 12px; margin: 17px 0 15px; border: 1px solid #ead9aa; border-left: 0; border-radius: 7px; background: #fffbf1; box-shadow: var(--shadow); overflow: hidden; }
+.discovery-note::before { content: ""; display: block; background: #c58d1a; }
+.discovery-note div { padding: 11px 13px 12px 0; color: #5d4b27; font-size: 12px; }
+.discovery-note strong { display: block; margin-bottom: 2px; color: #4f3d19; }
+.scenario-bar { display: grid; grid-template-columns: repeat(4, minmax(140px, 1fr)); gap: 12px; margin: 15px 0; padding: 14px; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); box-shadow: var(--shadow); }
+.field label { display: block; margin: 0 0 5px; color: #536179; font-size: 11px; font-weight: 750; }
+.field select { width: 100%; min-height: 39px; padding: 7px 30px 7px 9px; border: 1px solid #cbd4e1; border-radius: 5px; background: white; color: var(--ink); font-size: 12px; }
+.field-help { margin: 4px 0 0; color: #778398; font-size: 10px; }
+.workspace { display: grid; grid-template-columns: minmax(0, 1.65fr) minmax(280px, .8fr); gap: 16px; align-items: start; }
+.main-col, .side-col { min-width: 0; }
+.card { border: 1px solid var(--line); border-radius: 8px; background: var(--surface); box-shadow: var(--shadow); overflow: hidden; }
+.card + .card { margin-top: 14px; }
+.card-head { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 11px 15px; border-bottom: 1px solid #e7ebf1; }
+.card-head h2 { margin: 0; color: #394963; font-size: 12px; letter-spacing: .045em; text-transform: uppercase; }
+.card-body { padding: 15px; }
+.badge { display: inline-block; border-radius: 99px; padding: 3px 8px; background: #eef1f5; color: #56647a; font-size: 9px; font-weight: 850; letter-spacing: .045em; text-transform: uppercase; }
+.badge-blue { background: var(--pale-blue); color: #215195; }
+.badge-amber { background: var(--amber-soft); color: #79570f; }
+.badge-red { background: var(--red-soft); color: #8c3537; }
+.request-context { display: flex; align-items: flex-start; gap: 11px; }
+.avatar { width: 38px; height: 38px; flex: 0 0 38px; display: grid; place-items: center; border-radius: 50%; background: #e7eef9; color: var(--navy); font-size: 13px; font-weight: 800; }
+.request-context h3 { margin: 0 0 2px; color: var(--navy); font-size: 14px; }
+.request-context p { margin: 0; color: var(--muted); font-size: 11px; }
+.no-profile { margin: 12px 0 0; padding: 9px 11px; border: 1px dashed #bcc7d6; border-radius: 6px; color: #536179; font-size: 11px; }
+.result { border-top: 3px solid var(--blue); }
+.result.public { border-top-color: var(--blue); }
+.result.caution { border-top-color: #b27a10; }
+.result.stop { border-top-color: var(--red); }
+.result.neutral { border-top-color: #6b7b91; }
+.result-heading { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-bottom: 6px; }
+.result h2 { margin: 0; color: var(--navy); font-size: 19px; line-height: 1.35; }
+.result p { margin: 7px 0 0; color: #4f5f77; font-size: 12px; }
+.route-grid { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(190px, .75fr); gap: 12px; margin-top: 14px; }
+.route-box { border: 1px solid #e0e6ee; border-radius: 6px; background: #fbfcfe; }
+.route-box h3 { margin: 0; padding: 8px 10px; border-bottom: 1px solid #e5eaf0; color: #40516c; font-size: 11px; }
+.route-box .content { padding: 10px; color: #46566f; font-size: 11px; }
+.route-box ul { margin: 0; padding-left: 18px; }
+.route-box li + li { margin-top: 5px; }
+.source-box { display: grid; align-content: start; gap: 7px; }
+.source-meta { color: #68768a; font-size: 10px; }
+.source-link { width: fit-content; font-size: 11px; font-weight: 750; }
+.notice { margin-top: 12px; padding: 9px 11px; border-left: 3px solid var(--amber); border-radius: 0 5px 5px 0; background: var(--amber-soft); color: #644b1c; font-size: 11px; }
+.notice.stop { border-left-color: var(--red); background: var(--red-soft); color: #773437; }
+.notice.neutral { border-left-color: #7c8aa0; background: #f1f4f8; color: #4e5d72; }
+.boundary-list { list-style: none; display: grid; gap: 8px; margin: 0; padding: 0; }
+.boundary-list li { display: grid; grid-template-columns: 18px 1fr; gap: 8px; align-items: start; color: #46566f; font-size: 11px; }
+.boundary-list .mark { width: 18px; height: 18px; display: grid; place-items: center; border-radius: 50%; background: #edf1f5; color: #4c5c73; font-size: 10px; font-weight: 900; }
+.action-card { border-left: 4px solid var(--navy); }
+.action-title { display: flex; align-items: flex-start; justify-content: space-between; gap: 9px; }
+.action-title h2 { margin: 0; color: var(--navy); font-size: 16px; }
+.action-copy { margin: 7px 0 12px; color: #536179; font-size: 11px; }
+.quote { margin: 0; padding: 10px 12px; border-radius: 5px; background: #f3f6fa; color: #31425e; font-size: 12px; }
+.quote small { display: block; margin-top: 5px; color: #79869a; font-size: 9px; }
+.handoff-controls { display: grid; grid-template-columns: minmax(190px, 1fr) auto; gap: 12px; align-items: end; }
+.check-label { display: flex; align-items: flex-start; gap: 8px; color: #47566d; font-size: 11px; }
+.check-label input { width: 16px; height: 16px; margin: 1px 0 0; accent-color: var(--blue); }
+.btn { min-height: 38px; padding: 7px 12px; border: 1px solid #c8d2e0; border-radius: 5px; background: white; color: var(--navy); font-size: 11px; font-weight: 750; }
+.btn.primary { border-color: var(--blue); background: var(--blue); color: white; }
+.btn:disabled { cursor: not-allowed; opacity: .45; }
+.handoff-preview { margin-top: 12px; padding: 12px; border: 1px solid #c9d8ee; border-radius: 6px; background: #f7faff; }
+.handoff-preview h3 { margin: 0 0 8px; color: var(--navy); font-size: 12px; }
+.handoff-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 13px; }
+.handoff-grid div { min-width: 0; }
+.handoff-grid span { display: block; color: #778398; font-size: 9px; }
+.handoff-grid strong { display: block; margin-top: 1px; color: #354762; font-size: 10px; font-weight: 700; }
+.source-index { display: grid; gap: 9px; }
+.source-index a { font-size: 10px; font-weight: 700; }
+.source-index p { margin: 2px 0 0; color: #748196; font-size: 9px; }
+.footer-note { margin: 18px 0 0; color: #8792a2; text-align: center; font-size: 9px; }
+.toast { position: fixed; right: 18px; bottom: 18px; z-index: 8; max-width: 390px; padding: 11px 14px; border-radius: 6px; background: var(--navy); color: white; box-shadow: 0 8px 24px #0003; font-size: 11px; }
+[hidden] { display: none !important; }
+@media (max-width: 950px) {
+  .scenario-bar { grid-template-columns: 1fr 1fr; }
+  .workspace { grid-template-columns: 1fr; }
+  .side-col { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .side-col .card + .card { margin-top: 0; }
+}
+@media (max-width: 650px) {
+  .topbar { min-height: 56px; padding: 0 12px; }
+  .brand { min-width: 0; }
+  .brand img { width: 23px; height: 29px; }
+  .brand-name { font-size: 12px; }
+  .brand-name small, .staff { display: none; }
+  .nav { overflow-x: auto; padding: 0 8px; }
+  .nav a { white-space: nowrap; padding-inline: 11px; }
+  main { padding: 16px 12px 28px; }
+  .title-row { display: block; }
+  h1 { font-size: 23px; }
+  .scope-tag { margin-top: 10px; }
+  .scenario-bar { grid-template-columns: 1fr; padding: 11px; }
+  .route-grid, .side-col { grid-template-columns: 1fr; }
+  .handoff-controls { grid-template-columns: 1fr; }
+  .handoff-controls .btn { width: 100%; }
+}
+</style>
+</head>
+<body class="en">
+<a class="skip-link" href="#main"><span lang="en">Skip to main content</span><span lang="th">ข้ามไปยังเนื้อหาหลัก</span></a>
+<header class="topbar">
+  <a class="brand" href="case-workspace.html" aria-label="Bangkok Bank CRM discovery home">
+    <img src="assets/bbl-lotus.png" alt="">
+    <span class="brand-name">Bangkok Bank <small>Customer Relationship Workspace</small></span>
+  </a>
+  <span class="prototype-pill"><span lang="en">PROTOTYPE</span><span lang="th">ต้นแบบ</span></span>
+  <span class="spacer"></span>
+  <div class="staff"><span lang="en">Service guidance</span><span lang="th">คำแนะนำบริการ</span><small><span lang="en">Synthetic scenario · no customer profile</span><span lang="th">สถานการณ์จำลอง · ไม่มีข้อมูลประวัติลูกค้า</span></small></div>
+  <button class="lang" id="language" type="button" aria-label="Switch to Thai">ไทย</button>
+</header>
+<nav class="nav" aria-label="Primary navigation">
+  <a href="#" lang="en">My work</a><a href="#" lang="th">งานของฉัน</a>
+  <a href="#" lang="en">Customer search</a><a href="#" lang="th">ค้นหาลูกค้า</a>
+  <a href="#" aria-current="page" lang="en">Service guidance</a><a href="#" aria-current="page" lang="th">คำแนะนำบริการ</a>
+  <a href="#" lang="en">Cases</a><a href="#" lang="th">เคสบริการ</a>
+</nav>
+<main id="main" tabindex="-1">
+  <p class="crumb"><span lang="en">Customer service / Special requests / Bereavement support</span><span lang="th">บริการลูกค้า / คำขอพิเศษ / การช่วยเหลือกรณีเสียชีวิต</span></p>
+  <div class="title-row">
+    <div>
+      <h1><span lang="en">Bereavement &amp; estate support</span><span lang="th">การช่วยเหลือกรณีเสียชีวิตและจัดการมรดก</span></h1>
+      <p class="subtitle"><span lang="en">A source-aware route guide for a sensitive customer request</span><span lang="th">คำแนะนำเส้นทางบริการที่แสดงแหล่งข้อมูลสำหรับคำขอที่ละเอียดอ่อน</span></p>
+    </div>
+    <span class="scope-tag"><span aria-hidden="true">!</span><span lang="en">Discovery concept · not approved Bank procedure</span><span lang="th">แนวคิดเพื่อค้นคว้า · ยังไม่ใช่ขั้นตอนที่ธนาคารอนุมัติ</span></span>
+  </div>
+
+  <div class="discovery-note">
+    <div>
+      <strong><span lang="en">Use the customer's stated need. Do not look up holdings.</span><span lang="th">ใช้ข้อมูลความต้องการที่ลูกค้าแจ้ง ห้ามค้นหาทรัพย์สินที่ถือครอง</span></strong>
+      <span lang="en">This synthetic prototype contains public references only. It does not confirm that a person was a Bangkok Bank customer, held an asset, or has an authorized representative.</span>
+      <span lang="th">ต้นแบบจำลองนี้มีเฉพาะข้อมูลอ้างอิงสาธารณะ ไม่ได้ยืนยันว่าบุคคลนั้นเป็นลูกค้าธนาคารกรุงเทพ ถือครองสินทรัพย์ หรือมีผู้แทนที่ได้รับอนุญาต</span>
+    </div>
+  </div>
+
+  <section class="scenario-bar" aria-label="Scenario controls">
+    <div class="field">
+      <label for="role"><span lang="en">Staff role</span><span lang="th">บทบาทพนักงาน</span></label>
+      <select id="role">
+        <option value="teller" data-en="Teller / branch service" data-th="พนักงานสาขา">Teller / branch service</option>
+        <option value="contact" data-en="Contact-center agent" data-th="พนักงานศูนย์บริการลูกค้า">Contact-center agent</option>
+        <option value="rm" data-en="Relationship manager" data-th="ผู้จัดการความสัมพันธ์ลูกค้า">Relationship manager</option>
+      </select>
+      <p class="field-help"><span lang="en">Role changes guidance only; it grants no data access.</span><span lang="th">บทบาทเปลี่ยนเฉพาะคำแนะนำ ไม่ได้ให้สิทธิ์เข้าถึงข้อมูล</span></p>
+    </div>
+    <div class="field">
+      <label for="need"><span lang="en">Customer-identified need</span><span lang="th">ความต้องการที่ลูกค้าระบุ</span></label>
+      <select id="need">
+        <option value="general" data-en="General estate question" data-th="สอบถามเรื่องมรดกทั่วไป">General estate question</option>
+        <option value="shares" data-en="Bangkok Bank shares" data-th="หุ้นธนาคารกรุงเทพ">Bangkok Bank shares</option>
+        <option value="bondbook" data-en="Savings bond · bond book" data-th="พันธบัตรออมทรัพย์ · สมุดพันธบัตร">Savings bond · bond book</option>
+        <option value="bondscrip" data-en="Savings bond · scrip" data-th="พันธบัตรออมทรัพย์ · ใบพันธบัตร">Savings bond · scrip</option>
+        <option value="deposit" data-en="Deposit account · route not verified" data-th="บัญชีเงินฝาก · ยังไม่ยืนยันเส้นทาง">Deposit account · route not verified</option>
+      </select>
+      <p class="field-help"><span lang="en">Choose only when the customer names the product. No profile lookup.</span><span lang="th">เลือกเมื่อ ลูกค้าระบุผลิตภัณฑ์เท่านั้น ห้ามค้นหาประวัติลูกค้า</span></p>
+    </div>
+    <div class="field">
+      <label for="contentState"><span lang="en">Guide state</span><span lang="th">สถานะคำแนะนำ</span></label>
+      <select id="contentState">
+        <option value="public" data-en="Current public reference · not staff-approved" data-th="ข้อมูลสาธารณะปัจจุบัน · ยังไม่อนุมัติสำหรับพนักงาน">Current public reference · not staff-approved</option>
+        <option value="sample" data-en="Hypothetical approved guide · synthetic" data-th="ตัวอย่างคำแนะนำที่สมมติว่าอนุมัติ · ข้อมูลจำลอง">Hypothetical approved guide · synthetic</option>
+        <option value="stale" data-en="Stale or conflicting" data-th="ล้าสมัยหรือขัดแย้ง">Stale or conflicting</option>
+        <option value="missing" data-en="No route configured" data-th="ยังไม่ได้กำหนดเส้นทาง">No route configured</option>
+      </select>
+      <p class="field-help"><span lang="en">The hypothetical state is a usability fixture, not real approval.</span><span lang="th">สถานะสมมติใช้ทดสอบการใช้งาน ไม่ใช่การอนุมัติจริง</span></p>
+    </div>
+    <div class="field">
+      <label for="authority"><span lang="en">Named-customer request</span><span lang="th">คำขอเกี่ยวกับลูกค้าที่ระบุชื่อ</span></label>
+      <select id="authority">
+        <option value="general" data-en="General guidance only" data-th="ขอคำแนะนำทั่วไปเท่านั้น">General guidance only</option>
+        <option value="unverified" data-en="Private status requested · authority not confirmed" data-th="ขอสถานะส่วนบุคคล · ยังไม่ยืนยันอำนาจ">Private status requested · authority not confirmed</option>
+        <option value="pass" data-en="Authority gate passed · synthetic; no source data" data-th="ผ่านการตรวจสอบอำนาจ · ข้อมูลจำลอง ไม่มีข้อมูลจากระบบต้นทาง">Authority gate passed · synthetic; no source data</option>
+      </select>
+      <p class="field-help"><span lang="en">A family or heir claim is not an authority result.</span><span lang="th">ความสัมพันธ์ในครอบครัวหรือการอ้างว่าเป็นทายาทไม่ใช่ผลตรวจสอบอำนาจ</span></p>
+    </div>
+  </section>
+
+  <div class="workspace">
+    <div class="main-col">
+      <section class="card" aria-labelledby="request-title">
+        <div class="card-head"><h2 id="request-title"><span lang="en">Customer request</span><span lang="th">คำขอของลูกค้า</span></h2><span class="badge badge-blue"><span lang="en">Synthetic scenario</span><span lang="th">สถานการณ์จำลอง</span></span></div>
+        <div class="card-body">
+          <div class="request-context">
+            <span class="avatar" aria-hidden="true">?</span>
+            <div>
+              <h3><span lang="en">A person asks for next steps after a customer's death</span><span lang="th">บุคคลหนึ่งสอบถามขั้นตอนหลังลูกค้าเสียชีวิต</span></h3>
+              <p><span lang="en">No deceased person, relationship, account, or asset is identified in this screen.</span><span lang="th">หน้านี้ไม่ได้ระบุผู้เสียชีวิต ความสัมพันธ์ บัญชี หรือสินทรัพย์ใด ๆ</span></p>
+            </div>
+          </div>
+          <div class="no-profile"><span lang="en"><strong>No customer profile linked.</strong> The selected product is a customer-provided topic for guidance only. This prototype has no customer, account, bond, or portfolio search.</span><span lang="th"><strong>ไม่มีการเชื่อมโยงประวัติลูกค้า</strong> ผลิตภัณฑ์ที่เลือกเป็นหัวข้อที่ลูกค้าแจ้งเพื่อรับคำแนะนำเท่านั้น ต้นแบบนี้ไม่มีการค้นหาลูกค้า บัญชี พันธบัตร หรือพอร์ตลงทุน</span></div>
+        </div>
+      </section>
+
+      <section class="card result public" id="result" aria-labelledby="result-title" aria-live="polite" aria-atomic="true">
+        <div class="card-head"><h2><span lang="en">Guidance and route</span><span lang="th">คำแนะนำและเส้นทางบริการ</span></h2><span class="badge badge-amber" id="stateBadge">Public reference only</span></div>
+        <div class="card-body">
+          <div class="result-heading"><h2 id="result-title">General estate question</h2></div>
+          <p id="result-summary"></p>
+          <div class="route-grid">
+            <section class="route-box" aria-labelledby="route-title">
+              <h3 id="route-title"><span lang="en">Customer-safe next step</span><span lang="th">ขั้นตอนถัดไปที่แจ้งลูกค้าได้</span></h3>
+              <div class="content" id="route-copy"></div>
+            </section>
+            <section class="route-box source-box" aria-labelledby="source-title">
+              <h3 id="source-title"><span lang="en">Source and freshness</span><span lang="th">แหล่งข้อมูลและความเป็นปัจจุบัน</span></h3>
+              <div class="content source-meta" id="source-meta"></div>
+              <a class="source-link" id="source-link" href="https://www.bangkokbank.com/en/Investor-Relations/Investor-Services" target="_blank" rel="noopener noreferrer"><span lang="en">Open cited public source</span><span lang="th">เปิดแหล่งข้อมูลสาธารณะที่อ้างอิง</span></a>
+            </section>
+          </div>
+          <div class="notice neutral" id="safety-notice"></div>
+        </div>
+      </section>
+
+      <section class="card action-card" aria-labelledby="action-title">
+        <div class="card-head"><h2><span lang="en">Staff action boundary</span><span lang="th">ขอบเขตการดำเนินการของพนักงาน</span></h2><span class="badge badge-blue" id="actionBadge">Guide only</span></div>
+        <div class="card-body">
+          <div class="action-title"><h2 id="action-title-text"></h2><span class="badge badge-amber"><span lang="en">No asset lookup</span><span lang="th">ห้ามค้นหาสินทรัพย์</span></span></div>
+          <p class="action-copy" id="action-copy"></p>
+          <blockquote class="quote" id="customer-copy"></blockquote>
+        </div>
+      </section>
+
+      <section class="card" aria-labelledby="followup-title">
+        <div class="card-head"><h2 id="followup-title"><span lang="en">Customer-requested follow-up</span><span lang="th">การติดตามตามคำขอของลูกค้า</span></h2><span class="badge" id="handoff-status"><span lang="en">Not created</span><span lang="th">ยังไม่ได้สร้าง</span></span></div>
+        <div class="card-body">
+          <div class="handoff-controls">
+            <label class="check-label" for="followup">
+              <input id="followup" type="checkbox">
+              <span><span lang="en">The customer asked the Bank to follow up. Preview only the minimum handoff context.</span><span lang="th">ลูกค้าขอให้ธนาคารติดตาม โปรดแสดงตัวอย่างเฉพาะข้อมูลขั้นต่ำที่จะส่งต่อ</span></span>
+            </label>
+            <button class="btn primary" id="previewHandoff" type="button" disabled><span lang="en">Preview handoff</span><span lang="th">ดูตัวอย่างการส่งต่องาน</span></button>
+          </div>
+          <p class="field-help" id="followup-help"><span lang="en">No estate case type or receiving queue is approved in this discovery fixture. Preview does not create or send a request.</span><span lang="th">ข้อมูลจำลองเพื่อค้นคว้านี้ยังไม่มีประเภทเคสหรือคิวผู้รับงานที่ได้รับอนุมัติ การดูตัวอย่างจะไม่สร้างหรือส่งคำขอ</span></p>
+          <div class="handoff-preview" id="handoffPreview" hidden aria-live="polite">
+            <h3><span lang="en">Synthetic handoff preview · not submitted</span><span lang="th">ตัวอย่างการส่งต่องานจำลอง · ยังไม่ได้ส่ง</span></h3>
+            <div class="handoff-grid">
+              <div><span lang="en">Request reference</span><span lang="th">เลขอ้างอิงคำขอ</span><strong><span lang="en">Not assigned · preview only</span><span lang="th">ยังไม่ได้กำหนด · ดูตัวอย่างเท่านั้น</span></strong></div>
+              <div><span lang="en">Request topic</span><span lang="th">หัวข้อคำขอ</span><strong id="handoffTopic"></strong></div>
+              <div><span lang="en">Receiving owner</span><span lang="th">ผู้รับผิดชอบปลายทาง</span><strong id="handoffOwner"></strong></div>
+              <div><span lang="en">Customer data included</span><span lang="th">ข้อมูลลูกค้าที่ส่ง</span><strong><span lang="en">None in this prototype</span><span lang="th">ไม่มีในต้นแบบนี้</span></strong></div>
+              <div><span lang="en">Accountability</span><span lang="th">ความรับผิดชอบ</span><strong><span lang="en">Originating staff retains ownership until acceptance</span><span lang="th">พนักงานผู้เริ่มงานยังรับผิดชอบจนกว่าจะมีผู้รับงานตอบรับ</span></strong></div>
+              <div><span lang="en">Next customer update</span><span lang="th">กำหนดอัปเดตลูกค้าครั้งถัดไป</span><strong><span lang="en">Not configured · do not promise a time</span><span lang="th">ยังไม่ได้กำหนด · ห้ามรับปากเวลา</span></strong></div>
+              <div><span lang="en">Source action</span><span lang="th">การดำเนินการในระบบต้นทาง</span><strong><span lang="en">Not started or confirmed</span><span lang="th">ยังไม่เริ่มหรือยืนยัน</span></strong></div>
+              <div><span lang="en">CRM request</span><span lang="th">คำขอใน CRM</span><strong><span lang="en">Preview only · no live case created</span><span lang="th">ดูตัวอย่างเท่านั้น · ไม่มีการสร้างเคสจริง</span></strong></div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <aside class="side-col" aria-label="Safety and source context">
+      <section class="card" aria-labelledby="boundaries-title">
+        <div class="card-head"><h2 id="boundaries-title"><span lang="en">Always keep separate</span><span lang="th">ต้องแยกการตรวจสอบเสมอ</span></h2></div>
+        <div class="card-body">
+          <ul class="boundary-list">
+            <li><span class="mark" aria-hidden="true">1</span><span lang="en"><strong>Customer identity</strong> — who is the named data subject?</span><span lang="th"><strong>ตัวตนลูกค้า</strong> — ใครคือเจ้าของข้อมูลที่ระบุ?</span></li>
+            <li><span class="mark" aria-hidden="true">2</span><span lang="en"><strong>Estate authority</strong> — what current authority covers this asset and action?</span><span lang="th"><strong>อำนาจจัดการมรดก</strong> — อำนาจปัจจุบันครอบคลุมสินทรัพย์และการดำเนินการใด?</span></li>
+            <li><span class="mark" aria-hidden="true">3</span><span lang="en"><strong>Staff entitlement</strong> — may this employee see or do this?</span><span lang="th"><strong>สิทธิ์พนักงาน</strong> — พนักงานคนนี้ดูหรือทำรายการนี้ได้หรือไม่?</span></li>
+            <li><span class="mark" aria-hidden="true">4</span><span lang="en"><strong>Source permission</strong> — does the product system confirm and permit it?</span><span lang="th"><strong>สิทธิ์ในระบบต้นทาง</strong> — ระบบผลิตภัณฑ์ยืนยันและอนุญาตหรือไม่?</span></li>
+          </ul>
+        </div>
+      </section>
+      <section class="card" aria-labelledby="limits-title">
+        <div class="card-head"><h2 id="limits-title"><span lang="en">This screen never</span><span lang="th">หน้านี้จะไม่</span></h2></div>
+        <div class="card-body">
+          <ul class="boundary-list">
+            <li><span class="mark" aria-hidden="true">×</span><span lang="en">Search holdings or confirm that an account or asset exists.</span><span lang="th">ค้นหาการถือครองหรือยืนยันว่ามีบัญชีหรือสินทรัพย์อยู่</span></li>
+            <li><span class="mark" aria-hidden="true">×</span><span lang="en">Decide who is an heir, executor, or beneficiary.</span><span lang="th">ตัดสินว่าใครเป็นทายาท ผู้จัดการมรดก หรือผู้รับประโยชน์</span></li>
+            <li><span class="mark" aria-hidden="true">×</span><span lang="en">Collect or attach court orders, IDs, certificates, or account papers.</span><span lang="th">เก็บหรือแนบคำสั่งศาล บัตรประจำตัว ใบรับรอง หรือเอกสารบัญชี</span></li>
+            <li><span class="mark" aria-hidden="true">×</span><span lang="en">Freeze, transfer, release, pay, or close an asset.</span><span lang="th">อายัด โอน ปลดระงับ จ่ายเงิน หรือปิดสินทรัพย์</span></li>
+          </ul>
+        </div>
+      </section>
+      <section class="card" aria-labelledby="sources-title">
+        <div class="card-head"><h2 id="sources-title"><span lang="en">Research references</span><span lang="th">แหล่งข้อมูลสำหรับการค้นคว้า</span></h2></div>
+        <div class="card-body source-index">
+          <div><a href="https://www.bangkokbank.com/en/Investor-Relations/Investor-Services" target="_blank" rel="noopener noreferrer">Bangkok Bank Investor Services</a><p><span lang="en">Public guidance about deceased shareholders and TSD.</span><span lang="th">ข้อมูลสาธารณะเกี่ยวกับผู้ถือหุ้นที่เสียชีวิตและ TSD</span></p></div>
+          <div><a href="https://www.bangkokbank.com/th-TH/Personal/Save-And-Invest/Investment/Secondary-Bonds" target="_blank" rel="noopener noreferrer">Bangkok Bank secondary bonds</a><p><span lang="en">Public guidance distinguishes bond book and scrip.</span><span lang="th">ข้อมูลสาธารณะแยกสมุดพันธบัตรและใบพันธบัตร</span></p></div>
+          <div><a href="https://www.bot.or.th/th/our-services/bond-and-debt-securities-services/Debt-Securities-Services.html" target="_blank" rel="noopener noreferrer">Bank of Thailand · debt securities</a><p><span lang="en">Public estate-administration service information.</span><span lang="th">ข้อมูลบริการสาธารณะเกี่ยวกับการจัดการมรดกตราสารหนี้</span></p></div>
+        </div>
+      </section>
+    </aside>
+  </div>
+  <p class="footer-note"><span lang="en">Synthetic research prototype · No CRM, customer, holdings, authority, or source system is connected · All suggested staff wording requires Bangkok Bank review</span><span lang="th">ต้นแบบจำลองเพื่อการค้นคว้า · ไม่เชื่อมต่อระบบ CRM ข้อมูลลูกค้า การถือครอง อำนาจ หรือระบบต้นทาง · ธนาคารกรุงเทพต้องตรวจสอบข้อความแนะนำพนักงานทั้งหมด</span></p>
+</main>
+<div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+<script>
+const sources = {
+  shares: 'https://www.bangkokbank.com/en/Investor-Relations/Investor-Services',
+  bonds: 'https://www.bangkokbank.com/th-TH/Personal/Save-And-Invest/Investment/Secondary-Bonds',
+  bot: 'https://www.bot.or.th/th/our-services/bond-and-debt-securities-services/Debt-Securities-Services.html'
+};
+const byId = (id) => document.getElementById(id);
+const tr = (en, th) => `<span lang="en">${en}</span><span lang="th">${th}</span>`;
+const trBlock = (en, th) => `<div lang="en">${en}</div><div lang="th">${th}</div>`;
+const roleLabel = () => {
+  const role = byId('role').value;
+  if (role === 'teller') return ['Teller / branch service', 'พนักงานสาขา'];
+  if (role === 'contact') return ['Contact-center agent', 'พนักงานศูนย์บริการลูกค้า'];
+  return ['Relationship manager', 'ผู้จัดการความสัมพันธ์ลูกค้า'];
+};
+function routeFor(need) {
+  if (need === 'shares') return {
+    title: ['Bangkok Bank shares · public investor guidance', 'หุ้นธนาคารกรุงเทพ · ข้อมูลสาธารณะสำหรับผู้ลงทุน'],
+    summary: ['Bangkok Bank’s public Investor Services page says a legal heir may claim shares with a court order proving heir status, the deceased person’s death certificate, and Citizen ID. It directs ownership transfer to TSD. This page does not confirm that the deceased person held shares or define an employee workflow.', 'หน้า Investor Services ของธนาคารกรุงเทพระบุข้อมูลสาธารณะว่าทายาทโดยชอบธรรมสามารถยื่นขอสิทธิในหุ้นโดยใช้คำสั่งศาลที่ยืนยันสถานะทายาท ใบมรณบัตร และบัตรประจำตัวประชาชน และให้ติดต่อ TSD เพื่อโอนกรรมสิทธิ์ หน้านี้ไม่ได้ยืนยันว่าผู้เสียชีวิตถือหุ้นหรือกำหนดขั้นตอนสำหรับพนักงาน'],
+    route: ['<ul><li>Show this public reference only when the customer identifies Bangkok Bank shares.</li><li>Refer to TSD for the published ownership-transfer route.</li><li>Do not ask the customer to upload or send documents through CRM.</li></ul>', '<ul><li>แสดงข้อมูลสาธารณะนี้เมื่อลูกค้าระบุว่าถามเรื่องหุ้นธนาคารกรุงเทพเท่านั้น</li><li>อ้างอิง TSD สำหรับขั้นตอนการโอนกรรมสิทธิ์ที่เผยแพร่</li><li>ห้ามขอให้ลูกค้าอัปโหลดหรือส่งเอกสารผ่าน CRM</li></ul>'],
+    source: ['Bangkok Bank Investor Services · reviewed 15 Oct 2026 · Public source, not an employee guide', 'Investor Services ธนาคารกรุงเทพ · ตรวจสอบ 15 ต.ค. 2569 · แหล่งข้อมูลสาธารณะ ไม่ใช่คู่มือพนักงาน'], url: sources.shares,
+    safety: ['The cited source describes a route for Bangkok Bank shares only. Do not generalize it to deposit accounts, funds, bonds, insurance, or other products.', 'แหล่งข้อมูลที่อ้างอิงกล่าวถึงเส้นทางสำหรับหุ้นธนาคารกรุงเทพเท่านั้น ห้ามนำไปใช้กับบัญชีเงินฝาก กองทุน พันธบัตร ประกันภัย หรือผลิตภัณฑ์อื่น']
+  };
+  if (need === 'bondbook') return {
+    title: ['Savings bond · bond-book case', 'พันธบัตรออมทรัพย์ · กรณีสมุดพันธบัตร'],
+    summary: ['Bangkok Bank’s public page refers a deceased bond-book holder to separate “account owner deceased” conditions but does not reproduce a complete checklist there. Do not convert this reference into a document or eligibility checklist.', 'หน้าข้อมูลสาธารณะของธนาคารกรุงเทพอ้างถึงเงื่อนไข “เจ้าของบัญชีถึงแก่กรรม” แยกต่างหากสำหรับผู้ถือสมุดพันธบัตรที่เสียชีวิต แต่ไม่ได้แสดงรายการตรวจสอบทั้งหมดไว้ในหน้านั้น ห้ามแปลงข้อความอ้างอิงนี้เป็นรายการเอกสารหรือเงื่อนไข'],
+    route: ['<ul><li>Do not guess which deceased-account rules apply to this bond-book case.</li><li>Open the cited product page for the current customer-facing reference.</li><li>Use a Bank-approved staff route only after the product owner confirms the correct conditions.</li></ul>', '<ul><li>ห้ามคาดเดาว่าเงื่อนไขบัญชีเจ้าของถึงแก่กรรมข้อใดใช้กับสมุดพันธบัตรนี้</li><li>เปิดหน้าผลิตภัณฑ์ที่อ้างอิงเพื่อดูข้อมูลปัจจุบันสำหรับลูกค้า</li><li>ใช้เส้นทางสำหรับพนักงานที่ธนาคารอนุมัติหลังเจ้าของผลิตภัณฑ์ยืนยันเงื่อนไขแล้วเท่านั้น</li></ul>'],
+    source: ['Bangkok Bank secondary bonds · reviewed 15 Oct 2026 · Public reference is incomplete for this route', 'พันธบัตรตลาดรอง ธนาคารกรุงเทพ · ตรวจสอบ 15 ต.ค. 2569 · ข้อมูลสาธารณะยังไม่ครบสำหรับเส้นทางนี้'], url: sources.bonds,
+    safety: ['The bond-book reference is not a complete procedure. Suppress document lists, processing times, and asset-status claims.', 'ข้อมูลอ้างอิงกรณีสมุดพันธบัตรยังไม่ใช่ขั้นตอนครบถ้วน ให้ระงับการแสดงรายการเอกสาร ระยะเวลาดำเนินการ และการอ้างสถานะสินทรัพย์']
+  };
+  if (need === 'bondscrip') return {
+    title: ['Savings bond · scrip case', 'พันธบัตรออมทรัพย์ · กรณีใบพันธบัตร'],
+    summary: ['Bangkok Bank’s public page directs an estate administrator to BOT for scrip-bond ownership transfer and lists court-order and receiving-account materials. This is external public information, not authority for a staff member to verify documents or transfer the bond.', 'หน้าข้อมูลสาธารณะของธนาคารกรุงเทพให้ผู้จัดการมรดกติดต่อ BOT เพื่อโอนกรรมสิทธิ์พันธบัตรแบบใบตราสาร และระบุเอกสารคำสั่งศาลกับบัญชีรับเงิน ข้อมูลนี้เป็นข้อมูลสาธารณะของหน่วยงานภายนอก ไม่ใช่อำนาจให้พนักงานตรวจเอกสารหรือโอนพันธบัตร'],
+    route: ['<ul><li>Use BOT’s public estate/debt-securities information for the external route.</li><li>Keep court orders, identity papers, and receiving-account details in the authorized product/legal workflow.</li><li>Do not mark an ownership transfer complete from a CRM referral.</li></ul>', '<ul><li>ใช้ข้อมูลสาธารณะของ BOT เรื่องการจัดการมรดก/ตราสารหนี้สำหรับเส้นทางภายนอก</li><li>เก็บคำสั่งศาล เอกสารยืนยันตัวตน และข้อมูลบัญชีรับเงินไว้ในขั้นตอนผลิตภัณฑ์/กฎหมายที่ได้รับอนุญาต</li><li>ห้ามระบุว่าการโอนกรรมสิทธิ์เสร็จสิ้นจากการส่งต่องานใน CRM</li></ul>'],
+    source: ['Bangkok Bank secondary bonds and BOT debt-securities services · reviewed 15 Oct 2026 · Public reference only', 'พันธบัตรตลาดรองธนาคารกรุงเทพและบริการตราสารหนี้ BOT · ตรวจสอบ 15 ต.ค. 2569 · ข้อมูลสาธารณะเท่านั้น'], url: sources.bonds,
+    safety: ['This route is specific to the identified scrip-bond scenario. The CRM does not verify executor status, receive documents, or reveal holdings.', 'เส้นทางนี้ใช้เฉพาะกรณีใบพันธบัตรที่ระบุเท่านั้น CRM ไม่ตรวจสอบสถานะผู้จัดการมรดก ไม่รับเอกสาร และไม่เปิดเผยการถือครอง']
+  };
+  if (need === 'deposit') return {
+    title: ['Deposit account · no verified route in this fixture', 'บัญชีเงินฝาก · ยังไม่มีเส้นทางที่ยืนยันในข้อมูลจำลองนี้'],
+    summary: ['This discovery fixture has no verified Bangkok Bank deposit-account estate procedure. The sources reviewed for this concept do not establish one. Do not infer a route, required documents, time, or whether an account exists.', 'ข้อมูลจำลองเพื่อค้นคว้านี้ยังไม่มีขั้นตอนจัดการมรดกบัญชีเงินฝากของธนาคารกรุงเทพที่ยืนยันแล้ว แหล่งข้อมูลที่ตรวจสอบสำหรับแนวคิดนี้ไม่ได้กำหนดขั้นตอนดังกล่าว ห้ามคาดเดาเส้นทาง เอกสาร ระยะเวลา หรือการมีอยู่ของบัญชี'],
+    route: ['<ul><li>Do not search for the account or infer that it exists.</li><li>Use only the Bank’s current, approved general support procedure.</li><li>If no approved route is available to the staff member, do not create an estate case in this CRM fixture.</li></ul>', '<ul><li>ห้ามค้นหาบัญชีหรือคาดเดาว่ามีบัญชีอยู่</li><li>ใช้เฉพาะขั้นตอนช่วยเหลือทั่วไปที่ธนาคารอนุมัติและเป็นปัจจุบัน</li><li>หากพนักงานไม่มีเส้นทางที่ธนาคารอนุมัติ ห้ามสร้างเคสมรดกในข้อมูลจำลอง CRM นี้</li></ul>'],
+    source: ['No verified deposit-estate procedure configured · Bank owner confirmation required', 'ยังไม่ได้กำหนดขั้นตอนจัดการมรดกบัญชีเงินฝากที่ยืนยันแล้ว · ต้องให้เจ้าของกระบวนการของธนาคารยืนยัน'], url: null,
+    safety: ['No product-specific instruction is available here. The customer’s question must not trigger a profile or balance search.', 'ไม่มีคำแนะนำเฉพาะผลิตภัณฑ์ในหน้านี้ คำถามของลูกค้าต้องไม่ทำให้เกิดการค้นหาประวัติหรือยอดเงิน']
+  };
+  return {
+    title: ['General estate question · no asset lookup', 'สอบถามเรื่องมรดกทั่วไป · ห้ามค้นหาสินทรัพย์'],
+    summary: ['No product has been identified by the customer. Offer only a Bank-approved general route; this prototype does not configure that route and cannot confirm whether the deceased person was a customer or held assets.', 'ลูกค้ายังไม่ได้ระบุผลิตภัณฑ์ ให้เสนอเฉพาะเส้นทางทั่วไปที่ธนาคารอนุมัติ ต้นแบบนี้ยังไม่ได้กำหนดเส้นทางดังกล่าวและไม่สามารถยืนยันว่าผู้เสียชีวิตเป็นลูกค้าหรือถือครองสินทรัพย์หรือไม่'],
+    route: ['<ul><li>Do not search for a customer or products.</li><li>Use the current Bank-approved general support process known to your role.</li><li>If that route is unavailable, explain that you will verify the correct route through the approved staff procedure.</li></ul>', '<ul><li>ห้ามค้นหาลูกค้าหรือผลิตภัณฑ์</li><li>ใช้ขั้นตอนช่วยเหลือทั่วไปที่ธนาคารอนุมัติและบทบาทของคุณเข้าถึงได้</li><li>หากไม่มีเส้นทางดังกล่าว ให้แจ้งว่าจะตรวจสอบเส้นทางที่ถูกต้องผ่านขั้นตอนพนักงานที่อนุมัติ</li></ul>'],
+    source: ['No product-specific guide selected · no customer data source queried', 'ยังไม่ได้เลือกคู่มือเฉพาะผลิตภัณฑ์ · ไม่มีการสอบถามแหล่งข้อมูลลูกค้า'], url: null,
+    safety: ['The general support route must be confirmed by the Bank before this screen is used for staff guidance.', 'ธนาคารต้องยืนยันเส้นทางช่วยเหลือทั่วไปก่อนใช้หน้านี้เป็นคำแนะนำสำหรับพนักงาน']
+  };
+}
+function render() {
+  const need = byId('need').value;
+  const contentState = byId('contentState').value;
+  const authority = byId('authority').value;
+  const role = byId('role').value;
+  const route = routeFor(need);
+  const result = byId('result');
+  let title = route.title;
+  let summary = route.summary;
+  let routeCopy = route.route;
+  let sourceMeta = route.source;
+  let url = route.url;
+  let safety = route.safety;
+  let tone = 'public';
+  let badge = ['Public reference only', 'ข้อมูลสาธารณะเท่านั้น'];
+
+  if (contentState === 'stale' || contentState === 'missing') {
+    tone = 'stop';
+    badge = contentState === 'stale' ? ['Stale / conflicting · suppress route', 'ล้าสมัย/ขัดแย้ง · ระงับเส้นทาง'] : ['No route configured', 'ยังไม่ได้กำหนดเส้นทาง'];
+    title = contentState === 'stale' ? ['Route suppressed · verify through an approved Bank process', 'ระงับเส้นทาง · ตรวจสอบผ่านขั้นตอนที่ธนาคารอนุมัติ'] : ['No approved route is configured in this fixture', 'ยังไม่มีเส้นทางที่ธนาคารอนุมัติในข้อมูลจำลองนี้'];
+    summary = contentState === 'stale'
+      ? ['The selected guide is stale or conflicting in this scenario. Do not use product details, document lists, timing, or source-status claims from it.', 'คู่มือที่เลือกในสถานการณ์นี้ล้าสมัยหรือมีข้อมูลขัดแย้ง ห้ามใช้รายละเอียดผลิตภัณฑ์ รายการเอกสาร ระยะเวลา หรือการอ้างสถานะจากแหล่งนี้']
+      : ['No verified guide is available for this scenario. Use only a current Bank-approved general support procedure; this prototype cannot supply one.', 'ไม่มีคู่มือที่ยืนยันแล้วสำหรับสถานการณ์นี้ ให้ใช้เฉพาะขั้นตอนช่วยเหลือทั่วไปที่ธนาคารอนุมัติและเป็นปัจจุบัน ต้นแบบนี้ไม่สามารถกำหนดขั้นตอนให้ได้'];
+    routeCopy = ['<ul><li>Do not repeat the suppressed route or promise a processing time.</li><li>Use the current Bank-approved general support process.</li><li>Do not create a CRM estate case unless its type and receiving owner are approved.</li></ul>', '<ul><li>ห้ามแจ้งเส้นทางที่ถูกระงับหรือรับปากระยะเวลาดำเนินการ</li><li>ใช้ขั้นตอนช่วยเหลือทั่วไปที่ธนาคารอนุมัติและเป็นปัจจุบัน</li><li>ห้ามสร้างเคสมรดกใน CRM เว้นแต่ธนาคารอนุมัติประเภทเคสและผู้รับงานแล้ว</li></ul>'];
+    sourceMeta = contentState === 'stale'
+      ? ['Selected fixture: stale/conflicting content · product guidance suppressed · owner/freshness policy not configured', 'ข้อมูลจำลองที่เลือก: เนื้อหาล้าสมัย/ขัดแย้ง · ระงับคำแนะนำผลิตภัณฑ์ · ยังไม่ได้กำหนดนโยบายเจ้าของ/ความเป็นปัจจุบัน']
+      : ['No approved source route configured · customer/product sources not queried', 'ยังไม่ได้กำหนดเส้นทางจากแหล่งข้อมูลที่ธนาคารอนุมัติ · ไม่มีการสอบถามแหล่งข้อมูลลูกค้า/ผลิตภัณฑ์'];
+    safety = ['A stale or absent route is not a reason to search for assets. Keep the customer-safe fallback visible.', 'เส้นทางที่ล้าสมัยหรือไม่มีข้อมูลไม่ใช่เหตุผลให้ค้นหาสินทรัพย์ ให้แสดงทางเลือกที่ปลอดภัยสำหรับลูกค้า'];
+  } else if (contentState === 'sample') {
+    tone = 'caution';
+    badge = ['Synthetic approval fixture · not real policy', 'สถานะอนุมัติจำลอง · ไม่ใช่นโยบายจริง'];
+    sourceMeta = ['Hypothetical content-owner approval state · synthetic only · no production guide or route is configured', 'สถานะอนุมัติจากเจ้าของเนื้อหาสมมติ · ข้อมูลจำลองเท่านั้น · ไม่มีคู่มือหรือเส้นทางจริง'];
+    safety = ['This state tests how a Bank-approved staff guide might appear. It does not indicate that Bangkok Bank approved this content or route.', 'สถานะนี้ใช้ทดสอบการแสดงผลของคู่มือพนักงานที่ธนาคารอนุมัติ ไม่ได้หมายความว่าธนาคารกรุงเทพอนุมัติเนื้อหาหรือเส้นทางนี้'];
+  }
+
+  if (authority === 'unverified') {
+    tone = 'stop';
+    badge = ['Restricted · authority not confirmed', 'จำกัดการเข้าถึง · ยังไม่ยืนยันอำนาจ'];
+    title = ['We cannot display named-customer status in this service context', 'ไม่สามารถแสดงสถานะลูกค้าที่ระบุชื่อในบริบทบริการนี้'];
+    summary = ['A family relationship or an assertion of heir/executor status is not proof of authority. No profile or product source is queried by this prototype.', 'ความสัมพันธ์ในครอบครัวหรือการอ้างว่าเป็นทายาท/ผู้จัดการมรดกไม่ใช่หลักฐานอำนาจ ต้นแบบนี้ไม่มีการสอบถามประวัติลูกค้าหรือแหล่งข้อมูลผลิตภัณฑ์'];
+    routeCopy = ['<ul><li>Do not disclose, confirm, deny, or hint at any account or asset.</li><li>Use the Bank-approved identity and estate-authority workflow for the named data subject.</li><li>If that workflow is not available, use the approved general support route.</li></ul>', '<ul><li>ห้ามเปิดเผย ยืนยัน ปฏิเสธ หรือบอกใบ้เกี่ยวกับบัญชีหรือสินทรัพย์</li><li>ใช้ขั้นตอนตรวจสอบตัวตนและอำนาจจัดการมรดกที่ธนาคารอนุมัติสำหรับเจ้าของข้อมูลที่ระบุชื่อ</li><li>หากไม่มีขั้นตอนดังกล่าว ให้ใช้เส้นทางช่วยเหลือทั่วไปที่อนุมัติ</li></ul>'];
+    safety = ['Neutral restricted state. Do not show an empty product panel, account count, masked identifier, or “no assets found” message.', 'สถานะจำกัดการเข้าถึงแบบเป็นกลาง ห้ามแสดงแผงผลิตภัณฑ์ว่าง จำนวนบัญชี รหัสที่ปกปิดบางส่วน หรือข้อความ “ไม่พบสินทรัพย์”'];
+  } else if (authority === 'pass') {
+    tone = 'caution';
+    badge = ['Synthetic authority pass · no holdings data', 'ผ่านการตรวจสอบอำนาจจำลอง · ไม่มีข้อมูลการถือครอง'];
+    summary = ['The authority-pass state is synthetic. Even after an authority check, this prototype has no holdings connector and returns no asset or account status.', 'สถานะผ่านการตรวจสอบอำนาจเป็นข้อมูลจำลอง แม้ผ่านการตรวจสอบอำนาจแล้ว ต้นแบบนี้ก็ไม่มีตัวเชื่อมต่อข้อมูลการถือครองและไม่แสดงสถานะสินทรัพย์หรือบัญชี'];
+    safety = ['Customer authority does not grant staff entitlement. A live implementation would recheck staff role, purpose, source permission, and the specific product action.', 'อำนาจของลูกค้าไม่ได้ให้สิทธิ์พนักงานโดยอัตโนมัติ ระบบจริงต้องตรวจสอบบทบาทพนักงาน วัตถุประสงค์ สิทธิ์ในแหล่งข้อมูล และการดำเนินการเฉพาะผลิตภัณฑ์อีกครั้ง'];
+  }
+
+  result.className = `card result ${tone}`;
+  byId('stateBadge').innerHTML = tr(badge[0], badge[1]);
+  byId('result-title').innerHTML = tr(title[0], title[1]);
+  byId('result-summary').innerHTML = tr(summary[0], summary[1]);
+  byId('route-copy').innerHTML = routeCopy[0].startsWith('<ul>') ? trBlock(routeCopy[0], routeCopy[1]) : tr(routeCopy[0], routeCopy[1]);
+  byId('source-meta').innerHTML = tr(sourceMeta[0], sourceMeta[1]);
+  byId('source-link').hidden = !url;
+  if (url) byId('source-link').href = url;
+  byId('safety-notice').className = `notice ${tone === 'stop' ? 'stop' : tone === 'public' ? 'neutral' : ''}`;
+  byId('safety-notice').innerHTML = `<strong>${tr('Safety boundary', 'ขอบเขตความปลอดภัย')}</strong> ${tr(safety[0], safety[1])}`;
+
+  const names = roleLabel();
+  const actionText = role === 'rm'
+    ? ['Guide or refer only when the customer asks', 'แนะนำหรือส่งต่อเมื่อลูกค้าร้องขอเท่านั้น']
+    : role === 'contact'
+      ? ['Give general guidance; move private status to an approved secure route', 'ให้คำแนะนำทั่วไป และส่งคำถามสถานะส่วนบุคคลไปยังช่องทางปลอดภัยที่อนุมัติ']
+      : ['Give the approved service route; do not process an asset action here', 'แจ้งเส้นทางบริการที่อนุมัติ ห้ามดำเนินการเกี่ยวกับสินทรัพย์ในหน้านี้'];
+  const actionCopy = role === 'rm'
+    ? ['Use a service purpose only. A bereavement disclosure is not a sales signal; do not open a portfolio or contact family members without the Bank’s current policy and customer direction.', 'ใช้เพื่อวัตถุประสงค์บริการเท่านั้น การแจ้งการเสียชีวิตไม่ใช่สัญญาณการขาย ห้ามเปิดพอร์ตหรือติดต่อสมาชิกครอบครัวโดยไม่มีนโยบายปัจจุบันของธนาคารและคำขอของลูกค้า']
+    : role === 'contact'
+      ? ['Apply the approved channel verification and disclosure rules. Email addresses or social handles do not establish authority; move confidential product questions to the Bank-approved secure route.', 'ใช้กฎการยืนยันตัวตนและเปิดเผยข้อมูลของช่องทางที่อนุมัติ อีเมลหรือชื่อบัญชีโซเชียลไม่ยืนยันอำนาจ ให้ส่งคำถามผลิตภัณฑ์ที่เป็นความลับไปยังช่องทางปลอดภัยที่ธนาคารอนุมัติ']
+      : ['Keep any identity, signature, legal-representative, and asset workflow in the authorized branch/product system. This screen offers guidance only.', 'ตรวจสอบตัวตน ลายมือชื่อ ผู้แทนตามกฎหมาย และสินทรัพย์ในระบบสาขา/ผลิตภัณฑ์ที่ได้รับอนุญาต หน้านี้ให้คำแนะนำเท่านั้น'];
+  byId('action-title-text').innerHTML = tr(actionText[0], actionText[1]);
+  byId('action-copy').innerHTML = tr(`${names[0]}: ${actionCopy[0]}`, `${names[1]}: ${actionCopy[1]}`);
+  byId('customer-copy').innerHTML = tr(
+    '“This screen cannot confirm whether someone held an asset. I can help find the current Bank-approved next step.”<small>Illustrative wording for usability review · Bank content-owner approval required</small>',
+    '“หน้านี้ไม่สามารถยืนยันได้ว่าบุคคลนั้นถือครองสินทรัพย์หรือไม่ ดิฉัน/ผมช่วยค้นหาขั้นตอนถัดไปที่ธนาคารอนุมัติและเป็นปัจจุบันได้”<small>ข้อความตัวอย่างสำหรับทดสอบการใช้งาน · ต้องได้รับอนุมัติจากเจ้าของเนื้อหาของธนาคาร</small>'
+  );
+
+  const followupRequested = byId('followup').checked;
+  byId('previewHandoff').disabled = !followupRequested;
+  if (!followupRequested) byId('handoffPreview').hidden = true;
+  byId('handoff-status').innerHTML = followupRequested
+    ? tr('Preview available · not submitted', 'พร้อมดูตัวอย่าง · ยังไม่ได้ส่ง')
+    : tr('Not created', 'ยังไม่ได้สร้าง');
+}
+function previewHandoff() {
+  if (!byId('followup').checked) return;
+  byId('handoffTopic').innerHTML = tr('Bereavement support · customer-identified topic only', 'การช่วยเหลือกรณีเสียชีวิต · เฉพาะหัวข้อที่ลูกค้าระบุ');
+  byId('handoffOwner').innerHTML = byId('contentState').value === 'sample'
+    ? tr('Synthetic estate support queue · not a Bank queue', 'คิวช่วยเหลือมรดกจำลอง · ไม่ใช่คิวของธนาคาร')
+    : tr('Not configured · no referral can be sent', 'ยังไม่ได้กำหนด · ไม่สามารถส่งต่อได้');
+  const preview = byId('handoffPreview');
+  preview.hidden = false;
+  byId('handoff-status').innerHTML = tr('Preview only · no case created', 'ดูตัวอย่างเท่านั้น · ไม่มีการสร้างเคส');
+  const toast = byId('toast');
+  toast.innerHTML = tr('Synthetic preview only. Nothing was saved or sent.', 'เป็นเพียงตัวอย่างจำลอง ไม่มีการบันทึกหรือส่งข้อมูล');
+  toast.hidden = false;
+  window.setTimeout(() => { toast.hidden = true; }, 4000);
+  preview.scrollIntoView({behavior: 'smooth', block: 'nearest'});
+}
+function setLanguage(thai) {
+  document.body.classList.toggle('th', thai);
+  document.body.classList.toggle('en', !thai);
+  document.documentElement.lang = thai ? 'th' : 'en';
+  byId('language').textContent = thai ? 'EN' : 'ไทย';
+  byId('language').setAttribute('aria-label', thai ? 'Switch to English' : 'Switch to Thai');
+  document.querySelectorAll('option[data-en]').forEach(option => { option.textContent = thai ? option.dataset.th : option.dataset.en; });
+  render();
+}
+['role','need','contentState','authority','followup'].forEach(id => byId(id).addEventListener('change', render));
+byId('previewHandoff').addEventListener('click', previewHandoff);
+byId('language').addEventListener('click', () => setLanguage(document.body.classList.contains('en')));
+render();
+</script>
+<script src="assets/language-preference.js"></script>
+</body>
+</html>

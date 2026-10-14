@@ -1,0 +1,292 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>รับเรื่องร้องเรียน ณ สาขา — Branch Complaint Intake · PROTOTYPE</title>
+<!--
+  PROTOTYPE ONLY — placeholder brand per NFR-05. Synthetic data.
+  Builds the missing intake moment (adversarial review ux-H1, persona-days
+  Naree 10:20): the screen that CREATES the case case-workspace.html shows
+  mid-life. Traces: FR-301/302/308, US-301, §3.4 interaction composer,
+  §3.6 milestones. Encodes review fixes: H2 (ID-bearing save receipt, no
+  toast-only save), M6 (validated fields), complaint-vs-inquiry record
+  classes (baseline v10), no-secrets (FR-705). 11px Thai floor per H6.
+-->
+<style>
+:root{
+  --navy:#10275f;--blue:#174a9a;--ink:#17243c;--muted:#4c5a72;--line:#d9e0ea;
+  --paper:#f1f4f8;--surface:#fff;--pale:#edf4ff;--green:#06684f;--green-bg:#edf8f3;
+  --amber:#7a4e06;--amber-bg:#fff6e4;--red:#8f3136;--red-bg:#fff3f2;--info:#274f9e;
+  --focus:0 0 0 3px rgba(8,103,232,.28);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font:15px/1.6 "Sarabun","Noto Sans Thai","Leelawadee UI",sans-serif}
+[lang="en"]{display:none}
+body.en [lang="th"]{display:none}
+body.en [lang="en"]{display:inline}
+.skip{position:absolute;top:-52px;left:12px;z-index:9;padding:9px 14px;background:#fff;color:var(--navy);font-weight:700;border-radius:6px;text-decoration:none}
+.skip:focus{top:10px}
+:focus-visible{outline:none;box-shadow:var(--focus);border-radius:4px}
+.topbar{min-height:62px;padding:0 24px;display:flex;align-items:center;gap:12px;background:var(--navy);color:#fff}
+.brand{display:flex;align-items:center;gap:10px;color:#fff;text-decoration:none;font-weight:700}
+.brand .lotus{width:30px;height:34px;display:inline-flex;align-items:center;justify-content:center;background:#fff;color:var(--navy);border-radius:4px;font-weight:800}
+.env{border-radius:99px;padding:3px 10px;background:#f0b644;color:#2b2b2b;font-size:11px;font-weight:800;letter-spacing:.06em}
+.spacer{flex:1}
+.staff{text-align:right;font-size:12.5px}
+.staff small{display:block;opacity:.75}
+.langbtn{height:34px;padding:0 12px;border:1px solid rgba(255,255,255,.4);border-radius:5px;background:transparent;color:#fff;cursor:pointer;font-size:13px}
+.nav{display:flex;gap:4px;padding:0 20px;background:#173e85}
+.nav a{padding:10px 15px;color:#fff;text-decoration:none;font-size:13px;opacity:.85}
+.nav a[aria-current]{border-bottom:3px solid #fff;opacity:1;font-weight:700}
+main{max-width:980px;margin:0 auto;padding:22px 20px 60px}
+h1{font-size:21px;margin:6px 0 2px}
+.crumb{font-size:12.5px;color:var(--muted);margin:0 0 16px}
+.callout{border:1px solid var(--info);background:#eaf0fb;border-radius:8px;padding:12px 16px;font-size:13.5px;margin:0 0 16px;display:flex;gap:10px}
+.callout .dot{flex:0 0 9px;width:9px;height:9px;border-radius:50%;background:var(--info);margin-top:7px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:8px;margin-bottom:18px}
+.card h2{font-size:13px;margin:0;padding:11px 16px;border-bottom:1px solid var(--line);color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
+.card .bd{padding:16px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:760px){.grid{grid-template-columns:1fr}}
+label{display:block;font-size:13.5px;font-weight:600;margin-bottom:5px}
+.req{color:var(--red);font-weight:700}
+input,select,textarea{width:100%;padding:9px 11px;border:1px solid var(--line);border-radius:6px;font:inherit;font-size:14px;background:#fff;color:var(--ink)}
+textarea{min-height:96px;resize:vertical}
+.hint{font-size:12px;color:var(--muted);margin-top:4px}
+.err{display:none;font-size:12.5px;color:var(--red);font-weight:600;margin-top:5px}
+.err[role="alert"]{display:block}
+fieldset{border:0;padding:0;margin:0}
+.radios{display:flex;flex-direction:column;gap:8px}
+.radios label{display:flex;gap:10px;align-items:flex-start;font-weight:500;margin:0}
+.radios input{width:auto;margin-top:4px}
+.rt{font-weight:700}
+.rd{font-size:12.5px;color:var(--muted)}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px}
+.btn{font:inherit;font-size:14px;border-radius:6px;padding:10px 20px;cursor:pointer;border:1px solid var(--line);background:#fff;color:var(--ink)}
+.btn.primary{background:var(--blue);border-color:var(--blue);color:#fff;font-weight:700}
+.btn.primary:hover{background:var(--navy)}
+.nosecrets{margin-top:14px;padding:10px 14px;border-radius:6px;background:var(--red-bg);border:1px solid var(--red);color:var(--red);font-size:13px;font-weight:600}
+/* milestone clock strip after save (reuses the case-workspace clock concept) */
+.receipt{display:none;border:1px solid var(--green);background:var(--green-bg);border-radius:8px;padding:16px 18px;margin-bottom:18px}
+.receipt.show{display:block}
+.receipt h2{font-size:14px;margin:0 0 6px;color:var(--green)}
+.receipt .ids{font-size:14px;font-weight:700;font-variant-numeric:tabular-nums}
+.receipt .sub{font-size:12.5px;color:var(--muted);margin-top:3px}
+.milestones{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:10px;margin-top:12px}
+.ms{background:#fff;border:1px solid var(--line);border-radius:6px;padding:10px 12px}
+.ms h3{font-size:11.5px;margin:0 0 4px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
+.ms .v{font-size:17px;font-weight:800;font-variant-numeric:tabular-nums}
+.ms .s{font-size:12px;color:var(--muted)}
+.dupcheck{display:none;border:1px solid var(--amber);background:var(--amber-bg);border-radius:8px;padding:11px 14px;font-size:13px;margin:0 0 14px;color:var(--amber);font-weight:600}
+.dupcheck.show{display:block}
+.dupcheck a{color:var(--amber)}
+footer.proto{text-align:center;font-size:12px;color:var(--muted);padding:14px 0 30px}
+</style>
+</head>
+<body>
+<a class="skip" href="#intake-form"><span lang="th">ข้ามไปยังแบบฟอร์ม</span><span lang="en">Skip to the intake form</span></a>
+
+<header class="topbar">
+  <a class="brand" href="role-workspaces.html"><span class="lotus" aria-hidden="true">บ</span> Bangkok Bank <small style="font-weight:400;opacity:.75">CRM</small></a>
+  <span class="env">PROTOTYPE</span>
+  <span class="spacer"></span>
+  <button class="langbtn" id="lang" type="button" aria-label="Switch language">EN</button>
+  <div class="staff"><span lang="th">นฤมล ว.</span><span lang="en">Naree W.</span><small><span lang="th">ฝ่ายบริการ สาขาสีลม</span><span lang="en">Branch Service · Silom</span></small></div>
+</header>
+
+<nav class="nav" aria-label="Main">
+  <a href="role-workspaces.html"><span lang="th">งานของฉัน</span><span lang="en">My work</span></a>
+  <a href="branch-service.html"><span lang="th">บริการสาขา</span><span lang="en">Branch service</span></a>
+  <a href="complaint-intake.html" aria-current="page"><span lang="th">รับเรื่องร้องเรียน</span><span lang="en">Complaint intake</span></a>
+  <a href="case-workspace.html"><span lang="th">เคสบริการ</span><span lang="en">Cases</span></a>
+  <a href="service-guide.html"><span lang="th">คำแนะนำบริการ</span><span lang="en">Service guidance</span></a>
+</nav>
+
+<main>
+  <h1><span lang="th">รับเรื่องร้องเรียน / เรื่องสอบถาม ณ สาขา</span><span lang="en">Branch complaint &amp; inquiry intake</span></h1>
+  <p class="crumb"><span lang="th">สาขาสีลม · 15 ต.ค. 2026 · บันทึกเป็นการโต้ตอบครั้งเดียว ไม่ต้องกรอกซ้ำ</span><span lang="en">Silom branch · 15 Oct 2026 · one capture, no re-entry downstream</span></p>
+
+  <div class="callout">
+    <span class="dot" aria-hidden="true"></span>
+    <div><span lang="th">ระบบจะแยกประเภทระหว่าง <b>เรื่องร้องเรียน</b> (มีนาฬิกาตามกำหนดเวลา) กับ <b>เรื่องสอบถาม</b> (บันทึกเพื่อวิเคราะห์ความเพียงพอของข้อมูล) — ทั้งสองประเภทต้องบันทึกทุกครั้งตามหลักเกณฑ์ SVG 1/2561</span><span lang="en">The system separates a <b>complaint</b> (clocked case) from an <b>inquiry</b> (recorded for information-sufficiency analysis) — both must be recorded every time under SVG 1/2561.</span></div>
+  </div>
+
+  <div class="dupcheck" id="dup" role="status">
+    <span lang="th">พบเรื่องที่อาจเกี่ยวข้อง: CASE-2026-004817 (ลูกค้ารายอื่น · ปัญหาการหักเงินซ้ำ 12 ต.ค.) — </span><span lang="en">Possible related case found: CASE-2026-004817 (different party · duplicated-debit issue, 12 Oct) — </span>
+    <a href="case-workspace.html"><span lang="th">ตรวจสอบก่อนบันทึก</span><span lang="en">review before saving</span></a>
+  </div>
+
+  <form id="intake-form" novalidate>
+    <div class="card">
+      <h2><span lang="th">1 · ประเภทเรื่อง</span><span lang="en">1 · Record class</span></h2>
+      <div class="bd">
+        <fieldset class="radios">
+          <legend class="hint" style="margin-bottom:8px"><span lang="th">เลือกหนึ่งข้อ — การเลือกกำหนดฟิลด์ที่ต้องกรอกและปลายทาง</span><span lang="en">Choose one — the choice drives required fields and destination</span></legend>
+          <label><input type="radio" name="kind" value="complaint" data-fx="complaint">
+            <span><span class="rt"><span lang="th">ร้องเรียน — ลูกค้าไม่พอใจหรือเสียหาย</span><span lang="en">Complaint — dissatisfaction or detriment</span></span><br>
+            <span class="rd"><span lang="th">สร้างเคสมีนาฬิกา: ยืนยันทันที · ผู้จัดการสาขาติดตาม 2 วันทำการ · แจ้งผลหรือความคืบหน้า 15 วันทำการ</span><span lang="en">Creates a clocked case: immediate ack · branch-manager follow-up 2 working days · resolve-or-notify 15 business days</span></span></span></label>
+          <label><input type="radio" name="kind" value="inquiry" data-fx="inquiry">
+            <span><span class="rt"><span lang="th">สอบถามข้อมูลบริการ — ยังไม่ใช่เรื่องร้องเรียน</span><span lang="en">Service inquiry — not yet a complaint</span></span><br>
+            <span class="rd"><span lang="th">บันทึกเป็นการสอบถาม (ไม่นับเข้าสถิติร้องเรียน) · แจ้งปลายทางตามหัวข้อ · แปลงประเภทได้ภายหลังโดยมีบันทึกการเปลี่ยน</span><span lang="en">Recorded as an inquiry (not counted as a complaint) · routed by topic · reclassifiable later with an audited change</span></span></span></label>
+          <label><input type="radio" name="kind" value="fraud" data-fx="fraud">
+            <span><span class="rt" style="color:var(--red)"><span lang="th">ฉุกเฉิน: ฉ้อโกง / เงินกำลังหาย ตอนนี้</span><span lang="en">URGENT: fraud / money moving now</span></span><br>
+            <span class="rd"><span lang="th">เส้นทางฉุกเฉิน 24 ชม. · อย่าบันทึกล่าช้า — โทร 1333 กด *3 ทันทีหากลูกค้าอยู่สาย</span><span lang="en">24-hour urgent route · do not delay capture — call 1333 press *3 now if the customer is on the line</span></span></span></label>
+        </fieldset>
+        <p class="err" id="kind-err" role="alert" hidden><span lang="th">กรุณาเลือกประเภทเรื่อง</span><span lang="en">Choose a record class</span></p>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2><span lang="th">2 · ลูกค้าและการยืนยันตัวตน</span><span lang="en">2 · Party &amp; verification</span></h2>
+      <div class="bd">
+        <div class="grid">
+          <div>
+            <label for="party"><span lang="th">ชื่อลูกค้า <span class="req">*</span></span><span lang="en">Customer name <span class="req">*</span></span></label>
+            <input id="party" name="party" autocomplete="off" value="อนันต์ พ. (บัญชีออมทรัพย์ ····4812)" readonly>
+            <p class="hint"><span lang="th">ดึงจากบริการที่ลูกค้าเลือกไว้ · ระบุตัวตนตามขั้นตอนสาขาก่อนเปิดเผยข้อมูลใด ๆ</span><span lang="en">Prefilled from the selected service · verify identity per branch procedure before disclosing anything</span></p>
+          </div>
+          <div>
+            <label for="vstate"><span lang="th">สถานะการยืนยันตัวตน <span class="req">*</span></span><span lang="en">Verification state <span class="req">*</span></span></label>
+            <select id="vstate" name="vstate">
+              <option value=""><span lang="th">— เลือก —</span><span lang="en">— select —</span></option>
+              <option value="id-passport"><span lang="th">บัตรประชาชน/หนังสือเดินทาง ตรงตัวสาขา</span><span lang="en">ID/passport verified in person</span></option>
+              <option value="passbook-sig"><span lang="th">สมุดบัญชี + ลายเซ็นตรงตามระเบียบ</span><span lang="en">Passbook + signature per procedure</span></option>
+              <option value="partial"><span lang="th">ยืนยันบางส่วน — ยังไม่เปิดเผยข้อมูล</span><span lang="en">Partial — nothing disclosed yet</span></option>
+            </select>
+            <p class="err" id="vstate-err" role="alert" hidden><span lang="th">กรุณาระบุสถานะการยืนยัน (SVG 1/2561 ต้องมีทุกเรื่อง)</span><span lang="en">Verification state is required (SVG 1/2561 applies to every record)</span></p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2><span lang="th">3 · เนื้อเรื่อง</span><span lang="en">3 · The issue</span></h2>
+      <div class="bd">
+        <div class="grid">
+          <div>
+            <label for="cat"><span lang="th">หมวด <span class="req">*</span></span><span lang="en">Category <span class="req">*</span></span></label>
+            <select id="cat" name="cat">
+              <option value=""><span lang="th">— เลือก —</span><span lang="en">— select —</span></option>
+              <option value="dup-debit"><span lang="th">การหักบัญชีซ้ำ/ผิด</span><span lang="en">Duplicated/wrong debit</span></option>
+              <option value="card"><span lang="th">บัตร / ATM / การชำระเงิน</span><span lang="en">Card / ATM / payment error</span></option>
+              <option value="service"><span lang="th">พฤติกรรมการให้บริการ</span><span lang="en">Service conduct</span></option>
+              <option value="product"><span lang="th">ข้อมูลผลิตภัณฑ์/เงื่อนไข</span><span lang="en">Product/condition information</span></option>
+              <option value="digital"><span lang="th">ช่องทางดิจิทัล / การย้ายจาก iBanking</span><span lang="en">Digital channel / iBanking migration</span></option>
+              <option value="other"><span lang="th">อื่น ๆ</span><span lang="en">Other</span></option>
+            </select>
+            <p class="err" id="cat-err" role="alert" hidden><span lang="th">กรุณาเลือกหมวด</span><span lang="en">Category is required</span></p>
+          </div>
+          <div>
+            <label for="impact"><span lang="th">ผลกระทบ/จำนวนเงินที่ลูกค้าแจ้ง</span><span lang="en">Impact / customer-stated amount</span></label>
+            <input id="impact" name="impact" placeholder="เช่น 7,000 บาท / e.g. THB 7,000" autocomplete="off">
+            <p class="hint"><span lang="th">จำนวนที่ลูกค้าแจ้งเท่านั้น — ยอดจริงตรวจสอบโดยระบบต้นทาง</span><span lang="en">Customer-stated only — authoritative amounts come from the source system</span></p>
+          </div>
+        </div>
+        <div style="margin-top:14px">
+          <label for="acct"><span lang="th">คำแจ้งของลูกค้า <span class="req">*</span></span><span lang="en">Customer's account of the issue <span class="req">*</span></span></label>
+          <textarea id="acct" name="acct" minlength="20" placeholder="เล่าตามคำของลูกค้า วันเวลาและรายการที่เกี่ยวข้อง / The customer's own words: dates, times, transactions"></textarea>
+          <p class="err" id="acct-err" role="alert" hidden><span lang="th">กรุณาบันทึกคำแจ้งของลูกค้า (อย่างน้อย 20 ตัวอักษร)</span><span lang="en">Record the customer's account (min 20 characters)</span></p>
+        </div>
+        <p class="nosecrets">⚠ <span lang="th">ห้ามบันทึกรหัสผ่าน / PIN / OTP หรือข้อมูลรับรองใด ๆ ในช่องนี้</span><span lang="en">Never record passwords / PINs / OTPs or any credential in this field</span></p>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2><span lang="th">4 · ปลายทางและคำมั่น</span><span lang="en">4 · Routing &amp; promise</span></h2>
+      <div class="bd">
+        <p id="routing" style="margin:0 0 6px;font-size:14px"><b><span lang="th">ปลายทาง: </span><span lang="en">Destination: </span></b><span id="dest"><span lang="th">— เลือกประเภทเรื่องก่อน —</span><span lang="en">— choose a record class first —</span></span></p>
+        <p id="promisetext" style="margin:0;font-size:13px;color:var(--muted)"><span lang="th">ข้อความปลอดภัยต่อลูกค้าจะปรากฏตามประเภทที่เลือก</span><span lang="en">Customer-safe wording appears per the chosen class</span></p>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button class="btn primary" type="submit" id="save"><span lang="th">บันทึกและรับเลขอ้างอิง</span><span lang="en">Save &amp; get reference</span></button>
+      <button class="btn" type="button" id="cancel"><span lang="th">ยกเลิก</span><span lang="en">Cancel</span></button>
+    </div>
+  </form>
+
+  <section class="receipt" id="receipt" role="status" aria-live="polite" tabindex="-1">
+    <h2><span lang="th">บันทึกแล้ว — อ้างอิงด้านล่างนี้กับลูกค้า</span><span lang="en">Saved — cite this reference with the customer</span></h2>
+    <p class="ids" id="receipt-ids"></p>
+    <p class="sub" id="receipt-sub"></p>
+    <div class="milestones" id="receipt-ms"></div>
+  </section>
+
+  <footer class="proto"><span lang="th">ต้นแบบเพื่อการตรวจสอบ — ข้อมูลจำลอง · สีและโลโก้เป็นตัวแทนชั่วคราว (NFR-05) · อ้างอิง FR-301/302/308 · งานตรวจสอบ T03</span><span lang="en">Validation prototype — synthetic data · placeholder brand (NFR-05) · traces FR-301/302/308 · usability task T03</span></footer>
+</main>
+
+<script>
+'use strict';
+const $ = (s) => document.querySelector(s);
+const DEST = {
+  complaint: {th:'เคสร้องเรียน → ทีมคุณภาพบริการ (ผู้จัดการสาขาเป็นเจ้าของ 2 วันทำการแรก)', en:'Complaint case → Service Quality team (branch manager owns the first 2 working days)'},
+  inquiry:   {th:'บันทึกการสอบถาม → ปลายทางตามหมวด · ไม่นับเป็นสถิติร้องเรียน', en:'Inquiry record → routed by topic · not counted in complaint statistics'},
+  fraud:     {th:'เส้นทางฉุกเฉิน 24 ชม. → ทีมฉ้อโกง (แยกจากคิวร้องเรียนทั่วไป)', en:'24-hour urgent route → Fraud team (separate from ordinary complaint queues)'},
+};
+const PROMISE = {
+  complaint: {th:'บอกลูกค้า: "รับเรื่องแล้วเลขที่ [อ้างอิง] ผู้จัดการสาขาจะติดตามภายใน 2 วันทำการ และจะแจ้งผลหรือความคืบหน้าภายใน 15 วันทำการ"', en:'Tell the customer: "Received, reference [ID]. The branch manager will follow up within 2 working days, and you will receive resolution or a progress update within 15 business days."'},
+  inquiry:   {th:'บอกลูกค้า: "บันทึกคำถามแล้ว ทีมที่เกี่ยวข้องจะตอบกลับตามช่องทางที่ลูกค้าสะดวก"', en:'Tell the customer: "Your question is recorded; the responsible team will respond via your preferred channel."'},
+  fraud:     {th:'บอกลูกค้า: "กำลังส่งเข้าเส้นทางฉุกเฉินทันที — ห้ามสัญญาการคืนเงิน อย่าขอรหัสใด ๆ อีก"', en:'Tell the customer: "Routing to the urgent path now — never promise recovery, never request any code again."'},
+};
+function applyLang(en){
+  document.documentElement.lang = en ? 'en' : 'th';
+  const b = $('#lang'); b.textContent = en ? 'ไทย' : 'EN';
+  b.setAttribute('aria-label', en ? 'สลับเป็นภาษาไทย' : 'Switch to English');
+}
+$('#lang').addEventListener('click', () => applyLang(document.body.classList.toggle('en')));
+
+function kindVal(){ const r=document.querySelector('input[name="kind"]:checked'); return r ? r.value : ''; }
+function updateRouting(){
+  const k = kindVal(), dest=$('#dest'), pr=$('#promisetext');
+  if (!k) return;
+  dest.innerHTML = `<span lang="th">${DEST[k].th}</span><span lang="en">${DEST[k].en}</span>`;
+  pr.innerHTML = `<span lang="th">${PROMISE[k].th}</span><span lang="en">${PROMISE[k].en}</span>`;
+}
+document.querySelectorAll('input[name="kind"]').forEach(r => r.addEventListener('change', () => {
+  updateRouting();
+  $('#kind-err').hidden = true;
+  if (r.value === 'fraud') $('#dup').classList.remove('show');
+}));
+// duplicate-check hint: transaction-category complaints may relate to an existing case
+$('#cat').addEventListener('change', () => {
+  if ($('#cat').value === 'dup-debit' && kindVal() !== 'fraud') $('#dup').classList.add('show');
+  else $('#dup').classList.remove('show');
+});
+
+function validate(){
+  let ok = true, first = null;
+  const mark = (id, bad) => { const e=$(id); e.hidden = !bad; if (bad){ ok=false; first = first || e; } };
+  mark('#kind-err', !kindVal());
+  mark('#vstate-err', !$('#vstate').value);
+  mark('#cat-err', !$('#cat').value);
+  mark('#acct-err', $('#acct').value.trim().length < 20);
+  if (first) first.focus();
+  return ok;
+}
+$('#intake-form').addEventListener('submit', (ev) => {
+  ev.preventDefault();
+  if (!validate()) return;
+  const k = kindVal();
+  const ref = k === 'inquiry' ? 'INQ-2026-005104' : 'CASE-2026-004833';
+  const task = k === 'inquiry' ? 'TSK-2026-01917' : 'TSK-2026-01916';
+  $('#receipt-ids').innerHTML = `<span lang="th">${k==='inquiry'?'เลขที่การสอบถาม':'เลขที่เคส'}: ${ref} · งานติดตาม: ${task} · เจ้าของแรก: </span><span lang="en">${k==='inquiry'?'Inquiry record':'Case'} ${ref} · follow-up task ${task} · first owner: </span><span lang="th">ผู้จัดการสาขาสีลม</span><span lang="en">Silom branch manager</span>`;
+  $('#receipt-sub').innerHTML = k === 'inquiry'
+    ? '<span lang="th">บันทึกแล้วในประวัติการโต้ตอบของลูกค้า · ไม่นับเป็นเรื่องร้องเรียน · แปลงประเภทได้ภายหลังพร้อมบันทึกการเปลี่ยน</span><span lang="en">Recorded on the customer timeline · not counted as a complaint · reclassification later is audited</span>'
+    : '<span lang="th">ยืนยันการรับเรื่องกับลูกค้าทันทีตามนโยบายช่องทางสาขา (บันทึกเวลาแล้ว) · เคสส่งต่อทีมคุณภาพบริการแล้ว · เจ้าของเดิมคงอยู่จนกว่าทีมปลายทางตอบรับ</span><span lang="en">Acknowledged with the customer immediately per branch-channel policy (timestamped) · routed to Service Quality · origin owner retained until acceptance</span>';
+  const ms = [];
+  if (k === 'complaint') {
+    ms.push(['<span lang="th">ผู้จัดการสาขาติดตาม</span><span lang="en">Branch-manager follow-up</span>','<span lang="th">2 วันทำการ</span><span lang="en">2 working days</span>','<span lang="th">ครบกำหนด 21 ต.ค. 2026</span><span lang="en">due 21 Oct 2026</span>'],
+            ['<span lang="th">แจ้งผลหรือความคืบหน้า</span><span lang="en">Resolve or notify</span>','<span lang="th">15 วันทำการ</span><span lang="en">15 business days</span>','<span lang="th">ครบกำหนด 5 พ.ย. 2026</span><span lang="en">due 5 Nov 2026</span>']);
+  } else if (k === 'inquiry') {
+    ms.push(['<span lang="th">ส่งต่อตามหมวด</span><span lang="en">Route by topic</span>','<span lang="th">วันนี้</span><span lang="en">Today</span>','<span lang="th">หมวดที่เลือกกำหนดทีมปลายทาง</span><span lang="en">category determines the receiving team</span>']);
+  } else {
+    ms.push(['<span lang="th">เส้นทางฉุกเฉิน 24 ชม.</span><span lang="en">Urgent 24-hour route</span>','<span lang="th">ทันที</span><span lang="en">Immediate</span>','<span lang="th">แยกจากคิวร้องเรียน · 1333 กด *3 หากลูกค้ายังสาย</span><span lang="en">separate from complaint queues · 1333 *3 if caller still on line</span>']);
+  }
+  $('#receipt-ms').innerHTML = ms.map(([h,v,s]) => `<div class="ms"><h3>${h}</h3><div class="v">${v}</div><div class="s">${s}</div></div>`).join('');
+  const r = $('#receipt'); r.classList.add('show'); r.focus();
+});
+$('#cancel').addEventListener('click', () => { if (confirm('ยกเลิกการบันทึก? / Discard this intake?')) location.href = 'role-workspaces.html'; });
+</script>
+</body>
+</html>

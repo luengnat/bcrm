@@ -1,0 +1,277 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>คิวทีมภายใต้ภาระสูง — Supervisor Queue Under Load · PROTOTYPE</title>
+<!--
+  PROTOTYPE ONLY — synthetic cutover-week fixture (NFR: no real customer data).
+  Build-queue #4 from the adversarial review (ops O-M5 + persona-days Somsak):
+  the supervisor-under-load view specified by FR-206/US-205 but never built.
+  Design rules encoded: roll-up triage (not a 200-row dump); no staff
+  leaderboard — workload as counts with reason-gated rebalance (SVG 1/2561
+  fair-treatment posture); shift-end auto-fallback banner (ops O-C2);
+  honest-unknown metrics; reassign requires reason + audit receipt (§3.7);
+  bulk actions limited to bulk-SAFE ones.
+-->
+<style>
+:root{
+  --navy:#10275f;--blue:#174a9a;--ink:#17243c;--muted:#4c5a72;--line:#d9e0ea;
+  --paper:#f1f4f8;--surface:#fff;--red:#8f3136;--red-bg:#fdf0ef;--amber:#7a4e06;
+  --amber-bg:#fff6e4;--green:#06684f;--green-bg:#edf8f3;--info:#274f9e;
+  --focus:0 0 0 3px rgba(8,103,232,.28);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font:15px/1.6 "Sarabun","Noto Sans Thai","Leelawadee UI",sans-serif}
+[lang="en"]{display:none}
+body.en [lang="th"]{display:none}
+body.en [lang="en"]{display:inline}
+.skip{position:absolute;top:-52px;left:12px;z-index:9;padding:9px 14px;background:#fff;color:var(--navy);font-weight:700;border-radius:6px;text-decoration:none}
+.skip:focus{top:10px}
+:focus-visible{outline:none;box-shadow:var(--focus);border-radius:4px}
+.topbar{min-height:62px;padding:0 24px;display:flex;align-items:center;gap:12px;background:var(--navy);color:#fff}
+.brand{display:flex;align-items:center;gap:10px;color:#fff;text-decoration:none;font-weight:700}
+.brand .lotus{width:30px;height:34px;display:inline-flex;align-items:center;justify-content:center;background:#fff;color:var(--navy);border-radius:4px;font-weight:800}
+.env{border-radius:99px;padding:3px 10px;background:#f0b644;color:#2b2b2b;font-size:11px;font-weight:800}
+.week{border-radius:99px;padding:3px 10px;background:#cfe3ff;color:#173e85;font-size:11px;font-weight:800}
+.spacer{flex:1}
+.staff{text-align:right;font-size:12.5px}
+.staff small{display:block;opacity:.75}
+.langbtn{height:34px;padding:0 12px;border:1px solid rgba(255,255,255,.4);border-radius:5px;background:transparent;color:#fff;cursor:pointer;font-size:13px}
+.nav{display:flex;gap:4px;padding:0 20px;background:#173e85}
+.nav a{padding:10px 15px;color:#fff;text-decoration:none;font-size:13px;opacity:.85}
+.nav a[aria-current]{border-bottom:3px solid #fff;opacity:1;font-weight:700}
+main{max-width:1180px;margin:0 auto;padding:22px 20px 60px}
+h1{font-size:21px;margin:6px 0 2px}
+.crumb{font-size:12.5px;color:var(--muted);margin:0 0 14px}
+.shiftbar{display:flex;gap:12px;align-items:center;background:var(--amber-bg);border:1px solid var(--amber);border-radius:8px;padding:11px 15px;margin:0 0 16px;font-size:13.5px}
+.shiftbar b{color:var(--amber)}
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));gap:12px;margin:0 0 18px}
+.tile{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:13px 15px;position:relative}
+.tile.danger{border-color:var(--red);background:var(--red-bg)}
+.tile.warn{border-color:var(--amber);background:var(--amber-bg)}
+.tile h3{font-size:11.5px;margin:0 0 5px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
+.tile .v{font-size:26px;font-weight:800;font-variant-numeric:tabular-nums}
+.tile .s{font-size:12px;color:var(--muted)}
+.tile .ico{position:absolute;top:12px;right:13px;font-size:13px;font-weight:800;color:var(--red)}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:8px;margin-bottom:16px}
+.card h2{font-size:13px;margin:0;padding:11px 16px;border-bottom:1px solid var(--line);color:var(--muted);text-transform:uppercase;letter-spacing:.05em;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.card .bd{padding:14px 16px}
+table{width:100%;border-collapse:collapse;font-size:13.5px}
+th{text-align:left;font-size:11.5px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);padding:8px 10px;border-bottom:1px solid var(--line);white-space:nowrap}
+td{padding:9px 10px;border-bottom:1px solid var(--paper);vertical-align:top}
+tr.sel td{background:var(--paper)}
+.why{display:inline-block;font-size:11.5px;font-weight:700;border-radius:99px;padding:2px 9px}
+.why.due{background:var(--red-bg);color:var(--red)}
+.why.unacc{background:var(--amber-bg);color:var(--amber)}
+.why.aging{background:#eef1f5;color:#45536b}
+.owner{font-variant-numeric:tabular-nums}
+.load{display:inline-flex;align-items:center;gap:8px}
+.load .bar{height:8px;border-radius:99px;background:#e3e9f2;overflow:hidden;display:inline-block;width:70px;vertical-align:middle}
+.load .bar i{display:block;height:100%;background:var(--blue)}
+.load .bar.over i{background:var(--red)}
+.bulkbar{display:none;gap:10px;align-items:center;background:#eaf0fb;border:1px solid var(--info);border-radius:8px;padding:10px 14px;margin:0 0 14px;font-size:13.5px}
+.bulkbar.show{display:flex}
+.btn{font:inherit;font-size:13.5px;border-radius:6px;padding:8px 16px;cursor:pointer;border:1px solid var(--line);background:#fff;color:var(--ink)}
+.btn.primary{background:var(--blue);border-color:var(--blue);color:#fff;font-weight:700}
+.btn.primary:hover{background:var(--navy)}
+.btn[disabled]{opacity:.45;cursor:not-allowed}
+.unknown{background:#eef1f5;border:1px solid var(--line);border-radius:8px;padding:11px 14px;font-size:13px;color:#45536b;margin:0 0 16px}
+.unknown b{color:var(--ink)}
+dialog{border:1px solid var(--line);border-radius:10px;padding:20px;max-width:min(560px,90vw)}
+dialog::backdrop{background:rgba(16,39,95,.45)}
+label{display:block;font-size:13.5px;font-weight:600;margin:10px 0 5px}
+select,textarea{width:100%;padding:9px 11px;border:1px solid var(--line);border-radius:6px;font:inherit;font-size:14px}
+.err{display:none;color:var(--red);font-weight:600;font-size:12.5px;margin-top:5px}
+.err.show{display:block}
+.receipt{display:none;border:1px solid var(--green);background:var(--green-bg);border-radius:8px;padding:12px 16px;margin:0 0 14px;font-size:13.5px}
+.receipt.show{display:block}
+footer.proto{text-align:center;font-size:12px;color:var(--muted);padding:14px 0 30px}
+</style>
+</head>
+<body>
+<a class="skip" href="#triage"><span lang="th">ข้ามไปยังรายการคัดกรอง</span><span lang="en">Skip to the triage list</span></a>
+
+<header class="topbar">
+  <a class="brand" href="role-workspaces.html"><span class="lotus" aria-hidden="true">บ</span> Bangkok Bank <small style="font-weight:400;opacity:.75">CRM</small></a>
+  <span class="env">PROTOTYPE</span>
+  <span class="week"><span lang="th">สัปดาห์ยกเลิก iBanking · ภาระสูง</span><span lang="en">I-BANKING CUTOVER WEEK · HIGH LOAD</span></span>
+  <span class="spacer"></span>
+  <button class="langbtn" id="lang" type="button" aria-label="Switch language">EN</button>
+  <div class="staff"><span lang="th">สมศักดิ์ ท.</span><span lang="en">Somsak T.</span><small><span lang="th">หัวหน้าทีม · ศูนย์บริการ + บริการสาขา</span><span lang="en">Team lead · contact center + branch service</span></small></div>
+</header>
+
+<nav class="nav" aria-label="Main">
+  <a href="role-workspaces.html"><span lang="th">งานของฉัน</span><span lang="en">My work</span></a>
+  <a href="supervisor-queue.html" aria-current="page"><span lang="th">คิวทีม</span><span lang="en">Team queue</span></a>
+  <a href="case-workspace.html"><span lang="th">เคสบริการ</span><span lang="en">Cases</span></a>
+  <a href="contact-center.html"><span lang="th">ศูนย์บริการ</span><span lang="en">Contact center</span></a>
+</nav>
+
+<main>
+  <h1><span lang="th">คิวทีมภายใต้ภาระสูง — คัดกรองแบบกลุ่ม ไม่ใช่รายแถว 200 รายการ</span><span lang="en">Team queue under load — grouped triage, not a 200-row dump</span></h1>
+  <p class="crumb"><span lang="th">15 ธ.ค. 2026 · 09:10 · เกณฑ์ปกติ 60–80 รายการ/วัน · วันนี้ 214 รายการ (iBanking หยุดวันที่ 16 ธ.ค.)</span><span lang="en">15 Dec 2026 · 09:10 · normal 60–80 items/day · today 214 items (iBanking ends 16 Dec)</span></p>
+
+  <div class="shiftbar" role="status">
+    <b>⏱ <span lang="th">สิ้นสุดกะกลางคืน 06:00:</span><span lang="en">Night shift ended 06:00:</span></b>
+    <span lang="th">งานที่ยังไม่ถูกรับของ 2 เจ้าหน้าที่เวรดึก ตกกลับคิวทีมอัตโนมัติตามกฎการส่งมอบกะ — ไม่ติดกับตัวบุคคลที่ปิดกะไปแล้ว</span><span lang="en">unaccepted items from two night-shift agents auto-fell back to the team queue per the shift-handover rule — never pinned to individuals who have clocked out</span>
+  </div>
+
+  <div class="tiles">
+    <div class="tile danger"><span class="ico" aria-hidden="true">!</span>
+      <h3><span lang="th">นาฬิกาแตะเส้นวันนี้</span><span lang="en">Clocks breaching today</span></h3>
+      <div class="v">17</div>
+      <div class="s"><span lang="th">11 แจ้งลูกค้า · 6 ยืนยันรับเรื่อง</span><span lang="en">11 customer updates · 6 acknowledgements</span></div>
+    </div>
+    <div class="tile warn">
+      <h3><span lang="th">ส่งต่อแล้วไม่มีผู้รับ</span><span lang="en">Unaccepted handoffs</span></h3>
+      <div class="v">9</div>
+      <div class="s"><span lang="th">3 รายการเกิน 60 นาที · เจ้าของเดิมยังรับผิดชอบ</span><span lang="en">3 over 60 minutes · origin owner still accountable</span></div>
+    </div>
+    <div class="tile">
+      <h3><span lang="th">ภาระงานต่อผู้รับผิดชอบ</span><span lang="en">Workload per owner</span></h3>
+      <div class="v">6<span style="font-size:15px;color:var(--muted)"> <span lang="th">คน</span><span lang="en">owners</span></span></div>
+      <div class="s"><span lang="th">สูงสุด 48 · ต่ำสุด 12 — สมดุลด้วยเหตุผล ไม่ใช่กระดานอันดับ</span><span lang="en">max 48 · min 12 — rebalance with reasons, never a leaderboard</span></div>
+    </div>
+    <div class="tile">
+      <h3><span lang="th">ตัวชี้วัดที่ไม่ทราบค่า</span><span lang="en">Unknown metrics</span></h3>
+      <div class="v">2</div>
+      <div class="s"><span lang="th">ตัวหารไม่ครบ — แสดง "ไม่ทราบ" ห้ามตีความเป็นศูนย์</span><span lang="en">missing denominators — shown unknown, never zero</span></div>
+    </div>
+  </div>
+
+  <div class="unknown">
+    <b><span lang="th">อัตรายืนยันรับเรื่องตามช่องทาง:</span><span lang="en">Channel acknowledgement rate:</span></b>
+    <span lang="th">แหล่งข้อมูลตัวหารของช่องทางอีเมลไม่ครบสำหรับสัปดาห์นี้ — แสดงเป็น "ไม่ทราบ" จนกว่าเจ้าของข้อมูลยืนยัน (ห้ามใช้จัดอันดับหรือรายงานต่อ BOT ในสถานะนี้)</span>
+    <span lang="en">the email-channel denominator is incomplete this week — reported as unknown until the data owner confirms (must not be ranked or BOT-reported in this state)</span>
+  </div>
+
+  <div class="bulkbar" id="bulkbar" role="status">
+    <b id="bulk-n">0</b> <span lang="th">รายการที่เลือก</span><span lang="en">selected</span>
+    <button class="btn primary" id="bulk-reassign" type="button"><span lang="th">มอบหมายใหม่ (ต้องระบุเหตุผล)</span><span lang="en">Reassign (reason required)</span></button>
+    <button class="btn" id="bulk-clear" type="button"><span lang="th">ยกเลิกการเลือก</span><span lang="en">Clear selection</span></button>
+  </div>
+
+  <div class="card" id="triage">
+    <h2><span lang="th">รายการคัดกรอง — กลุ่มตามสาเหตุที่ต้องทำวันนี้ (แสดงตัวแทนกลุ่ม ไม่ใช่ทั้ง 214)</span><span lang="en">Triage — grouped by today's exception (cluster representatives, not all 214)</span></h2>
+    <div class="bd" style="padding:0;overflow-x:auto">
+      <table>
+        <thead><tr>
+          <th><input type="checkbox" id="sel-all" aria-label="<span>Select all</span>"></th>
+          <th><span lang="th">กลุ่ม / สาเหตุ</span><span lang="en">Cluster / why</span></th>
+          <th><span lang="th">จำนวน</span><span lang="en">Count</span></th>
+          <th><span lang="th">ตัวแทนเคส</span><span lang="en">Representative</span></th>
+          <th><span lang="th">เจ้าของ</span><span lang="en">Owner</span></th>
+          <th><span lang="th">ครบกำหนด</span><span lang="en">Due</span></th>
+        </tr></thead>
+        <tbody id="rows">
+          <tr><td><input type="checkbox" class="row-sel"></td>
+            <td><span class="why due"><span lang="th">แจ้งลูกค้าครบกำหนดวันนี้</span><span lang="en">customer update due today</span></span></td>
+            <td class="owner">11</td><td>CASE-2026-04912</td><td><span lang="th">มาลี ศ.</span><span lang="en">Mali S.</span></td><td><span lang="th">วันนี้ 15:00</span><span lang="en">Today 15:00</span></td></tr>
+          <tr><td><input type="checkbox" class="row-sel"></td>
+            <td><span class="why due"><span lang="th">แจ้งลูกค้าครบกำหนดวันนี้</span><span lang="en">customer update due today</span></span></td>
+            <td class="owner">6</td><td>CASE-2026-04930</td><td><span lang="th">กันต์ ว.</span><span lang="en">Kan W.</span></td><td><span lang="th">วันนี้ 16:30</span><span lang="en">Today 16:30</span></td></tr>
+          <tr><td><input type="checkbox" class="row-sel"></td>
+            <td><span class="why unacc"><span lang="th">ส่งต่อไม่มีผู้รับ &gt;60 นาที</span><span lang="en">unaccepted handoff &gt;60 min</span></span></td>
+            <td class="owner">3</td><td>SR-2026-1187</td><td><span lang="th">ทีมศูนย์ฯ (กะดึก) → คิวดิจิทัล</span><span lang="en">CC night team → digital queue</span></td><td><span lang="th">เกิน 72 นาที</span><span lang="en">72 min over</span></td></tr>
+          <tr><td><input type="checkbox" class="row-sel"></td>
+            <td><span class="why unacc"><span lang="th">ส่งต่อไม่มีผู้รับ</span><span lang="en">unaccepted handoff</span></span></td>
+            <td class="owner">6</td><td>SR-2026-1203</td><td><span lang="th">สาขา 034 → ทีมบัตร</span><span lang="en">Branch 034 → card team</span></td><td><span lang="th">เกิน 25 นาที</span><span lang="en">25 min over</span></td></tr>
+          <tr><td><input type="checkbox" class="row-sel"></td>
+            <td><span class="why aging"><span lang="th">เกินกำหนด 15 วันทำการ</span><span lang="en">past 15-business-day commitment</span></span></td>
+            <td class="owner">2</td><td>CASE-2026-04777</td><td><span lang="th">ปิยะ ค.</span><span lang="en">Piya K.</span></td><td><span lang="th">เกิน 1 วันทำการ</span><span lang="en">1 business day over</span></td></tr>
+          <tr><td><input type="checkbox" class="row-sel"></td>
+            <td><span class="why aging"><span lang="th">งานย้ายจาก iBanking ที่ถูกทำซ้ำ 2 ช่องทาง</span><span lang="en">duplicated iBanking-migration items</span></span></td>
+            <td class="owner">14</td><td>CASE-2026-04955</td><td><span lang="th">— ตรวจซ้ำก่อนมอบหมาย</span><span lang="en">— dedupe before assignment</span></td><td>—</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2><span lang="th">ภาระต่อผู้รับผิดชอบ — ตัวเลขเพื่อปรับสมดุล ไม่ใช่การจัดอันดับ</span><span lang="en">Load per owner — numbers for rebalancing, not ranking</span></h2>
+    <div class="bd" id="owners">
+      <div class="load"><span style="min-width:110px"><span lang="th">มาลี ศ.</span><span lang="en">Mali S.</span></span><span class="bar over"><i style="width:100%"></i></span> <b style="color:var(--red)">48</b> <span style="font-size:12px;color:var(--muted)"><span lang="th">(ลาบ่ายครึ่งวัน)</span><span lang="en">(on half-day leave)</span></span></div>
+      <div class="load"><span style="min-width:110px"><span lang="th">กันต์ ว.</span><span lang="en">Kan W.</span></span><span class="bar"><i style="width:60%"></i></span> <b>29</b></div>
+      <div class="load"><span style="min-width:110px"><span lang="th">ปิยะ ค.</span><span lang="en">Piya K.</span></span><span class="bar"><i style="width:50%"></i></span> <b>24</b></div>
+      <div class="load"><span style="min-width:110px"><span lang="th">ณัฐ ร.</span><span lang="en">Natt R.</span></span><span class="bar"><i style="width:45%"></i></span> <b>22</b></div>
+      <div class="load"><span style="min-width:110px"><span lang="th">ใหม่ (เวรดึก)</span><span lang="en">New (night)</span></span><span class="bar"><i style="width:35%"></i></span> <b>17</b></div>
+      <div class="load"><span style="min-width:110px"><span lang="th">สุขี ม.</span><span lang="en">Sukhee M.</span></span><span class="bar"><i style="width:25%"></i></span> <b>12</b> <span style="font-size:12px;color:var(--muted)"><span lang="th">(รับงานเพิ่มได้)</span><span lang="en">(has capacity)</span></span></div>
+    </div>
+  </div>
+
+  <dialog id="reassign-dialog" aria-labelledby="ra-title">
+    <form method="dialog" id="ra-form" novalidate>
+      <h2 id="ra-title" style="font-size:16px;margin:0 0 4px"><span lang="th">มอบหมายใหม่</span><span lang="en">Reassign</span></h2>
+      <p style="font-size:12.5px;color:var(--muted);margin:0 0 8px"><span lang="th">ทุกรายการจะบันทึกผู้สั่ง เหตุผล เวลา และเจ้าของใหม่ (ตรวจสอบย้อนหลังได้) — เจ้าของเดิมของลูกค้ายังปรากฏในเคส</span><span lang="en">Every item records who, why, when, and the new owner (auditable) — the original customer-update owner remains visible in the case</span></p>
+      <label for="ra-to"><span lang="th">มอบหมายให้</span><span lang="en">Assign to</span></label>
+      <select id="ra-to">
+        <option value="sukhee"><span lang="th">สุขี ม. (12 · รับเพิ่มได้)</span><span lang="en">Sukhee M. (12 · has capacity)</span></option>
+        <option value="natt"><span lang="th">ณัฐ ร. (22)</span><span lang="en">Natt R. (22)</span></option>
+        <option value="digital-q"><span lang="th">คิวทีมดิจิทัล (สำหรับงานที่ค้างรับ)</span><span lang="en">Digital team queue (for unaccepted items)</span></option>
+      </select>
+      <label for="ra-why"><span lang="th">เหตุผล <span style="color:var(--red)">*</span></span><span lang="en">Reason <span style="color:var(--red)">*</span></span></label>
+      <textarea id="ra-why" minlength="10"></textarea>
+      <p class="err" id="ra-err"></p>
+      <div style="display:flex;gap:10px;margin-top:12px">
+        <button class="btn primary" type="submit" id="ra-ok"><span lang="th">ยืนยันมอบหมายใหม่</span><span lang="en">Confirm reassignment</span></button>
+        <button class="btn" type="button" onclick="document.getElementById('reassign-dialog').close()"><span lang="th">ยกเลิก</span><span lang="en">Cancel</span></button>
+      </div>
+    </form>
+  </dialog>
+
+  <div class="receipt" id="ra-receipt" role="status" aria-live="polite"></div>
+
+  <footer class="proto"><span lang="th">ต้นแบบเพื่อการตรวจสอบ — ข้อมูลจำลองสัปดาห์ยกเลิก iBanking · อ้างอิง FR-206/US-205 · งานตรวจสอบ T36 · ห้ามใช้เป็นกระดานอันดับพนักงาน</span><span lang="en">Validation prototype — synthetic cutover-week data · traces FR-206/US-205 · usability task T36 · must not be used as a staff leaderboard</span></footer>
+</main>
+
+<script>
+'use strict';
+const $ = (s)=>document.querySelector(s), $$ = (s)=>document.querySelectorAll(s);
+function applyLang(en){
+  document.documentElement.lang = en ? 'en' : 'th';
+  const b = $('#lang'); b.textContent = en ? 'ไทย' : 'EN';
+  b.setAttribute('aria-label', en ? 'สลับเป็นภาษาไทย' : 'Switch to English');
+}
+$('#lang').addEventListener('click', () => applyLang(document.body.classList.toggle('en')));
+
+function refreshBulk(){
+  const n = $$('.row-sel:checked').length;
+  $('#bulk-n').textContent = n;
+  $('#bulkbar').classList.toggle('show', n > 0);
+}
+$$('.row-sel').forEach(c => c.addEventListener('change', refreshBulk));
+$('#sel-all').addEventListener('change', ()=>{
+  $$('.row-sel').forEach(c => c.checked = $('#sel-all').checked);
+  refreshBulk();
+});
+$('#bulk-clear').addEventListener('click', ()=>{
+  $$('.row-sel').forEach(c => c.checked = false);
+  $('#sel-all').checked = false; refreshBulk();
+});
+$('#bulk-reassign').addEventListener('click', ()=>{
+  $('#ra-err').classList.remove('show'); $('#ra-why').value = '';
+  $('#reassign-dialog').showModal();
+});
+$('#ra-form').addEventListener('submit', (ev)=>{
+  ev.preventDefault();
+  const why = $('#ra-why').value.trim();
+  if (why.length < 10){
+    const e = $('#ra-err'); e.classList.add('show');
+    e.textContent = document.body.classList.contains('en') ? 'A reason of at least 10 characters is required (auditable).' : 'ต้องระบุเหตุผลอย่างน้อย 10 ตัวอักษร (บันทึกตรวจสอบย้อนหลัง)';
+    $('#ra-why').focus(); return;
+  }
+  $('#reassign-dialog').close();
+  const n = $$('.row-sel:checked').length;
+  const to = $('#ra-to'), name = to.options[to.selectedIndex].text.split(' (')[0];
+  const r = $('#ra-receipt');
+  r.innerHTML = '<b><span lang="th">มอบหมายใหม่แล้ว</span><span lang="en">Reassigned</span></b> — ' + n +
+    ' <span lang="th">กลุ่ม → </span><span lang="en">cluster(s) → </span>' + name +
+    ' · <span lang="th">ผู้สั่ง: สมศักดิ์ ท. · เหตุผลบันทึกแล้ว · เจ้าของเดิมแสดงในเคส · การแจ้งลูกค้าคงกำหนดเดิม</span><span lang="en">by Somsak T. · reason recorded · original owner visible in case · customer-update commitment unchanged</span>';
+  r.classList.add('show');
+  $$('.row-sel:checked').forEach(c => { c.checked = false; c.closest('tr').classList.add('sel'); });
+  $('#sel-all').checked = false; refreshBulk();
+});
+</script>
+</body>
+</html>

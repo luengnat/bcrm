@@ -1,0 +1,693 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Service guidance — Bangkok Bank CRM</title>
+<style>
+:root {
+  --navy: #10275f;
+  --blue: #174a9a;
+  --lotus: #0867e8;
+  --ink: #17243c;
+  --muted: #64728a;
+  --line: #d9e0ea;
+  --paper: #f1f4f8;
+  --surface: #fff;
+  --pale-blue: #edf4ff;
+  --teal: #087e82;
+  --teal-soft: #eaf7f5;
+  --amber: #986000;
+  --amber-soft: #fff6e4;
+  --red: #ad353c;
+  --shadow: 0 8px 24px rgba(16, 39, 95, .06);
+  --focus: 0 0 0 3px rgba(8, 103, 232, .28);
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font: 15px/1.55 "Sarabun", "Noto Sans Thai", "Leelawadee UI", sans-serif;
+}
+body:not(.en) [lang="en"] { display: none; }
+body.en [lang="th"] { display: none; }
+body.en [lang="en"] { display: inline; }
+button, select, input { font: inherit; }
+button { cursor: pointer; }
+a { color: var(--blue); }
+:focus-visible { outline: none; box-shadow: var(--focus); border-radius: 5px; }
+
+.topbar {
+  height: 62px; padding: 0 26px; display: flex; align-items: center; gap: 12px;
+  background: var(--navy); color: white; box-shadow: 0 2px 10px rgba(9, 27, 66, .16);
+}
+.brand { display: flex; align-items: center; gap: 10px; min-width: 235px; color: white; text-decoration: none; }
+.brand img { width: 31px; height: 37px; object-fit: contain; }
+.brand-name { font-weight: 700; letter-spacing: -.2px; }
+.brand-name small { font-weight: 400; opacity: .78; padding-left: 4px; }
+.env { border-radius: 99px; padding: 3px 9px; background: #f0b644; color: #2b2b2b; font-size: 10px; font-weight: 800; letter-spacing: .09em; }
+.search { flex: 1; max-width: 470px; display: flex; margin-left: 22px; }
+.search input { min-width: 0; flex: 1; border: 0; border-radius: 5px 0 0 5px; padding: 9px 12px; background: white; color: var(--ink); }
+.search button { border: 0; border-radius: 0 5px 5px 0; padding: 0 17px; background: #2877c7; color: white; font-weight: 650; }
+.top-spacer { flex: 1; }
+.lang, .top-icon { height: 34px; padding: 0 12px; border: 1px solid rgba(255,255,255,.35); border-radius: 5px; background: transparent; color: white; }
+.staff { font-size: 13px; text-align: right; line-height: 1.3; white-space: nowrap; }
+.staff small { display: block; opacity: .7; font-size: 11px; }
+
+.nav { background: #173e85; color: white; display: flex; gap: 2px; padding: 0 22px; min-height: 43px; align-items: stretch; }
+.nav a { color: rgba(255,255,255,.88); text-decoration: none; padding: 10px 17px 8px; border-bottom: 3px solid transparent; font-size: 13px; }
+.nav a[aria-current] { color: white; border-bottom-color: #fff; font-weight: 700; }
+.nav a:hover { background: rgba(255,255,255,.09); }
+
+main { max-width: 1480px; margin: 0 auto; padding: 24px 28px 42px; }
+.crumb { margin: 0 0 8px; color: var(--muted); font-size: 12px; }
+.title-row { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; }
+h1 { margin: 0; color: var(--navy); font-size: 27px; line-height: 1.25; letter-spacing: -.35px; }
+.subhead { margin: 5px 0 0; color: var(--muted); font-size: 13px; }
+.reviewed { display: flex; align-items: center; gap: 8px; border: 1px solid #b9d7d3; border-radius: 6px; padding: 7px 10px; background: var(--teal-soft); color: #176963; font-size: 12px; font-weight: 650; white-space: nowrap; }
+.reviewed .check { width: 17px; height: 17px; display: inline-grid; place-items: center; border-radius: 50%; background: var(--teal); color: white; font-size: 11px; }
+
+.scenario-bar { display: flex; align-items: center; flex-wrap: wrap; gap: 12px 24px; margin: 19px 0 16px; padding: 12px 14px; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); box-shadow: var(--shadow); }
+.control-group { display: flex; align-items: center; flex-wrap: wrap; gap: 5px; }
+.control-label { margin-right: 5px; color: var(--muted); font-size: 12px; font-weight: 650; }
+.seg { display: inline-flex; border: 1px solid var(--line); border-radius: 6px; padding: 2px; background: #f7f9fc; }
+.seg button { border: 0; border-radius: 4px; padding: 6px 10px; background: transparent; color: #4c5a71; font-size: 12px; }
+.seg button[aria-pressed="true"] { background: var(--navy); color: white; box-shadow: 0 1px 3px rgba(15,32,71,.2); }
+
+.layout { display: grid; grid-template-columns: minmax(0, 1fr) 328px; gap: 18px; align-items: start; }
+.main-col { min-width: 0; }
+.card { border: 1px solid var(--line); border-radius: 8px; background: var(--surface); box-shadow: var(--shadow); overflow: hidden; }
+.card + .card { margin-top: 15px; }
+.card-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; border-bottom: 1px solid #e6eaf0; padding: 12px 16px; }
+.card-head h2 { margin: 0; color: #394963; font-size: 13px; letter-spacing: .04em; text-transform: uppercase; }
+.card-body { padding: 16px; }
+.kicker { color: var(--muted); font-size: 11px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; }
+.transition-banner { position: relative; display: grid; grid-template-columns: minmax(220px, .95fr) 1.6fr; gap: 23px; border-top: 3px solid var(--lotus); padding: 18px 20px; background: linear-gradient(112deg, #fff 0%, #fff 54%, #f4f8ff 100%); }
+.transition-banner h2 { margin: 4px 0 6px; font-size: 20px; color: var(--navy); line-height: 1.35; }
+.transition-banner p { margin: 0; color: var(--muted); font-size: 13px; }
+.date-list { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; }
+.date-item { border-left: 2px solid #81a9df; padding: 2px 0 3px 11px; }
+.date-item .date { display: block; color: var(--navy); font-size: 17px; font-weight: 800; letter-spacing: -.2px; }
+.date-item strong { display: block; margin-top: 1px; font-size: 12px; }
+.date-item small { display: block; margin-top: 3px; color: var(--muted); font-size: 11px; }
+.phase-tag { display: inline-block; margin: 0 0 4px; border-radius: 99px; padding: 2px 7px; background: #eef1f5; color: #58677d; font-size: 9px; font-weight: 800; letter-spacing: .04em; text-transform: uppercase; }
+.date-item.active .phase-tag { background: var(--pale-blue); color: var(--blue); }
+.phase-status { grid-column: 1 / -1; border-left: 3px solid var(--lotus); border-radius: 0 5px 5px 0; padding: 8px 10px; background: var(--pale-blue); color: #344b70; font-size: 11px; }
+.phase-status.retired { border-color: var(--amber); background: var(--amber-soft); color: #684813; }
+
+.service-grid { display: grid; grid-template-columns: 1.05fr .95fr; gap: 15px; }
+.inner-panel { border: 1px solid #e1e6ee; border-radius: 7px; background: white; }
+.inner-panel h3 { margin: 0; padding: 10px 12px; border-bottom: 1px solid #e7ebf1; color: #42526a; font-size: 12px; }
+.inner-panel .inner { padding: 11px 13px; }
+.timeline { list-style: none; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 0; padding: 0; }
+.timeline li { position: relative; min-height: 73px; padding: 10px 11px; border: 1px solid #e1e7ef; border-radius: 6px; background: #fafbfd; }
+.timeline li.active { border-color: #8eadd8; background: var(--pale-blue); }
+.timeline .step { display: block; margin-bottom: 3px; color: var(--muted); font-size: 10px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
+.timeline strong { display: block; font-size: 12px; line-height: 1.45; }
+.timeline small { display: block; margin-top: 3px; color: var(--muted); font-size: 11px; }
+.exception { display: flex; gap: 10px; margin-top: 10px; padding: 10px 11px; border: 1px solid #e7d3a1; border-radius: 6px; background: var(--amber-soft); color: #684813; font-size: 12px; }
+.exception .icon { display: inline-grid; flex: 0 0 19px; width: 19px; height: 19px; place-items: center; border-radius: 50%; background: #c38a19; color: white; font-size: 12px; font-weight: 800; }
+.exception strong { display: block; margin-bottom: 2px; }
+.guide-list { list-style: none; display: grid; gap: 9px; margin: 0; padding: 0; }
+.guide-list li { display: grid; grid-template-columns: 24px 1fr; align-items: start; gap: 8px; font-size: 12px; }
+.num { width: 22px; height: 22px; display: grid; place-items: center; border-radius: 50%; background: #e7effb; color: var(--blue); font-size: 11px; font-weight: 750; }
+.guide-list strong { display: block; margin-bottom: 1px; color: #283a57; }
+.guide-list p { margin: 0; color: var(--muted); }
+
+.role-action { border-left: 4px solid var(--navy); }
+.role-action .card-body { padding: 15px 17px 17px; }
+.role-title-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.role-title-row h2 { margin: 0; color: var(--navy); font-size: 17px; }
+.permission-pill { border-radius: 99px; padding: 4px 9px; background: var(--pale-blue); color: var(--blue); font-size: 10px; font-weight: 750; white-space: nowrap; }
+.role-copy { max-width: 850px; margin: 7px 0 12px; color: #4e5c72; font-size: 13px; }
+.next-route { display: grid; grid-template-columns: 1fr auto; gap: 14px; align-items: center; border-top: 1px solid #e7ebf0; padding-top: 12px; }
+.next-route strong { display: block; color: var(--ink); font-size: 12px; }
+.next-route p { margin: 2px 0 0; color: var(--muted); font-size: 12px; }
+.action-stack { display: grid; min-width: 230px; gap: 6px; }
+.btn { border: 1px solid #cbd4e1; border-radius: 5px; padding: 8px 12px; background: white; color: var(--navy); font-size: 12px; font-weight: 700; }
+.btn.primary { border-color: var(--blue); background: var(--blue); color: white; }
+.btn:hover { filter: brightness(.97); }
+.btn.primary:hover { background: #103f85; }
+.note-bar { display: flex; align-items: flex-start; gap: 9px; margin-top: 13px; padding: 9px 11px; border-radius: 6px; background: #f3f6fa; color: #526078; font-size: 11px; }
+.note-bar b { color: #34445d; }
+
+.side .card-head { padding: 11px 14px; }
+.side .card-body { padding: 13px 14px; }
+.route-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; }
+.route-top h2 { margin: 1px 0 3px; color: var(--navy); font-size: 15px; line-height: 1.4; }
+.route-tag { flex: 0 0 auto; border: 1px solid #c5d7f0; border-radius: 5px; padding: 3px 7px; background: var(--pale-blue); color: #225193; font-size: 10px; font-weight: 700; }
+.route-summary { margin: 7px 0 10px; color: #536179; font-size: 12px; }
+.route-steps { display: grid; gap: 8px; list-style: none; margin: 0; padding: 0; }
+.route-steps li { display: grid; grid-template-columns: 20px 1fr; gap: 7px; align-items: start; color: #34435a; font-size: 11px; }
+.route-steps .tick { display: grid; place-items: center; width: 18px; height: 18px; border-radius: 50%; background: #e8f4f1; color: #167068; font-size: 11px; font-weight: 800; }
+.no-schedule { margin-top: 11px; padding: 9px 10px; border: 1px solid #efc6c4; border-radius: 6px; background: #fff4f3; color: #81353a; font-size: 11px; }
+.no-schedule strong { display: block; margin-bottom: 2px; }
+.service-lookup { display: grid; grid-template-columns: minmax(260px, .85fr) minmax(0, 1.15fr); gap: 14px; align-items: start; }
+.service-lookup label { display: block; margin-bottom: 5px; color: #45536a; font-size: 12px; font-weight: 700; }
+.service-lookup select { width: 100%; min-height: 40px; padding: 8px 10px; border: 1px solid #cbd4e1; border-radius: 5px; background: white; color: var(--ink); }
+.lookup-help { margin: 6px 0 0; color: var(--muted); font-size: 11px; }
+.service-result { min-height: 90px; border: 1px solid #d8e2f1; border-left: 4px solid var(--lotus); border-radius: 6px; padding: 11px 13px; background: #f7faff; }
+.service-result h3 { margin: 0 0 5px; color: var(--navy); font-size: 14px; }
+.service-result p { margin: 4px 0; color: #4b5a71; font-size: 12px; }
+.service-result .route-channel { color: var(--blue); font-weight: 750; }
+.service-result .role-note { margin-top: 8px; border-top: 1px solid #dce5f1; padding-top: 7px; color: #465773; }
+.service-result .empty { color: var(--muted); }
+.script { position: relative; border-left: 3px solid #5e84ba; border-radius: 0 6px 6px 0; background: #f4f7fc; padding: 11px 12px; color: #384860; font-size: 12px; }
+.script::before { content: "“"; position: absolute; top: -7px; left: 5px; color: #91a9ca; font: 36px/1 Georgia, serif; opacity: .7; }
+.script p { margin: 5px 0 0; padding-left: 8px; }
+.source-list { display: grid; gap: 10px; }
+.source-item { display: grid; grid-template-columns: 20px 1fr; gap: 7px; align-items: start; font-size: 11px; }
+.source-mark { display: grid; place-items: center; width: 19px; height: 19px; border-radius: 4px; background: #eaf0fa; color: var(--blue); font-size: 10px; font-weight: 800; }
+.source-item a { font-weight: 650; text-decoration: none; }
+.source-item a:hover { text-decoration: underline; }
+.source-item small { display: block; margin-top: 2px; color: var(--muted); font-size: 10px; }
+.source-foot { margin: 12px 0 0; border-top: 1px solid #e7ebf0; padding-top: 9px; color: var(--muted); font-size: 10px; }
+.demo-stamp { margin: 20px 0 0; color: #8792a2; text-align: center; font-size: 10px; }
+
+dialog { width: min(460px, calc(100% - 24px)); padding: 0; border: 1px solid var(--line); border-radius: 10px; color: var(--ink); box-shadow: 0 16px 60px rgba(8, 22, 50, .28); }
+dialog::backdrop { background: rgba(13, 28, 58, .42); }
+.dialog-head { display: flex; align-items: center; justify-content: space-between; padding: 13px 16px; border-bottom: 1px solid var(--line); }
+.dialog-head h2 { margin: 0; color: var(--navy); font-size: 16px; }
+.dialog-body { padding: 15px 16px; }
+.dialog-body label { display: block; margin: 0 0 5px; color: #45536a; font-size: 12px; font-weight: 700; }
+.dialog-body select, .dialog-body input { width: 100%; margin: 0 0 12px; padding: 8px 9px; border: 1px solid #cbd4e1; border-radius: 5px; background: white; color: var(--ink); }
+.dialog-note { margin: 2px 0 12px; color: var(--muted); font-size: 11px; }
+.dialog-actions { display: flex; justify-content: flex-end; gap: 8px; padding: 0 16px 15px; }
+#toast { position: fixed; right: 22px; bottom: 22px; z-index: 10; display: none; max-width: 360px; border-radius: 7px; padding: 11px 14px; background: var(--navy); color: white; box-shadow: 0 6px 24px rgba(0,0,0,.18); font-size: 12px; }
+#toast.show { display: block; animation: arrive .18s ease-out; }
+@keyframes arrive { from { transform: translateY(6px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+
+@media (max-width: 1100px) {
+  main { padding-inline: 20px; }
+  .layout { grid-template-columns: 1fr; }
+  .side { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+  .side .card + .card { margin-top: 0; }
+}
+@media (max-width: 760px) {
+  .topbar { height: auto; min-height: 58px; padding: 9px 13px; flex-wrap: wrap; gap: 8px; }
+  .brand { min-width: auto; margin-right: auto; }
+  .brand-name small, .env, .top-icon, .staff { display: none; }
+  .search { order: 2; flex-basis: 100%; max-width: none; margin: 2px 0 0; }
+  .nav { padding: 0 8px; overflow-x: auto; white-space: nowrap; }
+  .nav a { padding: 10px 12px 8px; }
+  main { padding: 18px 12px 30px; }
+  .title-row { display: block; }
+  h1 { font-size: 22px; }
+  .reviewed { display: inline-flex; margin-top: 10px; }
+  .scenario-bar { display: grid; gap: 11px; margin: 14px 0; }
+  .control-group { align-items: flex-start; }
+  .control-label { flex-basis: 100%; margin: 0 0 2px; }
+  .seg { width: 100%; }
+  .seg button { flex: 1; padding-inline: 6px; }
+  .transition-banner { grid-template-columns: 1fr; gap: 14px; padding: 15px; }
+  .date-list { gap: 8px; }
+  .service-grid { grid-template-columns: 1fr; }
+  .service-lookup { grid-template-columns: 1fr; }
+  .timeline { grid-template-columns: 1fr 1fr; }
+  .next-route { grid-template-columns: 1fr; }
+  .action-stack { min-width: 0; }
+  .next-route .btn { justify-self: stretch; }
+  .side { grid-template-columns: 1fr; }
+  .demo-stamp { margin-top: 15px; }
+}
+@media (max-width: 390px) {
+  .timeline { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="case-workspace.html" aria-label="Bangkok Bank CRM home">
+    <img src="assets/bbl-lotus.png" alt="">
+    <span class="brand-name">Bangkok Bank <small>CRM</small></span>
+  </a>
+  <span class="env">PROTOTYPE</span>
+  <form class="search" role="search" onsubmit="return false">
+    <label for="search" style="position:absolute;left:-9999px"><span lang="th">ค้นหาลูกค้า / เลขคดี</span><span lang="en">Search customer / case</span></label>
+    <input id="search" type="search" placeholder="ค้นหาลูกค้า / เลขคดี" data-placeholder-th="ค้นหาลูกค้า / เลขคดี" data-placeholder-en="Search customer / case">
+    <button type="submit"><span lang="th">ค้นหา</span><span lang="en">Search</span></button>
+  </form>
+  <span class="top-spacer"></span>
+  <button class="lang" id="lang" type="button" aria-label="Switch to English">EN</button>
+  <div class="staff"><span lang="th">สมชาย ใจดี</span><span lang="en">Somchai Jaidi</span><small><span lang="th">บริการสาขา · สีลม</span><span lang="en">Branch Service · Silom</span></small></div>
+</header>
+<nav class="nav" aria-label="Main navigation">
+  <a href="#"><span lang="th">งานของฉัน</span><span lang="en">My work</span></a>
+  <a href="#"><span lang="th">ค้นหาลูกค้า</span><span lang="en">Customer search</span></a>
+  <a href="case-workspace.html"><span lang="th">คดี</span><span lang="en">Cases</span></a>
+  <a href="service-guide.html" aria-current="page"><span lang="th">คำแนะนำบริการ</span><span lang="en">Service guidance</span></a>
+  <a href="contact-update-guide.html"><span lang="th">แก้ไขข้อมูลติดต่อ</span><span lang="en">Contact updates</span></a>
+  <a href="your-data-assist.html"><span lang="th">ข้อมูลของคุณ</span><span lang="en">Your Data</span></a>
+  <a href="#"><span lang="th">รายงาน</span><span lang="en">Reports</span></a>
+</nav>
+
+<main>
+  <p class="crumb"><span lang="th">บริการลูกค้า <span aria-hidden="true">›</span> คำแนะนำบริการ <span aria-hidden="true">›</span> ดิจิทัลแบงก์กิ้ง</span><span lang="en">Customer service <span aria-hidden="true">›</span> Service guidance <span aria-hidden="true">›</span> Digital banking</span></p>
+  <div class="title-row">
+    <div>
+      <h1><span lang="th">การเปลี่ยนจากบัวหลวงไอแบงก์กิ้ง</span><span lang="en">Moving from Bualuang iBanking</span></h1>
+      <p class="subhead"><span lang="th">ค้นหาเส้นทางบริการที่เหมาะกับลูกค้า แล้วส่งต่อไปยังระบบที่มีอำนาจดำเนินการ</span><span lang="en">Find the right service path for this customer, then hand off to the system authorized to act.</span></p>
+    </div>
+    <div class="reviewed"><span class="check" aria-hidden="true">✓</span><span lang="th">อ้างอิงประกาศธนาคาร · ทบทวน 15 ต.ค. 2569</span><span lang="en">Bank notice · reviewed 15 Oct 2026</span></div>
+  </div>
+
+  <section class="scenario-bar" aria-label="Prototype scenario controls">
+    <div class="control-group">
+      <span class="control-label"><span lang="th">มุมมองพนักงาน</span><span lang="en">Employee view</span></span>
+      <div class="seg" role="group" aria-label="Employee role">
+        <button type="button" data-role="teller" aria-pressed="false"><span lang="th">พนักงานสาขา</span><span lang="en">Teller</span></button>
+        <button type="button" data-role="agent" aria-pressed="true"><span lang="th">คอนแทคเซ็นเตอร์</span><span lang="en">Contact center</span></button>
+        <button type="button" data-role="rm" aria-pressed="false"><span lang="th">RM</span><span lang="en">RM</span></button>
+      </div>
+    </div>
+    <div class="control-group">
+      <span class="control-label"><span lang="th">สถานการณ์ลูกค้า</span><span lang="en">Customer situation</span></span>
+      <div class="seg" role="group" aria-label="Customer situation">
+        <button type="button" data-context="mobile" aria-pressed="false"><span lang="th">ใช้ Mobile Banking</span><span lang="en">Uses Mobile Banking</span></button>
+        <button type="button" data-context="overseas" aria-pressed="false"><span lang="th">อยู่ต่างประเทศ · ไม่มีแอป</span><span lang="en">Overseas · no app</span></button>
+        <button type="button" data-context="osConflict" aria-pressed="true"><span lang="th">ข้อมูล OS ขัดแย้ง</span><span lang="en">OS guidance conflicts</span></button>
+        <button type="button" data-context="foreign" aria-pressed="false"><span lang="th">ไม่มีบัตรประชาชนไทย</span><span lang="en">No Thai Citizen ID</span></button>
+      </div>
+    </div>
+    <div class="control-group">
+      <span class="control-label"><span lang="th">ช่วงวันที่มีผล</span><span lang="en">Guidance phase</span></span>
+      <div class="seg" role="group" aria-label="Guidance phase">
+        <button type="button" data-phase="before" aria-pressed="true"><span lang="th">ก่อน 1 พ.ย.</span><span lang="en">Before 1 Nov</span></button>
+        <button type="button" data-phase="interim" aria-pressed="false"><span lang="th">1 พ.ย.–14 ธ.ค.</span><span lang="en">1 Nov–14 Dec</span></button>
+        <button type="button" data-phase="retired" aria-pressed="false"><span lang="th">ตั้งแต่ 15 ธ.ค.</span><span lang="en">From 15 Dec</span></button>
+      </div>
+    </div>
+  </section>
+
+  <div class="layout">
+    <div class="main-col">
+      <section class="card transition-banner" aria-labelledby="transition-title">
+        <div>
+          <span class="kicker"><span lang="th">บริการที่ได้รับผลกระทบ</span><span lang="en">Service transition</span></span>
+          <h2 id="transition-title"><span id="transition-title-th" lang="th"></span><span id="transition-title-en" lang="en"></span></h2>
+          <p><span lang="th">แสดงกำหนดการและข้อยกเว้นแยกจากสถานะบัญชีหรือรายการของลูกค้าแต่ละราย</span><span lang="en">Show the published timeline and exceptions separately from a customer’s individual account or scheduled items.</span></p>
+        </div>
+        <div class="date-list" aria-label="Key dates">
+          <div class="phase-status" id="phase-status" role="status" aria-live="polite"></div>
+          <div class="date-item" id="schedule-rule">
+            <span class="phase-tag" id="schedule-phase-tag"></span>
+            <span class="date">1 พ.ย. 2569</span><strong><span lang="th">หยุดตั้งรายการล่วงหน้าใหม่</span><span lang="en">No new scheduled items</span></strong>
+            <small><span lang="th">บริการตั้งรายการล่วงหน้าบน iBanking สิ้นสุด</span><span lang="en">iBanking scheduling setup ends</span></small>
+          </div>
+          <div class="date-item" id="retirement-rule">
+            <span class="phase-tag" id="retirement-phase-tag"></span>
+            <span class="date">15 ธ.ค. 2569</span><strong><span lang="th">ยุติบริการ iBanking</span><span lang="en">iBanking service ends</span></strong>
+            <small><span lang="th">รายการที่ถึงกำหนดวันนี้เป็นต้นไปจะถูกยกเลิก</span><span lang="en">Items due on or after this date are cancelled</span></small>
+          </div>
+        </div>
+      </section>
+
+      <section class="card" aria-labelledby="impact-heading">
+        <div class="card-head">
+          <h2 id="impact-heading"><span lang="th">สิ่งที่ต้องอธิบายให้ลูกค้า</span><span lang="en">What to explain</span></h2>
+          <span class="kicker"><span lang="th">ประกาศมีผลตามวันที่</span><span lang="en">Effective-dated guidance</span></span>
+        </div>
+        <div class="card-body service-grid">
+          <div class="inner-panel">
+            <h3><span lang="th">กำหนดการและข้อยกเว้น</span><span lang="en">Timeline and exceptions</span></h3>
+            <div class="inner">
+              <ol class="timeline">
+                <li class="active">
+                  <span class="step"><span lang="th">เริ่ม 1 พ.ย. 2569</span><span lang="en">From 1 Nov 2026</span></span>
+                  <strong><span lang="th">ตั้งโอน / ชำระล่วงหน้ารายการใหม่ผ่าน iBanking ไม่ได้</span><span lang="en">New scheduled transfers and payments can no longer be set up in iBanking.</span></strong>
+                  <small><span lang="th">ใช้ Bangkok Bank Mobile Banking สำหรับรายการที่รองรับ</span><span lang="en">Use Bangkok Bank Mobile Banking for supported schedules.</span></small>
+                </li>
+                <li>
+                  <span class="step"><span lang="th">เริ่ม 15 ธ.ค. 2569</span><span lang="en">From 15 Dec 2026</span></span>
+                  <strong><span lang="th">บัวหลวง iBanking ยุติให้บริการ</span><span lang="en">Bualuang iBanking is discontinued.</span></strong>
+                  <small><span lang="th">รายการล่วงหน้าที่จะมีผลตั้งแต่วันนี้เป็นต้นไปถูกยกเลิกโดยอัตโนมัติ</span><span lang="en">Future-dated items due on or after this date are automatically cancelled.</span></small>
+                </li>
+              </ol>
+              <div class="exception">
+                <span class="icon" aria-hidden="true">!</span>
+                <div><strong><span lang="th">ข้อยกเว้น: Direct Debit ยังดำเนินต่อ</span><span lang="en">Exception: Direct Debit continues</span></strong><span lang="th">รายการหักบัญชีอัตโนมัติที่ลงทะเบียนไว้ไม่ถูกยกเลิกตามกำหนดการข้างต้น</span><span lang="en">Registered Direct Debit instructions are not cancelled by the scheduled-item cutoff above.</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="inner-panel">
+            <h3><span lang="th">เส้นทางบริการที่เผยแพร่</span><span lang="en">Published service routes</span></h3>
+            <div class="inner">
+              <ul class="guide-list">
+                <li><span class="num">1</span><div><strong><span lang="th">โอน เติมเงิน จ่ายบิล และดูรายการ</span><span lang="en">Transfers, top-ups, bill pay and account history</span></strong><p><span lang="th">Bangkok Bank Mobile Banking</span><span lang="en">Bangkok Bank Mobile Banking</span></p></div></li>
+                <li><span class="num">2</span><div><strong><span lang="th">รายการผู้รับเงินที่บันทึกไว้</span><span lang="en">Saved payee details</span></strong><p><span lang="th">ไม่ย้ายให้อัตโนมัติ ยกเว้นผู้รับเงินโอนระหว่างประเทศที่ลงทะเบียนไว้</span><span lang="en">Do not transfer automatically, except registered international-transfer beneficiaries.</span></p></div></li>
+                <li><span class="num">3</span><div><strong><span lang="th">บริการเฉพาะบางรายการ</span><span lang="en">Other affected services</span></strong><p><span lang="th">ใช้สาขา โทรศัพท์อัตโนมัติ หรือคอนแทคเซ็นเตอร์ตามรายการในประกาศ</span><span lang="en">Use a branch, automated phone banking or the contact center as listed per service in the notice.</span></p></div></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="card" aria-labelledby="service-lookup-title">
+        <div class="card-head">
+          <h2 id="service-lookup-title"><span lang="th">ค้นหาช่องทางทดแทนตามบริการ</span><span lang="en">Find the replacement route by service</span></h2>
+          <span class="kicker"><span lang="th">เลือกบริการที่ลูกค้าถาม</span><span lang="en">Select the service the customer named</span></span>
+        </div>
+        <div class="card-body service-lookup">
+          <div>
+            <label for="service-map-select"><span lang="th">บริการเดิมใน iBanking</span><span lang="en">iBanking service</span></label>
+            <select id="service-map-select" aria-describedby="service-map-help">
+              <option value="">Choose a service…</option>
+              <optgroup id="map-payments" label="Payments and accounts">
+                <option value="transfers">Transfers, top-ups and bill pay</option>
+                <option value="accountActivity">Account summaries and transaction history</option>
+                <option value="scheduled">Scheduled transfers or bill payments</option>
+                <option value="directDebit">Direct Debit service</option>
+                <option value="international">International money transfer</option>
+                <option value="fcd">Foreign currency deposit account (FCD)</option>
+                <option value="mutualFunds">Mutual-fund orders and investment units</option>
+              </optgroup>
+              <optgroup id="map-cards-cheques" label="Cards, cheques and other services">
+                <option value="cardControl">Suspend a card or request a replacement</option>
+                <option value="returnedCheque">Check returned-cheque status</option>
+                <option value="chequeBook">Order a cheque book</option>
+                <option value="statementAddress">Change mailing address for credit-card statements</option>
+                <option value="lostPassbook">Suspend a lost passbook</option>
+                <option value="dividend">Register for dividend payments</option>
+                <option value="issuedCheque">Suspend an issued cheque</option>
+                <option value="suspiciousTransaction">Investigate a suspicious transaction</option>
+                <option value="abnormalBalance">Check an abnormal account balance</option>
+                <option value="suspiciousCard">Investigate a suspicious credit-card transaction</option>
+                <option value="abnormalCardBalance">Check an abnormal credit-card balance</option>
+                <option value="rewards">Redeem credit-card reward points</option>
+                <option value="cardPin">Request a credit-card PIN</option>
+                <option value="studentPrepaid">Top up a Student Prepaid Card</option>
+              </optgroup>
+            </select>
+            <p class="lookup-help" id="service-map-help"><span lang="th">เส้นทางลูกค้าไม่ใช่สิทธิ์ของพนักงาน และไม่ยืนยันว่าธุรกรรมเสร็จแล้ว</span><span lang="en">The customer's route does not grant staff permission or confirm that a transaction is complete.</span></p>
+          </div>
+          <div class="service-result" id="service-map-result" role="status" aria-live="polite">
+            <p class="empty"><span lang="th">เลือกบริการเพื่อดูช่องทางที่ประกาศไว้และข้อควรระวัง</span><span lang="en">Choose a service to see its published channel and guidance caveat.</span></p>
+          </div>
+        </div>
+      </section>
+
+      <section class="card role-action" aria-labelledby="role-title">
+        <div class="card-head">
+          <div class="role-title-row"><h2 id="role-title"><span lang="th">บทบาทของคุณในคำขอนี้</span><span lang="en">Your role in this request</span></h2><span class="permission-pill" id="permission-pill">ANSWER · GUIDE · REFER</span></div>
+        </div>
+        <div class="card-body">
+          <p class="role-copy" id="role-copy"></p>
+          <div class="next-route">
+            <div><strong><span lang="th">ข้อมูลอ้างอิงรายการของลูกค้า</span><span lang="en">Customer-specific schedule status</span></strong><p><span lang="th">ตรวจในแหล่งข้อมูลที่ได้รับอนุญาตเท่านั้น ลูกค้าและ CRM นี้ไม่เห็นรายการกำหนดการส่วนบุคคล</span><span lang="en">Check only in an authorized source. This guide does not expose the customer’s individual schedule.</span></p></div>
+            <div class="action-stack">
+              <button class="btn primary" id="source-action"></button>
+              <button class="btn" id="handoff"><span lang="th">บันทึกการติดตามที่ลูกค้าร้องขอ</span><span lang="en">Record requested follow-up</span></button>
+            </div>
+          </div>
+          <div class="note-bar"><span aria-hidden="true">ⓘ</span><span><b><span lang="th">ขอบเขตสิทธิ์:</span><span lang="en">Authority boundary:</span></b> <span lang="th">รายการในเมนู IVR ไม่ได้กำหนดสิทธิ์ของพนักงาน ระบบต้นทางยืนยันธุรกรรมและสถานะของลูกค้า</span><span lang="en">An IVR feature list does not define staff permissions. The authoritative system confirms customer transactions and status.</span></span></div>
+        </div>
+      </section>
+    </div>
+
+    <aside class="side">
+      <section class="card" aria-labelledby="route-heading">
+        <div class="card-head"><h2><span lang="th">เส้นทางตามสถานการณ์ลูกค้า</span><span lang="en">Route for this customer</span></h2><span class="route-tag" id="context-label"></span></div>
+        <div class="card-body">
+          <div class="route-top"><h2 id="route-heading"></h2></div>
+          <p class="route-summary" id="route-summary"></p>
+          <ul class="route-steps" id="route-steps"></ul>
+          <div class="no-schedule"><strong><span lang="th">ไม่แสดงข้อมูลรายบัญชีใน CRM</span><span lang="en">No account-level schedule in CRM</span></strong><span lang="th">อย่าระบุว่ารายการของลูกค้าถูกยกเลิกหรือย้ายแล้ว หากระบบต้นทางยังไม่ยืนยัน</span><span lang="en">Do not say an item was cancelled or moved unless the source system confirms it.</span></div>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="card-head"><h2><span lang="th">ข้อความที่ใช้สื่อสารได้</span><span lang="en">Customer-safe wording</span></h2></div>
+        <div class="card-body">
+          <div class="script"><span class="kicker"><span lang="th">ตัวอย่าง · ปรับตามสถานการณ์</span><span lang="en">Example · adapt to the situation</span></span><p id="safe-script"></p></div>
+          <p class="source-foot"><span lang="th">ตรวจสอบตัวตนและใช้ถ้อยคำตามขั้นตอนที่ธนาคารอนุมัติ ก่อนพูดถึงข้อมูลบัญชี</span><span lang="en">Follow the Bank’s approved verification and wording before discussing account information.</span></p>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="card-head"><h2><span lang="th">ที่มาและเจ้าของข้อมูล</span><span lang="en">Source and ownership</span></h2></div>
+        <div class="card-body">
+          <div class="source-list">
+            <div class="source-item"><span class="source-mark">BBL</span><div><a href="https://www.bangkokbank.com/en/Personal/Digital-Banking/Bualuang-mBanking/Terminate-Bualuang-iBanking" target="_blank" rel="noreferrer"><span lang="th">ประกาศยุติ Bualuang iBanking</span><span lang="en">iBanking termination notice</span></a><small><span lang="th">ข้อมูลลูกค้า · ประกาศธนาคาร</span><span lang="en">Customer information · Bank notice</span></small></div></div>
+            <div class="source-item"><span class="source-mark">OPS</span><div><a href="https://www.bangkokbank.com/en/Personal/Digital-Banking/Self-Services/Phone-Banking" target="_blank" rel="noreferrer"><span lang="th">Phone Banking / คอนแทคเซ็นเตอร์</span><span lang="en">Phone Banking / Contact Center</span></a><small><span lang="th">รายการ IVR แยกจากสิทธิ์พนักงาน</span><span lang="en">IVR menu, separate from employee authority</span></small></div></div>
+            <div class="source-item"><span class="source-mark">BBL</span><div><a href="https://www.bangkokbank.com/en/Personal/Digital-Banking/Bualuang-mBanking/How-To-Check-Version" target="_blank" rel="noreferrer"><span lang="th">ข้อกำหนดระบบปฏิบัติการของ Mobile Banking</span><span lang="en">Mobile Banking OS support</span></a><small><span lang="th">iOS 15.0+ / Android 10.0+ ตั้งแต่ 20 ม.ค. 2569</span><span lang="en">iOS 15.0+ / Android 10.0+ since 20 Jan 2026</span></small></div></div>
+            <div class="source-item"><span class="source-mark">BBL</span><div><a href="https://www.bangkokbank.com/en/Personal/Digital-Banking/Bualuang-mBanking/FAQ" target="_blank" rel="noreferrer"><span lang="th">คำถามที่พบบ่อย Mobile Banking</span><span lang="en">General Mobile Banking FAQ</span></a><small><span lang="th">ยังระบุ iOS 14.0+ / Android 9.0+ ตั้งแต่ 20 มี.ค. 2568 · ต้องยืนยันแหล่งที่ใช้</span><span lang="en">Still lists iOS 14.0+ / Android 9.0+ since 20 Mar 2025 · source precedence needs confirmation</span></small></div></div>
+            <div class="source-item"><span class="source-mark">BBL</span><div><a href="https://www.bangkokbank.com/en/Personal/Other-Services/Branch-Services/Bank-Branches" target="_blank" rel="noreferrer"><span lang="th">บริการที่สาขา</span><span lang="en">Branch services</span></a><small><span lang="th">ขั้นตอนที่สาขา · ตรวจสอบรายการตามบริการ</span><span lang="en">Branch procedures · check each service’s requirements</span></small></div></div>
+          </div>
+          <p class="source-foot"><span lang="th">เจ้าของคำแนะนำภายใน / รอบการทบทวน: รอธนาคารระบุ · ถ้าข้อมูลไม่ตรงกันให้หยุดอ้างกำหนดเวลาและติดต่อเจ้าของเนื้อหา</span><span lang="en">Internal content owner / review cadence: Bank confirmation pending. If sources conflict, suppress deadlines and contact the content owner.</span></p>
+        </div>
+      </section>
+    </aside>
+  </div>
+  <p class="demo-stamp"><span lang="th">ต้นแบบเพื่อทบทวน · ข้อมูลลูกค้าจำลอง · อ้างอิง US-701, US-702, US-711–712, US-P1-04, T16–T17, T22 · ต้องยืนยันสิทธิ์พนักงานและเจ้าของเนื้อหากับธนาคาร</span><span lang="en">Validation prototype · synthetic customer context · traces to US-701, US-702, US-711–712, US-P1-04, T16–T17, T22 · employee permissions and content ownership require Bank validation.</span></p>
+</main>
+
+<dialog id="handoff-dialog" aria-labelledby="dialog-title">
+  <form method="dialog" id="handoff-form">
+    <div class="dialog-head"><h2 id="dialog-title"><span lang="th">ติดตามตามที่ลูกค้าร้องขอ</span><span lang="en">Customer-requested follow-up</span></h2><button class="btn" type="button" id="close-dialog" aria-label="Close">×</button></div>
+    <div class="dialog-body">
+      <label for="followup-owner"><span lang="th">ทีมผู้รับผิดชอบ</span><span lang="en">Follow-up owner</span></label>
+      <select id="followup-owner"><option value="digital">Digital Banking Support · บริการดิจิทัล</option><option value="branch">Customer-selected branch · สาขาที่ลูกค้าเลือก</option></select>
+      <label for="followup-date"><span lang="th">วันที่ติดตาม</span><span lang="en">Follow-up date</span></label>
+      <input id="followup-date" type="date" value="2026-10-19">
+      <p class="dialog-note"><span lang="th">บันทึกเฉพาะคำขอช่วยเหลือและช่องทางที่ลูกค้าตกลง ห้ามใส่เลขบัญชีเต็ม รหัสผ่าน PIN หรือ OTP</span><span lang="en">Record the requested assistance and agreed channel only. Do not enter a full account number, password, PIN, or OTP.</span></p>
+    </div>
+    <div class="dialog-actions"><button class="btn" id="cancel-dialog" type="button"><span lang="th">ยกเลิก</span><span lang="en">Cancel</span></button><button class="btn primary" type="submit"><span lang="th">บันทึกร่าง</span><span lang="en">Save draft</span></button></div>
+  </form>
+</dialog>
+<div id="toast" role="status" aria-live="polite"></div>
+
+<script>
+const state = { lang: "th", role: "agent", context: "osConflict", phase: "before" };
+const serviceRoutes = {
+  transfers: { th:["โอน เติมเงิน และชำระบิล","Bangkok Bank Mobile Banking","ตรวจสอบว่าลูกค้าใช้งานแอปได้และมีสิทธิ์ใช้บริการที่ต้องการ"], en:["Transfers, top-ups and bill pay","Bangkok Bank Mobile Banking","Confirm that the customer can use the app and is eligible for the requested service."] },
+  accountActivity: { th:["ดูสรุปบัญชีและประวัติรายการ","Bangkok Bank Mobile Banking","การดูข้อมูลรายบัญชียังต้องผ่านการยืนยันตัวตนของลูกค้า"], en:["Account summaries and transaction history","Bangkok Bank Mobile Banking","Customer-specific information still requires the Bank's verification process."] },
+  scheduled: { th:["ตั้งรายการโอนหรือชำระบิลล่วงหน้า","Bangkok Bank Mobile Banking","รายการ iBanking ที่ถึงกำหนดตั้งแต่ 15 ธ.ค. 2569 จะถูกยกเลิกอัตโนมัติ; CRM ไม่เห็นหรือย้ายกำหนดการของลูกค้า"], en:["Schedule transfers or bill payments","Bangkok Bank Mobile Banking","iBanking items due from 15 Dec 2026 are cancelled automatically; CRM cannot see or move the customer's schedule."] },
+  directDebit: { th:["บริการ Direct Debit","Bangkok Bank Mobile Banking","รายการ Direct Debit ที่ลงทะเบียนผ่าน iBanking ยังดำเนินต่อ; อย่าขอให้ลูกค้าตั้งรายการซ้ำ"], en:["Direct Debit service","Bangkok Bank Mobile Banking","Direct Debit instructions registered through iBanking continue; do not ask the customer to recreate them."] },
+  international: { th:["โอนเงินระหว่างประเทศ","Bangkok Bank Mobile Banking","ผู้รับเงินที่ลงทะเบียนสำหรับการโอนระหว่างประเทศเป็นข้อยกเว้นที่ย้ายข้อมูลให้อัตโนมัติ"], en:["International money transfer","Bangkok Bank Mobile Banking","Registered international-transfer beneficiaries are the stated automatic-transfer exception."] },
+  fcd: { th:["บริการบัญชีเงินฝากเงินตราต่างประเทศ (FCD)","Bangkok Bank Mobile Banking","ตรวจสอบข้อกำหนดอุปกรณ์และสิทธิ์ของลูกค้าก่อนแนะนำ"], en:["Foreign currency deposit account (FCD)","Bangkok Bank Mobile Banking","Check device prerequisites and customer eligibility before advising."] },
+  mutualFunds: { th:["คำสั่งซื้อ ขายคืน สับเปลี่ยนกองทุน และดูหน่วยลงทุน","Bangkok Bank Mobile Banking","ช่องทางที่ประกาศไม่ให้สิทธิ์พนักงานดูพอร์ตหรือให้คำแนะนำการลงทุน"], en:["Mutual-fund orders and investment units","Bangkok Bank Mobile Banking","The published channel does not grant staff portfolio access or investment-advice authority."] },
+  cardControl: { th:["ระงับบัตรหรือขอเปลี่ยนบัตร","Bangkok Bank Mobile Banking","การยืนยันและผลการระงับ/เปลี่ยนบัตรต้องมาจากระบบบัตรที่ได้รับอนุญาต; กรณีบัตรหาย/ถูกขโมยให้ใช้เส้นทางเร่งด่วน"], en:["Suspend a card or request a replacement","Bangkok Bank Mobile Banking","Verification and suspension/replacement status must come from the authorized card system; use the urgent path for a lost/stolen card."] },
+  returnedCheque: { th:["ตรวจสอบสถานะเช็คคืน","สาขาและระบบตอบรับอัตโนมัติทางโทรศัพท์","อย่าสับสนกับการขอระงับเช็คที่ออกแล้ว ซึ่งประกาศระบุ Call Center"], en:["Check returned-cheque status","Bank branches and automated voice prompts","Do not confuse this with suspending an issued cheque, which the notice routes to the Call Center."] },
+  chequeBook: { th:["สั่งสมุดเช็ค","สาขาธนาคาร","ใช้ขั้นตอนและการตรวจสอบอำนาจของสาขาที่ได้รับอนุญาต"], en:["Order a cheque book","Bank branches","Follow the authorized branch procedure and authority checks."] },
+  statementAddress: { th:["เปลี่ยนที่อยู่จัดส่งใบแจ้งยอดบัตรเครดิต","สาขาธนาคาร","เป็นการเปลี่ยนที่อยู่สำหรับใบแจ้งยอดบัตรเครดิตตามประกาศ ไม่ใช่ที่อยู่ทุกประเภท"], en:["Change mailing address for credit-card statements","Bank branches","This is the notice's route for credit-card statement mailing addresses, not every address type."] },
+  lostPassbook: { th:["ระงับการใช้สมุดบัญชีที่สูญหาย","สาขาธนาคาร","อย่าแจ้งลูกค้าว่าระงับแล้วจนกว่าระบบต้นทางจะยืนยัน"], en:["Suspend a lost passbook","Bank branches","Do not say the passbook has been suspended until the authoritative system confirms it."] },
+  dividend: { th:["ลงทะเบียนรับเงินปันผล","สาขาธนาคาร","ใช้ขั้นตอนการลงทะเบียนของสาขาที่ได้รับอนุญาต"], en:["Register for dividend payments","Bank branches","Use the authorized branch registration procedure."] },
+  issuedCheque: { th:["ระงับเช็คที่ออกแล้ว","Call Center","หากเป็นเหตุสงสัยทุจริต ให้ใช้เส้นทางเร่งด่วนด้าน fraud ที่ธนาคารอนุมัติด้วย"], en:["Suspend an issued cheque","Call Center","If fraud is suspected, also use the Bank-approved urgent fraud path."] },
+  suspiciousTransaction: { th:["ตรวจสอบธุรกรรมที่น่าสงสัย","Call Center","กรณีสงสัยทุจริตให้ใช้เส้นทาง urgent fraud ปัจจุบัน; รายการนี้ไม่ยืนยันการระงับหรือผลสอบสวน"], en:["Investigate a suspicious transaction","Call Center","For suspected fraud, use the current urgent fraud path; this listing does not confirm containment or investigation outcome."] },
+  abnormalBalance: { th:["สอบถามยอดบัญชีผิดปกติ","Call Center","การเปิดเผยข้อมูลบัญชียังต้องผ่านการยืนยันตัวตนและสิทธิ์ของ agent"], en:["Check an abnormal account balance","Call Center","Account disclosure still requires customer verification and agent authorization."] },
+  suspiciousCard: { th:["ตรวจสอบธุรกรรมบัตรเครดิตที่น่าสงสัย","Call Center","กรณีสงสัยทุจริตให้ใช้เส้นทาง urgent fraud ปัจจุบัน; CRM ไม่ตัดสินข้อพิพาทหรือความรับผิด"], en:["Investigate a suspicious credit-card transaction","Call Center","For suspected fraud, use the current urgent fraud path; CRM does not decide disputes or liability."] },
+  abnormalCardBalance: { th:["สอบถามยอดบัตรเครดิตผิดปกติ","Call Center","การเปิดเผยข้อมูลบัตรยังต้องผ่านการยืนยันตัวตนและสิทธิ์ของ agent"], en:["Check an abnormal credit-card balance","Call Center","Card disclosure still requires customer verification and agent authorization."] },
+  rewards: { th:["ขอแลกคะแนนสะสมบัตรเครดิต","สาขาและ Call Center","เส้นทางลูกค้าที่ประกาศไม่ยืนยันว่าสิทธิ์ agent ปัจจุบันทำรายการแลกคะแนนได้"], en:["Redeem credit-card reward points","Bank branches and Call Center","The published customer route does not confirm that an agent's current permission includes redemption."] },
+  cardPin: { th:["ขอ PIN บัตรเครดิต","ลูกค้าส่ง SMS คำว่า PIN เว้นวรรค ตามด้วยเลขบัตร 4 หลักท้าย ไปที่ 4711333","ให้คำแนะนำตามข้อความที่ธนาคารอนุมัติ ลูกค้าส่งเอง; ห้ามบันทึกข้อมูลบัตรใน CRM"], en:["Request a credit-card PIN","Customer sends SMS: PIN, a space, then the last four digits of the card number to 4711333","Use Bank-approved wording and have the customer send it themselves; never store card details in CRM."] },
+  studentPrepaid: { th:["เติมเงิน Student Prepaid Card","ตู้ ATM ธนาคารกรุงเทพ","แนะนำให้ใช้ตู้ ATM; อย่าส่งต่อไปยังขั้นตอน Mobile Banking"], en:["Top up a Student Prepaid Card","Bangkok Bank ATM","Direct the customer to an ATM; do not route them to the Mobile Banking flow."] }
+};
+const content = {
+  roles: {
+    teller: {
+      en: "Explain the published change and guide the customer to the suitable route. If the customer asks to transact at the branch, launch the authorized teller workflow; identity, mandate, signature, limits, approval and customer confirmation are checked there. CRM does not execute the transaction or inspect the customer’s future schedule.",
+      th: "อธิบายประกาศและแนะนำช่องทางที่เหมาะสม หากลูกค้าต้องการทำธุรกรรมที่สาขา ให้เปิดระบบ teller ที่ได้รับอนุญาต ซึ่งตรวจตัวตน อำนาจลงนาม ลายมือชื่อ วงเงิน การอนุมัติ และการยืนยันจากลูกค้า CRM ไม่ทำธุรกรรมและไม่เห็นกำหนดการส่วนบุคคลของลูกค้า",
+      badge: "GUIDE · INITIATE IN TELLER SYSTEM",
+      sourceEn: "Continue in authorized teller workflow",
+      sourceTh: "ดำเนินการต่อในระบบ teller ที่ได้รับอนุญาต"
+    },
+    agent: {
+      en: "Answer and guide within the verified call scope and your agent entitlement. The public IVR service list is not an agent permission list. For an account-specific schedule or transaction, route to the approved source workflow; do not promise that a phone agent can execute it.",
+      th: "ตอบและแนะนำตามขอบเขตการยืนยันตัวตนและสิทธิ์ของ agent รายการบริการ IVR ที่เผยแพร่ไม่ใช่รายการสิทธิ์ของพนักงาน หากถามถึงกำหนดการหรือธุรกรรมรายบัญชี ให้ส่งไปยังระบบต้นทางที่อนุมัติ อย่ารับปากว่าพนักงานโทรศัพท์ทำรายการแทนได้",
+      badge: "ANSWER · GUIDE · REFER",
+      sourceEn: "Open agent service procedure",
+      sourceTh: "เปิดขั้นตอนบริการของ agent"
+    },
+    rm: {
+      en: "If you own or formally cover this relationship, explain the service change and honor a customer-requested follow-up after checking the permitted purpose, channel and contact preferences. Keep the task in service recovery; the transition is not a sales prompt. Refer account-specific schedules to an authorized source.",
+      th: "หากคุณเป็น RM เจ้าของความสัมพันธ์หรือได้รับมอบหมายให้ดูแล ให้อธิบายการเปลี่ยนบริการและติดตามตามที่ลูกค้าร้องขอ หลังตรวจวัตถุประสงค์ ช่องทาง และความต้องการติดต่อที่อนุญาต จัดงานนี้เป็นการดูแลบริการ ไม่ใช่คำแนะนำขาย และส่งคำถามเรื่องกำหนดการรายบัญชีไปยังแหล่งข้อมูลที่ได้รับอนุญาต",
+      badge: "ASSIGNED RELATIONSHIP · SERVICE FOLLOW-UP",
+      sourceEn: "Open RM client-work queue",
+      sourceTh: "เปิดคิวงานลูกค้าของ RM"
+    }
+  },
+  contexts: {
+    mobile: {
+      label: {en:"Mobile Banking user", th:"ผู้ใช้ Mobile Banking"},
+      title: {en:"Review future items in Mobile Banking", th:"ตรวจรายการล่วงหน้าใน Mobile Banking"},
+      summary: {en:"The app is the published alternative for supported transfers, top-ups, bill payments and scheduled items.", th:"แอปเป็นช่องทางทดแทนที่ประกาศไว้สำหรับรายการโอน เติมเงิน จ่ายบิล และรายการล่วงหน้าที่รองรับ"},
+      steps: {en:["Ask the customer to review future-dated instructions in the app.","If an eligible item is still needed, the customer can schedule it in Mobile Banking.","Direct Debit remains active; do not ask the customer to recreate it."], th:["ให้ลูกค้าตรวจรายการที่ตั้งล่วงหน้าไว้ในแอป","หากต้องการใช้รายการที่รองรับ ให้ลูกค้าตั้งรายการใน Mobile Banking","Direct Debit ยังดำเนินต่อ ไม่ต้องตั้งรายการซ้ำ"]},
+      script: {en:"Bualuang iBanking scheduling ends on 1 November, and iBanking ends on 15 December 2026. Please review any future-dated transfers or payments in Mobile Banking. Registered Direct Debit continues.", th:"บริการตั้งรายการล่วงหน้าในบัวหลวง iBanking สิ้นสุด 1 พฤศจิกายน และ iBanking สิ้นสุด 15 ธันวาคม 2569 กรุณาตรวจรายการโอนหรือชำระเงินล่วงหน้าใน Mobile Banking ส่วน Direct Debit ที่ลงทะเบียนไว้ยังดำเนินต่อ"}
+    },
+    overseas: {
+      label: {en:"Overseas · no Mobile Banking", th:"อยู่ต่างประเทศ · ไม่มี Mobile Banking"},
+      title: {en:"Check availability, then use the enquiry route", th:"ตรวจช่วงเวลา แล้วใช้ช่องทางสอบถาม"},
+      summary: {en:"The notice says overseas customers can keep using iBanking through 14 Dec 2026 Thailand time. From 15 Dec, +66 2 645 5555 is listed for balance and transaction enquiries after the Bank’s verification process; it is not a transfer-execution route.", th:"ประกาศระบุว่าลูกค้าต่างประเทศยังใช้ iBanking ได้ถึง 14 ธ.ค. 2569 ตามเวลาไทย ตั้งแต่ 15 ธ.ค. หมายเลข +66 2 645 5555 ใช้สอบถามยอดและรายการหลังผ่านขั้นตอนยืนยันตัวตนของธนาคาร ไม่ใช่ช่องทางยืนยันการโอนเงิน"},
+      steps: {en:["Until 14 Dec 2026 Thailand time, the published notice says iBanking remains available.","From 15 Dec, share +66 2 645 5555 for balance or transaction enquiries, subject to the Bank’s verification process.","Do not promise that a phone agent can execute a transfer or confirm an individual scheduled item from CRM.","Never ask the customer to tell staff a password, PIN, or OTP; record follow-up only when requested and permitted."], th:["จนถึง 14 ธ.ค. 2569 ตามเวลาไทย ประกาศระบุว่ายังใช้ iBanking ได้","ตั้งแต่ 15 ธ.ค. แจ้งหมายเลข +66 2 645 5555 สำหรับสอบถามยอดหรือรายการ หลังผ่านขั้นตอนยืนยันตัวตนของธนาคาร","อย่ารับปากว่าพนักงานโทรศัพท์ทำรายการโอนได้ หรือยืนยันกำหนดการรายบัญชีจาก CRM","ห้ามขอรหัสผ่าน PIN หรือ OTP จากลูกค้า บันทึกการติดตามเมื่อลูกค้าร้องขอและเป็นไปตามสิทธิ์"]},
+      script: {en:"The Bank’s notice says you can continue using iBanking through 14 December 2026 Thailand time. From 15 December, you may call +66 2 645 5555 for balance or transaction enquiries and follow the Bank’s verification steps. Please never share a password, PIN, or OTP with staff. This CRM screen cannot confirm or change an individual scheduled item or make a transfer.", th:"ประกาศของธนาคารระบุว่ายังใช้ iBanking ได้ถึง 14 ธันวาคม 2569 ตามเวลาไทย ตั้งแต่ 15 ธันวาคม สามารถโทร +66 2 645 5555 เพื่อสอบถามยอดหรือรายการและทำตามขั้นตอนยืนยันตัวตนของธนาคาร กรุณาอย่าเปิดเผยรหัสผ่าน PIN หรือ OTP แก่พนักงาน หน้าจอ CRM นี้ไม่สามารถยืนยันหรือแก้ไขรายการล่วงหน้ารายบัญชีหรือทำรายการโอนได้"}
+    },
+    osConflict: {
+      label: {en:"OS guidance conflict", th:"ข้อมูล OS ขัดแย้ง"},
+      title: {en:"Confirm the device requirement before advising", th:"ยืนยันข้อกำหนดอุปกรณ์ก่อนให้คำแนะนำ"},
+      summary: {en:"Official pages disagree: the termination notice and dedicated OS guide list iOS 15.0+ / Android 10.0+ from 20 Jan 2026; the general FAQ still lists iOS 14.0+ / Android 9.0+ from 20 Mar 2025. Do not select a customer-facing threshold until the Bank content owner confirms which page controls.", th:"หน้าเว็บทางการระบุไม่ตรงกัน: ประกาศยุติบริการและหน้าข้อกำหนด OS ระบุ iOS 15.0 ขึ้นไป / Android 10.0 ขึ้นไปตั้งแต่ 20 ม.ค. 2569 แต่คำถามที่พบบ่อยยังระบุ iOS 14.0 ขึ้นไป / Android 9.0 ขึ้นไปตั้งแต่ 20 มี.ค. 2568 อย่าเลือกข้อกำหนดเพื่อแจ้งลูกค้าจนกว่าเจ้าของเนื้อหาของธนาคารจะยืนยันแหล่งที่ใช้"},
+      steps: {en:["Show the conflicting page values and effective dates to staff, with links to both sources.","Do not tell the customer that their device is supported or unsupported based on one page; route the content question to the owner or use the FAQ's branch/1333 help path.","If the customer is overseas and needs a balance or transaction enquiry, use +66 2 645 5555 after the approved verification process; this does not confirm transfer execution.","Do not ask for credentials, PINs, OTPs, or device screenshots; record only the customer-requested follow-up if needed."], th:["แสดงค่าที่ต่างกันและวันที่เริ่มใช้ของแต่ละหน้าแก่พนักงาน พร้อมลิงก์ไปยังแหล่งข้อมูลทั้งสอง","อย่าแจ้งว่ารองรับหรือไม่รองรับโดยอ้างเพียงหน้าใดหน้าหนึ่ง ให้ส่งคำถามเรื่องเนื้อหาไปยังเจ้าของข้อมูลหรือใช้ช่องทางขอความช่วยเหลือจากสาขา/1333 ตาม FAQ","หากลูกค้าอยู่ต่างประเทศและต้องการสอบถามยอดหรือรายการ ให้ใช้หมายเลข +66 2 645 5555 หลังผ่านขั้นตอนยืนยันตัวตนที่อนุมัติ ซึ่งไม่ได้ยืนยันการทำรายการโอน","ไม่ขอข้อมูลเข้าสู่ระบบ PIN, OTP หรือภาพหน้าจออุปกรณ์ บันทึกเฉพาะการติดตามที่ลูกค้าร้องขอเมื่อจำเป็น"]},
+      script: {en:"Bangkok Bank's online pages list different device requirements. Please contact a branch or 1333 to confirm whether your phone can use the current app. If you are overseas and need a balance or transaction enquiry, the international Call Center can help after the Bank's verification steps; that does not mean a transfer can be made there.", th:"หน้าเว็บของธนาคารกรุงเทพระบุข้อกำหนดอุปกรณ์ต่างกัน กรุณาติดต่อสาขาหรือ 1333 เพื่อยืนยันว่าโทรศัพท์ของคุณใช้แอปปัจจุบันได้หรือไม่ หากอยู่ต่างประเทศและต้องการสอบถามยอดหรือรายการ สามารถติดต่อคอนแทคเซ็นเตอร์ระหว่างประเทศหลังผ่านขั้นตอนยืนยันตัวตนของธนาคาร แต่ไม่ได้หมายความว่าสามารถทำรายการโอนผ่านช่องทางนั้นได้"}
+    },
+    foreign: {
+      label: {en:"Foreign customer · no Thai Citizen ID", th:"ลูกค้าต่างชาติ · ไม่มีบัตรประชาชนไทย"},
+      title: {en:"Use the current branch identity path", th:"ใช้ขั้นตอนยืนยันตัวตนที่สาขา"},
+      summary: {en:"The published registration guidance directs customers without current identity information to a branch with a passport. The exact registration path depends on their prior Mobile Banking use.", th:"แนวทางลงทะเบียนระบุให้ลูกค้าที่ข้อมูลยืนยันตัวตนไม่เป็นปัจจุบันไปสาขาพร้อมหนังสือเดินทาง ขั้นตอนลงทะเบียนขึ้นอยู่กับประวัติการใช้ Mobile Banking"},
+      steps: {en:["Check whether the customer has used Bangkok Bank Mobile Banking before.","Direct them to a branch with their passport for identity verification when the notice requires it.","Let the authorized branch system determine the registration steps; do not collect document copies in CRM."], th:["ตรวจว่าลูกค้าเคยใช้ Bangkok Bank Mobile Banking หรือไม่","หากประกาศกำหนด ให้แนะนำไปสาขาพร้อมหนังสือเดินทางเพื่อยืนยันตัวตน","ให้ระบบสาขาที่มีอำนาจกำหนดขั้นตอนลงทะเบียน ไม่เก็บสำเนาเอกสารใน CRM"]},
+      script: {en:"The registration route depends on whether you have used Bangkok Bank Mobile Banking before. Please bring your passport to a Bangkok Bank branch if identity verification is needed. Staff will confirm the applicable steps there.", th:"ขั้นตอนลงทะเบียนขึ้นอยู่กับว่าคุณเคยใช้ Bangkok Bank Mobile Banking หรือไม่ หากต้องยืนยันตัวตน กรุณานำหนังสือเดินทางไปสาขาธนาคารกรุงเทพ เจ้าหน้าที่จะตรวจสอบขั้นตอนที่ใช้กับกรณีของคุณ"}
+    }
+  }
+};
+
+const $ = (selector) => document.querySelector(selector);
+function applyLanguage() {
+  document.body.classList.toggle("en", state.lang === "en");
+  document.documentElement.lang = state.lang;
+  $("#lang").textContent = state.lang === "en" ? "ไทย" : "EN";
+  $("#lang").setAttribute("aria-label", state.lang === "en" ? "Switch to Thai" : "Switch to English");
+  const input = $("#search");
+  input.placeholder = state.lang === "en" ? input.dataset.placeholderEn : input.dataset.placeholderTh;
+  renderRole();
+  renderContext();
+  renderPhase();
+  renderServiceMap();
+}
+function renderRole() {
+  const role = content.roles[state.role];
+  $("#role-copy").textContent = role[state.lang];
+  $("#permission-pill").textContent = role.badge;
+  $("#source-action").textContent = state.lang === "en" ? role.sourceEn : role.sourceTh;
+}
+function renderContext() {
+  const ctx = content.contexts[state.context];
+  $("#context-label").textContent = ctx.label[state.lang];
+  $("#route-heading").textContent = ctx.title[state.lang];
+  $("#route-summary").textContent = ctx.summary[state.lang];
+  $("#safe-script").textContent = ctx.script[state.lang];
+  const list = $("#route-steps");
+  list.replaceChildren(...ctx.steps[state.lang].map((step) => {
+    const li = document.createElement("li");
+    const tick = document.createElement("span");
+    tick.className = "tick";
+    tick.setAttribute("aria-hidden", "true");
+    tick.textContent = "✓";
+    const text = document.createElement("span");
+    text.textContent = step;
+    li.append(tick, text);
+    return li;
+  }));
+}
+function renderPhase() {
+  const phases = {
+    before: {
+      title: {en:"Help customers prepare before service changes", th:"เตรียมลูกค้าก่อนวันเปลี่ยนบริการ"},
+      status: {en:"Before 1 Nov: the published scheduled-item setup cutoff is upcoming. Continue to distinguish iBanking setup availability from the later service retirement.", th:"ก่อน 1 พ.ย.: ยังไม่ถึงวันหยุดตั้งรายการล่วงหน้าตามประกาศ แยกวันหยุดตั้งรายการออกจากวันยุติบริการ iBanking"},
+      schedule: {en:"Upcoming", th:"ยังไม่ถึง"}, retirement: {en:"Upcoming", th:"ยังไม่ถึง"}, active:""
+    },
+    interim: {
+      title: {en:"Guide customers during the transition", th:"แนะนำลูกค้าระหว่างช่วงเปลี่ยนบริการ"},
+      status: {en:"From 1 Nov: new scheduled transfers/payments can no longer be set up in iBanking. iBanking remains available to overseas customers through 14 Dec 2026 Thailand time; the retirement is still upcoming.", th:"ตั้งแต่ 1 พ.ย.: ตั้งรายการโอน/ชำระเงินล่วงหน้าใหม่ผ่าน iBanking ไม่ได้ ลูกค้าต่างประเทศยังใช้ iBanking ได้ถึง 14 ธ.ค. 2569 ตามเวลาไทย และวันยุติบริการยังมาไม่ถึง"},
+      schedule: {en:"In effect", th:"มีผลแล้ว"}, retirement: {en:"Upcoming", th:"ยังไม่ถึง"}, active:"schedule"
+    },
+    retired: {
+      title: {en:"Guide customers after iBanking retirement", th:"แนะนำลูกค้าหลังยุติ iBanking"},
+      status: {en:"From 15 Dec: iBanking is discontinued. The notice says scheduled transfers/payments due on or after this date are automatically cancelled; CRM still cannot see which items belong to this customer.", th:"ตั้งแต่ 15 ธ.ค.: ยุติ iBanking ประกาศระบุว่ารายการโอน/ชำระเงินที่ถึงกำหนดตั้งแต่วันนี้เป็นต้นไปถูกยกเลิกอัตโนมัติ แต่ CRM ไม่เห็นว่าลูกค้ามีรายการใดบ้าง"},
+      schedule: {en:"Passed", th:"พ้นกำหนด"}, retirement: {en:"In effect", th:"มีผลแล้ว"}, active:"retirement"
+    }
+  }[state.phase];
+  document.querySelectorAll("[data-phase]").forEach((button) => button.setAttribute("aria-pressed", String(button.dataset.phase === state.phase)));
+  $("#transition-title-th").textContent = phases.title.th;
+  $("#transition-title-en").textContent = phases.title.en;
+  $("#schedule-rule").classList.toggle("active", phases.active === "schedule");
+  $("#retirement-rule").classList.toggle("active", phases.active === "retirement");
+  $("#schedule-phase-tag").textContent = phases.schedule[state.lang];
+  $("#retirement-phase-tag").textContent = phases.retirement[state.lang];
+  $("#phase-status").textContent = phases.status[state.lang];
+  $("#phase-status").classList.toggle("retired", state.phase === "retired");
+}
+function renderServiceMap() {
+  const select = $("#service-map-select");
+  for (const option of select.options) {
+    const key = option.value;
+    if (key && serviceRoutes[key]) option.textContent = serviceRoutes[key][state.lang][0];
+    else option.textContent = state.lang === "en" ? "Choose a service…" : "เลือกบริการ…";
+  }
+  $("#map-payments").label = state.lang === "en" ? "Payments and accounts" : "การชำระเงินและบัญชี";
+  $("#map-cards-cheques").label = state.lang === "en" ? "Cards, cheques and other services" : "บัตร เช็ค และบริการอื่น";
+  const result = $("#service-map-result");
+  const route = serviceRoutes[select.value];
+  if (!route) {
+    result.replaceChildren();
+    const empty = document.createElement("p");
+    empty.className = "empty";
+    empty.textContent = state.lang === "en" ? "Choose a service to see its published channel and guidance caveat." : "เลือกบริการเพื่อดูช่องทางที่ประกาศไว้และข้อควรระวัง";
+    result.append(empty);
+    return;
+  }
+  const localized = route[state.lang];
+  const copy = {
+    teller: state.lang === "en" ? "Teller: explain this destination. If the customer asks for a branch action, continue in the authorized teller workflow." : "พนักงานสาขา: อธิบายช่องทางนี้ หากลูกค้าขอใช้บริการที่สาขา ให้ดำเนินการต่อในระบบ teller ที่ได้รับอนุญาต",
+    agent: state.lang === "en" ? "Contact center: answer or act only after channel-specific verification and a separate agent-permission check. The published route is not proof of authority or completion." : "คอนแทคเซ็นเตอร์: ตอบหรือดำเนินการหลังยืนยันตัวตนตามช่องทางและตรวจสิทธิ์ agent แยกต่างหาก เส้นทางที่ประกาศไม่ใช่หลักฐานว่ามีอำนาจหรือทำรายการสำเร็จ",
+    rm: state.lang === "en" ? "RM: share as service guidance only for an assigned/covered relationship and permitted purpose. Record follow-up only when the customer asks; do not turn this into a sales prompt." : "RM: ให้ข้อมูลบริการเมื่อได้รับมอบหมาย/ดูแลและมีวัตถุประสงค์ที่อนุญาตเท่านั้น บันทึกติดตามเมื่อลูกค้าร้องขอ และอย่าเปลี่ยนเป็นการเสนอขาย"
+  };
+  const title = document.createElement("h3");
+  title.textContent = localized[0];
+  const channel = document.createElement("p");
+  channel.innerHTML = `<span>${state.lang === "en" ? "Published alternative:" : "ช่องทางทดแทนที่ประกาศ:"} </span>`;
+  const channelValue = document.createElement("span");
+  channelValue.className = "route-channel";
+  channelValue.textContent = localized[1];
+  channel.append(channelValue);
+  const note = document.createElement("p");
+  note.textContent = localized[2];
+  const role = document.createElement("p");
+  role.className = "role-note";
+  role.textContent = copy[state.role];
+  const source = document.createElement("p");
+  source.className = "source-foot route-source";
+  source.textContent = state.lang === "en"
+    ? "Source: Bangkok Bank iBanking retirement notice · checked 15 Oct 2026 · internal content owner pending."
+    : "ที่มา: ประกาศยุติ Bualuang iBanking ของธนาคารกรุงเทพ · ตรวจสอบ 15 ต.ค. 2569 · รอระบุเจ้าของเนื้อหาภายใน";
+  result.replaceChildren(title, channel, note, role, source);
+}
+document.querySelectorAll("[data-role]").forEach((button) => button.addEventListener("click", () => {
+  state.role = button.dataset.role;
+  document.querySelectorAll("[data-role]").forEach((item) => item.setAttribute("aria-pressed", String(item === button)));
+  renderRole();
+  renderServiceMap();
+}));
+document.querySelectorAll("[data-context]").forEach((button) => button.addEventListener("click", () => {
+  state.context = button.dataset.context;
+  document.querySelectorAll("[data-context]").forEach((item) => item.setAttribute("aria-pressed", String(item === button)));
+  renderContext();
+}));
+document.querySelectorAll("[data-phase]").forEach((button) => button.addEventListener("click", () => {
+  state.phase = button.dataset.phase;
+  renderPhase();
+}));
+$("#service-map-select").addEventListener("change", renderServiceMap);
+$("#lang").addEventListener("click", () => { state.lang = state.lang === "th" ? "en" : "th"; applyLanguage(); });
+const dialog = $("#handoff-dialog");
+$("#handoff").addEventListener("click", () => dialog.showModal());
+$("#source-action").addEventListener("click", () => {
+  const toast = $("#toast");
+  toast.textContent = state.lang === "en"
+    ? "Prototype handoff: the authorized source system owns verification, transaction and completion status."
+    : "การส่งต่อในต้นแบบ: ระบบต้นทางที่ได้รับอนุญาตเป็นผู้ตรวจสอบ ดำเนินธุรกรรม และยืนยันสถานะเสร็จสิ้น";
+  toast.classList.add("show");
+  window.setTimeout(() => toast.classList.remove("show"), 3600);
+});
+$("#close-dialog").addEventListener("click", () => dialog.close());
+$("#cancel-dialog").addEventListener("click", () => dialog.close());
+$("#handoff-form").addEventListener("submit", (event) => {
+  event.preventDefault();
+  dialog.close();
+  const toast = $("#toast");
+  toast.textContent = state.lang === "en" ? "Prototype: follow-up draft recorded with the selected owner and date." : "ต้นแบบ: บันทึกร่างการติดตามพร้อมทีมและวันที่ที่เลือกแล้ว";
+  toast.classList.add("show");
+  window.setTimeout(() => toast.classList.remove("show"), 3200);
+});
+applyLanguage();
+</script>
+<script src="assets/language-preference.js"></script>
+</body>
+</html>

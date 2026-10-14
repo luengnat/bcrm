@@ -1,0 +1,311 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Portfolio access — Bangkok Bank CRM</title>
+<style>
+:root {
+  --navy:#10275f; --blue:#174a9a; --lotus:#0867e8; --ink:#17243c; --muted:#66748b;
+  --line:#dce3ec; --paper:#f1f4f8; --surface:#fff; --pale:#edf4ff; --teal:#14786f;
+  --teal-soft:#eaf7f4; --amber:#956000; --amber-soft:#fff6e5; --red:#a3373d;
+  --red-soft:#fff0ef; --shadow:0 8px 24px rgba(16,39,95,.055); --focus:0 0 0 3px rgba(8,103,232,.3);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font:14px/1.55 "Sarabun","Noto Sans Thai","Leelawadee UI",sans-serif}
+body:not(.en) [lang="en"]{display:none} body.en [lang="th"]{display:none} body.en [lang="en"]{display:inline}
+button,input,select,textarea{font:inherit} button{cursor:pointer} :focus-visible{outline:none;box-shadow:var(--focus);border-radius:5px}
+.topbar{height:62px;padding:0 26px;display:flex;align-items:center;gap:14px;background:var(--navy);color:white}
+.brand{display:flex;align-items:center;gap:10px;color:white;text-decoration:none;font-weight:700;white-space:nowrap}
+.brand img{width:30px;height:36px;object-fit:contain}.brand small{font-weight:400;opacity:.78}
+.env{border-radius:99px;padding:3px 9px;background:#f0b644;color:#312b20;font-size:10px;font-weight:800;letter-spacing:.08em}
+.top-search{display:flex;max-width:430px;flex:1;margin-left:20px}.top-search input{min-width:0;flex:1;border:0;border-radius:5px 0 0 5px;padding:8px 11px}.top-search button{border:0;border-radius:0 5px 5px 0;padding:0 14px;background:#2b6eb6;color:#fff;font-weight:700}
+.grow{flex:1}.lang,.profile{border:1px solid rgba(255,255,255,.36);border-radius:5px;background:transparent;color:#fff;padding:6px 10px}.profile{border-color:transparent;text-align:right}.profile small{display:block;opacity:.75;font-size:11px}
+.nav{display:flex;align-items:stretch;gap:3px;padding:0 22px;background:#173e85}.nav a{padding:10px 15px 8px;color:#edf3ff;text-decoration:none;font-size:13px;border-bottom:3px solid transparent}.nav a:hover{background:#ffffff14}.nav a[aria-current]{border-color:#fff;color:#fff;font-weight:700}
+main{max-width:1440px;margin:auto;padding:23px 28px 44px}.crumb{margin:0 0 8px;color:var(--muted);font-size:12px}
+.title-row{display:flex;justify-content:space-between;align-items:flex-start;gap:18px}.title-row h1{margin:0;color:var(--navy);font-size:27px;letter-spacing:-.3px;line-height:1.25}.subtitle{margin:5px 0 0;color:var(--muted);font-size:13px}
+.review-chip{display:flex;align-items:center;gap:8px;border:1px solid #c4d7ef;border-radius:6px;padding:7px 10px;background:#f7faff;color:#35557f;font-size:11px;font-weight:650;white-space:nowrap}.review-chip b{display:grid;place-items:center;width:19px;height:19px;border-radius:50%;background:var(--blue);color:white}
+.scenario{display:flex;align-items:center;flex-wrap:wrap;gap:12px 25px;margin:18px 0 15px;padding:11px 14px;border:1px solid var(--line);border-radius:8px;background:#fff;box-shadow:var(--shadow)}
+.scenario-label{margin-right:6px;color:var(--muted);font-size:12px;font-weight:700}.seg{display:inline-flex;gap:3px;padding:3px;border:1px solid var(--line);border-radius:6px;background:#f8fafd}.seg button{border:0;border-radius:4px;padding:6px 11px;background:transparent;color:#54637a;font-size:12px}.seg button[aria-pressed="true"]{background:var(--navy);color:#fff}
+#subject-scenario{max-width:330px;border:1px solid var(--line);border-radius:5px;padding:6px 8px;background:#fff;color:var(--ink);font-size:12px}
+.layout{display:grid;grid-template-columns:minmax(0,1fr) 330px;gap:17px;align-items:start}.main-col{min-width:0}.card{border:1px solid var(--line);border-radius:8px;background:var(--surface);box-shadow:var(--shadow);overflow:hidden}.card+.card{margin-top:14px}.card-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 15px;border-bottom:1px solid #e8edf3}.card-head h2{margin:0;color:#44546c;font-size:12px;letter-spacing:.055em;text-transform:uppercase}.card-body{padding:15px}
+.customer{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:12px}.avatar{display:grid;place-items:center;width:45px;height:45px;border-radius:50%;background:#e8effb;color:var(--blue);font-size:15px;font-weight:800}.customer h2{margin:0;color:var(--navy);font-size:17px}.customer p{margin:2px 0 0;color:var(--muted);font-size:12px}.tag{display:inline-flex;align-items:center;gap:6px;border:1px solid #c8d8ee;border-radius:99px;padding:4px 9px;background:#f5f9ff;color:#315887;font-size:10px;font-weight:700;white-space:nowrap}.tag .dot{width:7px;height:7px;border-radius:50%;background:#386cb5}
+.subtle{color:var(--muted);font-size:12px}.row{display:flex;align-items:center;justify-content:space-between;gap:10px}.section-label{color:var(--muted);font-size:10px;font-weight:800;letter-spacing:.08em;text-transform:uppercase}
+.access-state{display:grid;grid-template-columns:auto 1fr;gap:13px;align-items:start;padding:17px;border:1px solid #e5cda1;border-radius:7px;background:linear-gradient(110deg,#fffaf0,#fff 78%)}.access-icon{display:grid;place-items:center;width:38px;height:38px;border-radius:50%;background:#fff0cf;color:#845617;font-size:17px;font-weight:800}.access-state h3{margin:0 0 3px;color:#634819;font-size:15px}.access-state p{margin:0;color:#675e50;font-size:12px}.denied{margin-top:8px;padding:8px 10px;border-left:3px solid #d19d3f;background:#fff7e9;color:#5b4b31;font-size:11px}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.field{min-width:0}.field.full{grid-column:1/-1}.field label,.field legend{display:block;margin:0 0 5px;color:#41516a;font-size:11px;font-weight:750}.field input,.field select,.field textarea{width:100%;border:1px solid #cbd5e2;border-radius:5px;padding:8px 9px;background:#fff;color:var(--ink);font-size:12px}.field input:focus,.field select:focus,.field textarea:focus{border-color:#5384c7}.field textarea{min-height:65px;resize:vertical}.help{display:block;margin-top:4px;color:var(--muted);font-size:10px}
+.checks{display:grid;grid-template-columns:1fr 1fr;gap:7px}.check{display:flex;align-items:flex-start;gap:8px;border:1px solid #e2e8f0;border-radius:5px;padding:8px;background:#fbfcfe;font-size:11px}.check input{width:14px;height:14px;margin:2px 0 0;accent-color:var(--blue)}.check strong{display:block;color:#293a55}.check small{display:block;color:var(--muted);font-size:10px}
+.actions{display:flex;align-items:center;flex-wrap:wrap;gap:8px;margin-top:13px}.btn{border:1px solid #c8d3e1;border-radius:5px;padding:8px 12px;background:#fff;color:var(--navy);font-size:11px;font-weight:750}.btn.primary{border-color:var(--blue);background:var(--blue);color:white}.btn.primary:hover{background:#103f85}.btn.danger{border-color:#e4b8b6;background:var(--red-soft);color:#8b3237}.btn:disabled{opacity:.5;cursor:not-allowed}.btn.small{padding:6px 9px}.inline-note{color:var(--muted);font-size:10px}
+.request-strip{display:flex;align-items:flex-start;gap:10px;border:1px solid #c7d9ef;border-radius:6px;padding:11px;background:#f3f8ff}.request-strip .symbol{display:grid;place-items:center;flex:0 0 23px;height:23px;border-radius:50%;background:#dceafa;color:#244f88;font-weight:800}.request-strip strong{display:block;color:#264b7d;font-size:12px}.request-strip p{margin:2px 0 0;color:#576983;font-size:11px}
+.approval-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}.meta{padding:9px;border:1px solid #e4e9f0;border-radius:5px;background:#fbfcfe}.meta span{display:block;color:var(--muted);font-size:10px}.meta strong{display:block;margin-top:2px;color:#293a55;font-size:12px;overflow-wrap:anywhere}.privacy-note{margin-top:11px;border-radius:5px;padding:9px 10px;background:#f4f6f9;color:#4e5c72;font-size:11px}
+.stepup{display:grid;grid-template-columns:auto 1fr;gap:13px;align-items:center;padding:17px;border:1px solid #c5d8ef;border-radius:7px;background:#f5f9ff}.stepup .lock{display:grid;place-items:center;width:40px;height:40px;border-radius:50%;background:#e3efff;color:#23528f;font-size:17px}.stepup h3{margin:0;color:var(--navy);font-size:15px}.stepup p{margin:3px 0 0;color:var(--muted);font-size:12px}
+.active-banner{display:flex;align-items:flex-start;gap:10px;padding:10px 12px;border:1px solid #b8d8d0;border-radius:6px;background:var(--teal-soft);color:#175e57;font-size:11px}.active-banner strong{display:block;font-size:12px}.active-banner .checkmark{display:grid;place-items:center;flex:0 0 20px;height:20px;border-radius:50%;background:var(--teal);color:white;font-weight:800}
+.portfolio-summary{display:grid;grid-template-columns:1.1fr .9fr;gap:13px;align-items:stretch;margin-top:13px}.total{border-radius:7px;padding:15px;background:var(--navy);color:white}.total .section-label{color:#b9cbed}.total strong{display:block;margin:5px 0 0;font-size:27px;line-height:1.2;font-variant-numeric:tabular-nums}.total p{margin:5px 0 0;color:#d2dcf0;font-size:10px}.allocation{border:1px solid #e3e9f0;border-radius:7px;padding:12px}.allocation h3{margin:0 0 8px;color:#3d4d64;font-size:12px}.alloc-row{display:grid;grid-template-columns:90px 1fr 35px;gap:7px;align-items:center;margin:8px 0;color:#526078;font-size:10px}.bar{height:7px;overflow:hidden;border-radius:10px;background:#e8edf4}.bar i{display:block;height:100%;border-radius:10px;background:#346cb2}.alloc-row:nth-child(3) .bar i{background:#6f8fbe}.alloc-row:nth-child(4) .bar i{background:#a7bad7}
+.authority{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}.authority-item{border:1px solid #e4e9f0;border-radius:5px;padding:9px}.authority-item span{display:block;color:var(--muted);font-size:10px}.authority-item strong{display:block;margin-top:3px;color:#34455f;font-size:11px}.authority-item .off{color:#747f90}.professional-check{margin-top:12px;padding:12px;border:1px solid #d8e2ef;border-radius:6px;background:#f8faff}.professional-head{display:flex;align-items:center;justify-content:space-between;gap:12px}.professional-head strong{color:#102849;font-size:12px}.professional-check p{margin:8px 0 4px;color:#34455f;font-size:12px}.professional-check small{display:block;color:var(--muted);font-size:10px}.professional-controls{display:flex;align-items:end;gap:10px;margin-top:10px;flex-wrap:wrap}.professional-controls label{display:grid;gap:4px;color:var(--muted);font-size:10px}.professional-controls select{min-width:210px;padding:7px;border:1px solid #cfd8e4;border-radius:4px;background:#fff;color:#24344a}.professional-check .allowed{color:#187047}.professional-check .blocked{color:#a34432}.readonly{display:inline-flex;margin-top:9px;border:1px solid #cbd9ed;border-radius:4px;padding:3px 7px;color:#355c91;background:#f5f9ff;font-size:9px;font-weight:800;letter-spacing:.05em;text-transform:uppercase}
+.revoked{padding:15px;border:1px solid #e6c0be;border-radius:7px;background:#fff7f6}.revoked h3{margin:0;color:#833439;font-size:15px}.revoked p{margin:4px 0 0;color:#765153;font-size:12px}.timeline{display:grid;gap:0;margin:0;padding:0;list-style:none}.timeline li{position:relative;display:grid;grid-template-columns:16px 1fr;gap:8px;padding:0 0 12px;color:#526078;font-size:10px}.timeline li:last-child{padding-bottom:0}.timeline .node{position:relative;margin-top:3px;width:10px;height:10px;border-radius:50%;background:#4575b5}.timeline li:not(:last-child) .node:after{position:absolute;top:10px;left:4px;width:1px;height:26px;background:#d9e1eb;content:""}.timeline strong{display:block;color:#34455f;font-size:11px}.timeline time{display:block;color:#8390a1;font-size:9px}
+.side .card-head{padding:11px 13px}.side .card-body{padding:13px}.side-title{display:flex;align-items:center;justify-content:space-between;gap:6px}.side-title h2{margin:0;color:#3f5069;font-size:12px}.side-title .tag{font-size:9px}.gate-list{display:grid;gap:0;margin:0;padding:0;list-style:none}.gate-list li{display:grid;grid-template-columns:21px 1fr;gap:8px;padding:9px 0;border-bottom:1px solid #edf0f4}.gate-list li:last-child{border-bottom:0}.gate-icon{display:grid;place-items:center;width:19px;height:19px;border-radius:50%;background:#edf0f4;color:#64728a;font-size:10px;font-weight:800}.gate-icon.ok{background:#e1f2ee;color:#14786f}.gate-icon.wait{background:#fff2d8;color:#88601a}.gate-list strong{display:block;color:#374862;font-size:11px}.gate-list small{display:block;color:var(--muted);font-size:10px;line-height:1.4}.gate-note{margin:10px 0 0;padding:9px;border-radius:5px;background:#f5f7fa;color:#536179;font-size:10px}
+.audit-list{display:grid;gap:10px}.audit-item{display:grid;grid-template-columns:18px 1fr;gap:8px;color:#5a687d;font-size:10px}.audit-item .bullet{display:grid;place-items:center;width:16px;height:16px;border-radius:50%;background:#edf2f8;color:#506d96;font-size:9px}.audit-item strong{display:block;color:#3d4c63;font-size:11px}.audit-item small{display:block;color:#8792a3;font-size:9px}.simulate{display:grid;gap:7px}.simulate .btn{width:100%;text-align:left}.simulate .explain{margin:0 0 3px;color:var(--muted);font-size:10px}
+.footer{margin-top:17px;text-align:center;color:#7f8a9b;font-size:10px}.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+@media(max-width:980px){.layout{grid-template-columns:1fr}.side-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.side-grid .card+.card{margin-top:0}}
+@media(max-width:680px){.topbar{height:auto;min-height:60px;padding:10px 14px;flex-wrap:wrap}.brand{min-width:auto}.top-search{order:2;flex-basis:100%;max-width:none;margin:0}.profile{display:none}.nav{overflow:auto;padding:0 7px}.nav a{white-space:nowrap;padding:9px 10px}.nav a:nth-child(4),.nav a:nth-child(5){display:none}main{padding:18px 13px 32px}.title-row{display:block}.review-chip{display:inline-flex;margin-top:12px}.scenario{align-items:flex-start;gap:9px}.scenario-label{width:100%}.seg button{padding:6px 8px}.customer{grid-template-columns:auto 1fr}.customer>.tag{grid-column:2;justify-self:start}.form-grid,.checks,.portfolio-summary{grid-template-columns:1fr}.field.full{grid-column:auto}.authority{grid-template-columns:1fr}.side-grid{grid-template-columns:1fr}.side-grid .card+.card{margin-top:14px}}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="case-workspace.html"><img src="assets/bbl-lotus.png" alt=""><span>Bangkok Bank <small>CRM</small></span></a>
+  <span class="env">PROTOTYPE</span><span class="env" style="background:#cfe3ff;color:#173e85">P1 · RELEASE 2 CONCEPT</span>
+  <form class="top-search" role="search" onsubmit="return false"><label class="sr-only" for="search"><span lang="th">ค้นหาลูกค้า</span><span lang="en">Search customer</span></label><input id="search" placeholder="ค้นหาลูกค้า / Search customer"><button type="submit"><span lang="th">ค้นหา</span><span lang="en">Search</span></button></form>
+  <span class="grow"></span>
+  <button class="lang" id="language" type="button" aria-label="Switch language">EN</button>
+  <div class="profile" id="profile"><span lang="th">กมลวรรณ วัฒนกิจ</span><span lang="en">Kamolwan Wattanakit</span><small><span lang="th">ที่ปรึกษาการลงทุน · สาธิต</span><span lang="en">Wealth advisor · demo</span></small></div>
+</header>
+<nav class="nav" aria-label="Main navigation">
+  <a href="#"><span lang="th">งานของฉัน</span><span lang="en">My work</span></a>
+  <a href="#"><span lang="th">ค้นหาลูกค้า</span><span lang="en">Customer search</span></a>
+  <a href="case-workspace.html"><span lang="th">คดี</span><span lang="en">Cases</span></a>
+  <a href="service-guide.html"><span lang="th">คำแนะนำบริการ</span><span lang="en">Service guidance</span></a>
+  <a href="portfolio-access.html" aria-current="page"><span lang="th">สิทธิ์พอร์ต</span><span lang="en">Portfolio access</span></a>
+</nav>
+<main>
+  <p class="crumb"><span lang="th">ลูกค้า <span aria-hidden="true">›</span> สิทธิ์ข้อมูลสินทรัพย์</span><span lang="en">Customer <span aria-hidden="true">›</span> Asset data access</span></p>
+  <div class="title-row">
+    <div><h1><span lang="th">การเข้าถึงพอร์ตลงทุน</span><span lang="en">Portfolio access</span></h1><p class="subtitle"><span lang="th">ตรวจสอบสิทธิ์ก่อนแสดงข้อมูล — คำขอ การอนุมัติ และการเพิกถอนในหน้าจอเดียว</span><span lang="en">Check entitlement before any data is returned. Request, approval, step-up, and revocation are shown in one workflow.</span></p></div>
+    <div class="review-chip"><b aria-hidden="true">i</b><span lang="th">ข้อมูลจำลอง · ไม่มีการเรียกดูบัญชีจริง</span><span lang="en">Synthetic scenario · no live account data</span></div>
+  </div>
+
+  <section class="scenario" aria-label="Prototype controls">
+    <span class="scenario-label"><span lang="th">จำลองมุมมอง</span><span lang="en">Simulate role</span></span>
+    <div class="seg" role="group" aria-label="Choose staff role">
+      <button id="advisor-tab" type="button" aria-pressed="true"><span lang="th">ที่ปรึกษา</span><span lang="en">Advisor</span></button>
+      <button id="approver-tab" type="button" aria-pressed="false"><span lang="th">ผู้อนุมัติสิทธิ์</span><span lang="en">Access approver</span></button>
+    </div>
+    <span class="scenario-label"><span lang="th">ทดสอบตัวตนผู้อนุมัติ</span><span lang="en">Test reviewer identity</span></span>
+    <div class="seg" role="group" aria-label="Simulate independent or matching reviewer identity">
+      <button id="independent-reviewer" type="button" aria-pressed="true"><span lang="th">คนละคน</span><span lang="en">Independent</span></button>
+      <button id="same-reviewer" type="button" aria-pressed="false"><span lang="th">คนเดียวกับผู้ขอ</span><span lang="en">Same as requester</span></button>
+    </div>
+    <label class="scenario-label" for="subject-scenario"><span lang="th">จำลองสิทธิ์ของบุคคลที่เชื่อมโยง</span><span lang="en">Simulate linked-party access</span></label>
+    <select id="subject-scenario" aria-label="Simulate linked-party access">
+      <option value="primary" data-th="ลูกค้าหลัก" data-en="Primary customer">ลูกค้าหลัก</option>
+      <option value="relationshipOnly" data-th="ความสัมพันธ์เท่านั้น" data-en="Relationship link only">ความสัมพันธ์เท่านั้น</option>
+      <option value="mandateStale" data-th="หนังสือมอบอำนาจเก่าหรือไม่ชัดเจน" data-en="Stale or unclear mandate">หนังสือมอบอำนาจเก่าหรือไม่ชัดเจน</option>
+      <option value="staffNotEligible" data-th="มีอำนาจลูกค้า แต่พนักงานไม่มีสิทธิ์ข้อมูล" data-en="Customer authority, employee not entitled">มีอำนาจลูกค้า แต่พนักงานไม่มีสิทธิ์ข้อมูล</option>
+      <option value="bothCurrent" data-th="อำนาจปัจจุบัน · พนักงานขอสิทธิ์ชั่วคราวได้" data-en="Current mandate · employee eligible to request">อำนาจปัจจุบัน · พนักงานขอสิทธิ์ชั่วคราวได้</option>
+    </select>
+    <span class="inline-note"><span lang="th">สลับบทบาทเพื่อดูข้อมูลที่แต่ละคนได้รับ</span><span lang="en">Switch roles to see what each person receives.</span></span>
+  </section>
+
+  <div class="layout">
+    <div class="main-col">
+      <section class="card">
+        <div class="card-body customer">
+          <div class="avatar" aria-hidden="true">NS</div>
+          <div><h2><span lang="th">ณิชา สุขสวัสดิ์</span><span lang="en">Nicha Suksawat</span></h2><p><span lang="th">ลูกค้าจำลอง · รหัส DEMO-10482 · ผู้ดูแลสัมพันธ์: ทีมความมั่งคั่ง 04</span><span lang="en">Synthetic customer · DEMO-10482 · Relationship owner: Wealth team 04</span></p></div>
+          <span class="tag"><span class="dot" aria-hidden="true"></span><span lang="th">ยืนยันตัวตนพนักงานแล้ว</span><span lang="en">Staff identity verified</span></span>
+        </div>
+      </section>
+
+      <section class="card" id="workflow-card" aria-labelledby="workflow-title">
+        <div class="card-head"><h2 id="workflow-title"><span lang="th">แผงข้อมูลพอร์ต</span><span lang="en">Portfolio panel</span></h2><span class="tag" id="state-tag"><span lang="th">ยังไม่มีสิทธิ์</span><span lang="en">No active access</span></span></div>
+        <div class="card-body" id="workflow"></div>
+      </section>
+
+      <section class="card">
+        <div class="card-head"><h2><span lang="th">บันทึกการตัดสินใจ</span><span lang="en">Access decision history</span></h2><span class="subtle"><span lang="th">ข้อมูลตรวจสอบ · เก็บตามนโยบายธนาคาร</span><span lang="en">Audit evidence · retained under Bank policy</span></span></div>
+        <div class="card-body"><ol class="timeline" id="timeline" aria-live="polite"></ol></div>
+      </section>
+    </div>
+
+    <aside class="side-grid">
+      <section class="card side">
+        <div class="card-head"><div class="side-title"><h2><span lang="th">เงื่อนไขการเข้าถึง</span><span lang="en">Access gates</span></h2><span class="tag"><span lang="th">ปฏิเสธเป็นค่าเริ่มต้น</span><span lang="en">Default deny</span></span></div></div>
+        <div class="card-body"><ul class="gate-list" id="gates"></ul><p class="gate-note"><span lang="th">การเห็นความสัมพันธ์หรือระดับบริการลูกค้าไม่ทำให้พนักงานมีสิทธิ์ดูพอร์ต</span><span lang="en">A customer relationship or service tier does not grant portfolio access.</span></p></div>
+      </section>
+      <section class="card side" id="simulation-card">
+        <div class="card-head"><h2><span lang="th">ทดสอบเหตุการณ์เพิกถอน</span><span lang="en">Revocation scenarios</span></h2></div>
+        <div class="card-body simulate"><p class="explain"><span lang="th">ใช้หลังอนุมัติและยืนยันตัวตนขั้นสูง เพื่อดูว่า CRM ปิดการแสดงข้อมูลอย่างไร</span><span lang="en">Use after approval and step-up to see how CRM removes an active view.</span></p>
+          <button class="btn small" type="button" data-revoke="assignment"><span lang="th">เปลี่ยนผู้ดูแล / ทีม</span><span lang="en">Assignment or team changed</span></button>
+          <button class="btn small" type="button" data-revoke="task"><span lang="th">ปิดงานที่ผูกกับคำขอ</span><span lang="en">Linked task closed</span></button>
+          <button class="btn small" type="button" data-revoke="source"><span lang="th">แหล่งข้อมูลถอนสิทธิ์</span><span lang="en">Source permission removed</span></button>
+          <button class="btn small" type="button" data-revoke="mandate"><span lang="th">อำนาจของลูกค้าสิ้นสุด</span><span lang="en">Customer authority ended</span></button>
+          <button class="btn small" type="button" data-revoke="expiry"><span lang="th">จำลองหมดอายุ</span><span lang="en">Simulate expiry</span></button>
+        </div>
+      </section>
+    </aside>
+  </div>
+  <p class="footer"><span lang="th">ต้นแบบเพื่อทบทวน · ระยะเวลา ผู้อนุมัติ ข้อมูลที่อนุญาต และการทบทวนสิทธิ์เป็นตัวอย่าง ต้องกำหนดโดยธนาคาร</span><span lang="en">Validation prototype · duration, approver, allowed data, and recertification values are illustrative and require Bank policy.</span></p>
+</main>
+<div class="sr-only" id="announcer" role="status" aria-live="polite"></div>
+<script>
+const body = document.body;
+const state = { role:"advisor", stage:"request", lang:"th", selected:["summary","positions"], approvedScope:"summary", professionalScenario:"current", subjectScenario:"primary", approverIsRequester:false, events:[{th:"คำขอพอร์ตยังไม่ส่ง",en:"No portfolio request submitted",time:"09:15 ICT · demo"}] };
+const t = (th,en) => `<span lang="th">${th}</span><span lang="en">${en}</span>`;
+const escapeHtml = value => String(value).replace(/[&<>"']/g,ch=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[ch]));
+const labels = {assignment:{th:"การมอบหมายลูกค้า/ทีมเปลี่ยน",en:"Customer assignment or team changed"},task:{th:"งานที่อ้างอิงถูกปิด",en:"Linked task was closed"},source:{th:"แหล่งข้อมูลไม่อนุญาตแล้ว",en:"Source permission is no longer active"},mandate:{th:"อำนาจของลูกค้าหมดอายุหรือถูกเพิกถอน",en:"Customer authority expired or was revoked"},expiry:{th:"สิทธิ์เข้าถึงหมดอายุ",en:"Access grant expired"}};
+const subjectScenarios = {
+  primary:{linked:false,allowed:true,authorityTh:"ไม่ต้องใช้สิทธิ์ตัวแทนในตัวอย่างนี้",authorityEn:"No representative authority used in this demo",staffTh:"มีสิทธิ์ขอการยกระดับตามบทบาทตัวอย่าง",staffEn:"Role is eligible to request scoped elevation"},
+  relationshipOnly:{linked:true,allowed:false,authorityTh:"พบความสัมพันธ์เท่านั้น · ยังไม่ยืนยันอำนาจของลูกค้า",authorityEn:"Relationship link only · customer authority not verified",staffTh:"ความสัมพันธ์ไม่ใช่สิทธิ์เข้าถึง",staffEn:"Relationship is not an access grant"},
+  mandateStale:{linked:true,allowed:false,authorityTh:"แหล่งอำนาจเก่าหรือขอบเขตไม่ชัดเจน",authorityEn:"Authority source is stale or scope is unclear",staffTh:"ต้องตรวจแหล่งอำนาจที่ธนาคารรับรอง",staffEn:"Bank-approved authority source must be checked"},
+  staffNotEligible:{linked:true,allowed:false,authorityTh:"มีอำนาจลูกค้าปัจจุบันสำหรับคำขอนี้",authorityEn:"Current customer authority covers this request",staffTh:"บทบาทพนักงานไม่มีสิทธิ์ข้อมูลพอร์ตนี้",staffEn:"Employee role is not eligible for this portfolio class"},
+  bothCurrent:{linked:true,allowed:true,authorityTh:"อำนาจปัจจุบัน · ครอบคลุมบุคคลและงานนี้",authorityEn:"Current authority · covers this subject and task",staffTh:"มีสิทธิ์ขอสิทธิ์ชั่วคราว · ยังไม่มีสิทธิ์อ่านข้อมูล",staffEn:"Eligible to request temporary access · no read grant yet"}
+};
+const workflow = document.getElementById("workflow");
+const tag = document.getElementById("state-tag");
+const timeline = document.getElementById("timeline");
+const gates = document.getElementById("gates");
+
+function audit(th,en){state.events.unshift({th,en,time:"Now · demo"});renderTimeline();}
+function announce(th,en){document.getElementById("announcer").innerHTML=t(th,en)}
+function renderTimeline(){timeline.innerHTML=state.events.map((e,i)=>`<li><span class="node" aria-hidden="true"></span><div><strong>${t(e.th,e.en)}</strong><time>${e.time}</time></div></li>`).join("")}
+function setTag(th,en){tag.innerHTML=t(th,en)}
+function renderGates(){
+  const subject=subjectScenarios[state.subjectScenario]||subjectScenarios.primary;
+  let items;
+  if(state.stage==="request"&&!subject.allowed) items=[["", "อำนาจลูกค้า: " + subject.authorityTh,"Customer authority: " + subject.authorityEn],["", "สิทธิ์พนักงาน: " + subject.staffTh,"Staff access: " + subject.staffEn],["", "ไม่มีข้อมูลพอร์ตถูกส่งกลับ","No portfolio data returned"],["", "ใช้เส้นทางตรวจสอบที่ได้รับอนุมัติ","Use the approved verification route"]];
+  else if(state.role==="approver"&&state.stage!=="pending") items=[["ok","บทบาทผู้ทบทวนสิทธิ์","Access reviewer role"],["","ไม่มีคำขอรออนุมัติ","No request awaiting decision"],["","ไม่แสดงข้อมูลพอร์ต","Portfolio values withheld"],["","ใช้การแยกหน้าที่","Separation of duties applied"]];
+  else if(state.stage==="active") items=[["ok","ยืนยันตัวตนพนักงานแล้ว","Staff identity verified"],["ok","อำนาจลูกค้า: " + subject.authorityTh,"Customer authority: " + subject.authorityEn],["ok","สิทธิ์พนักงาน: " + subject.staffTh,"Staff access: " + subject.staffEn],["ok","การอนุมัติและยืนยันขั้นสูง","Approval and step-up complete"],["ok","สิทธิ์จากแหล่งข้อมูล","Source authorization active"]];
+  else if(state.stage==="stepup") items=[["ok","อำนาจลูกค้า: " + subject.authorityTh,"Customer authority: " + subject.authorityEn],["ok","คำขอได้รับอนุมัติ","Request approved"],["wait","ต้องยืนยันตัวตนขั้นสูง","Step-up required"],["","ยังไม่คืนข้อมูลพอร์ต","No portfolio data returned yet"],["","ตรวจอำนาจและสิทธิ์ต้นทางซ้ำก่อนแสดง","Recheck authority and source access before reveal"]];
+  else if(state.stage==="pending") items=[["ok","อำนาจลูกค้า: " + subject.authorityTh,"Customer authority: " + subject.authorityEn],["ok","คำขอส่งแล้ว","Request submitted"],["wait","รอผู้อนุมัติ","Awaiting approver"],["","ยังไม่คืนข้อมูลพอร์ต","No portfolio data returned"],["","ยังไม่เกิดสิทธิ์ชั่วคราว","No temporary grant exists"]];
+  else if(state.stage==="revoked") items=[["","การอนุมัติเดิมสิ้นสุดแล้ว","Previous grant ended"],["","ค่าพอร์ตถูกนำออกจากหน้าจอ","Portfolio values removed from view"],["","ต้องมีการอนุมัติใหม่","A new approval is required"],["","บันทึกเพื่อทบทวนหลังใช้งาน","Audit event retained for review"]];
+  else items=[["ok","ตัวตนพนักงาน","Staff identity"],["", "อำนาจลูกค้า: " + subject.authorityTh,"Customer authority: " + subject.authorityEn],["", "สิทธิ์และขอบเขตพนักงาน: " + subject.staffTh,"Staff scope: " + subject.staffEn],["", "วัตถุประสงค์และงานที่เชื่อมโยง","Purpose and linked work"],["", "สิทธิ์จากแหล่งข้อมูล","Source permission"]];
+  gates.innerHTML=items.map(([s,th,en])=>`<li><span class="gate-icon ${s}" aria-hidden="true">${s==="ok"?"✓":s==="wait"?"!":"·"}</span><div><strong>${t(th,en)}</strong><small>${t(s==="ok"?"ผ่านตามสถานะสาธิต":s==="wait"?"ยังไม่ผ่าน": "ตรวจสอบก่อนคืนข้อมูล",s==="ok"?"Satisfied in this demo state":s==="wait"?"Not yet satisfied":"Checked before data is returned")}</small></div></li>`).join("");
+}
+function renderRequest(){
+  const subject=subjectScenarios[state.subjectScenario]||subjectScenarios.primary;
+  setTag("ยังไม่มีสิทธิ์","No active access");
+  if(!subject.allowed){
+    setTag("ข้อมูลถูกจำกัด","Restricted");
+    workflow.innerHTML=`<div class="access-state"><div class="access-icon" aria-hidden="true">!</div><div><h3>${t("ไม่สามารถแสดงข้อมูลในบริบทนี้","This information cannot be displayed in this context")}</h3><p>${t("สถานการณ์จำลองนี้ยังไม่ผ่านเงื่อนไขอำนาจของลูกค้าหรือสิทธิ์พนักงาน ข้อมูลสินทรัพย์ถูกระงับโดยไม่มีการยืนยันว่ามีหรือไม่มีบัญชีหรือสินทรัพย์","This simulated case does not pass the customer-authority or employee-entitlement checks. Asset data is withheld; the screen does not confirm whether an account or asset exists.")}</p><div class="denied">${t(subject.authorityTh + " · " + subject.staffTh,subject.authorityEn + " · " + subject.staffEn)}</div><div class="actions"><span class="inline-note">${t("ใช้เส้นทางตรวจสอบอำนาจหรือส่งต่อทีมที่ได้รับอนุญาตตามนโยบายธนาคาร","Use the Bank-approved authority-verification or authorized-team route.")}</span></div></div></div>`;
+    return;
+  }
+  workflow.innerHTML=`<div class="access-state"><div class="access-icon" aria-hidden="true">!</div><div><h3>${t("ไม่มีข้อมูลพอร์ตถูกส่งกลับ","No portfolio data returned")}</h3><p>${t("คุณยังไม่มีสิทธิ์ตามบทบาทและงานที่เลือก หากจำเป็นให้ส่งคำขอเข้าถึงแบบจำกัดขอบเขต","Your current role and task do not include portfolio access. If needed, request the smallest scope for a defined piece of work.")}</p><div class="denied">${t("ระดับบริการลูกค้าและความสัมพันธ์ไม่ใช่เหตุอนุมัติสิทธิ์","Customer tier and relationship alone are not access grounds.")}</div></div></div>
+    <div class="request-strip" style="margin-top:12px"><span class="symbol" aria-hidden="true">i</span><div><strong>${t(subject.linked?"บุคคลที่เชื่อมโยง · รหัสสังเคราะห์ DEMO-LINKED-02":"ลูกค้าหลัก · รหัสสังเคราะห์ DEMO-10482",subject.linked?"Linked data subject · synthetic ref DEMO-LINKED-02":"Primary customer · synthetic ref DEMO-10482")}</strong><p>${t("อำนาจของลูกค้า: " + subject.authorityTh + " · สิทธิ์พนักงาน: " + subject.staffTh,"Customer authority: " + subject.authorityEn + " · Staff access: " + subject.staffEn)}</p></div></div>
+    <form id="request-form" class="card-body" style="padding:16px 0 0">
+      <div class="form-grid">
+        <div class="field"><label for="purpose">${t("วัตถุประสงค์ *","Purpose *")}</label><select id="purpose" required><option value="">${state.lang==="th"?"เลือกวัตถุประสงค์ที่ธนาคารอนุมัติ":"Select a Bank-approved purpose"}</option><option value="review">${state.lang==="th"?"เตรียมทบทวนการลงทุน":"Prepare an investment review"}</option><option value="service">${state.lang==="th"?"ให้บริการตามคำขอลูกค้า":"Customer-requested service"}</option></select></div>
+        <div class="field"><label for="case-ref">${t("งาน/คดีที่เชื่อมโยง *","Linked task or case *")}</label><input id="case-ref" required value="TASK-2026-01842" aria-describedby="case-help"><small class="help" id="case-help">${t("ตัวอย่างอ้างอิงงาน · ต้องตรวจสอบกับระบบจริง","Example task reference · validate against the source system")}</small></div>
+        <fieldset class="field full" style="border:0;padding:0;margin:0"><legend>${t("ชั้นข้อมูลที่ขอ *","Requested data classes *")}</legend><div class="checks">
+          <label class="check"><input type="checkbox" name="scope" value="summary" checked><span><strong>${t("ภาพรวมพอร์ต","Portfolio summary")}</strong><small>${t("ยอดรวมที่อนุมัติให้ดูได้","Approved aggregate view")}</small></span></label>
+          <label class="check"><input type="checkbox" name="scope" value="positions" checked><span><strong>${t("รายการสินทรัพย์","Positions")}</strong><small>${t("ผลิตภัณฑ์และมูลค่าตามแหล่งข้อมูล","Products and source valuations")}</small></span></label>
+          <label class="check"><input type="checkbox" name="scope" value="performance"><span><strong>${t("ผลตอบแทน","Performance")}</strong><small>${t("แยกสิทธิ์ตามประเภทข้อมูล","Separate data-class entitlement")}</small></span></label>
+          <label class="check"><input type="checkbox" name="scope" value="transactions"><span><strong>${t("ประวัติรายการ","Transactions")}</strong><small>${t("ต้องมีสิทธิ์เฉพาะตามนโยบาย","Requires specific policy entitlement")}</small></span></label>
+        </div></fieldset>
+        <div class="field"><label for="duration">${t("ระยะเวลาที่ต้องการ","Requested duration")}</label><select id="duration"><option>${state.lang==="th"?"ตามนโยบายธนาคาร (ยังไม่กำหนดในต้นแบบ)":"Bank policy duration (not set in prototype)"}</option></select><small class="help">${t("ผู้อนุมัติอาจกำหนดเวลาสั้นกว่าที่ร้องขอ","Approver may set a shorter duration.")}</small></div>
+        <div class="field"><label for="reason">${t("เหตุผลประกอบ *","Request rationale *")}</label><input id="reason" required value="${state.lang==="th"?"เตรียมการทบทวนตามคำขอลูกค้า":"Prepare review requested by customer"}"></div>
+      </div>
+      <div class="privacy-note">${t("คำขอนี้เป็นการยกระดับตามปกติ ไม่ใช่ break-glass หากมีเหตุฉุกเฉิน ให้ใช้เส้นทางความปลอดภัยที่ธนาคารอนุมัติแยกต่างหาก","This is an ordinary access request, not break-glass. Emergencies use a separate route only if authorized by Bank policy.")}</div>
+      <div class="actions"><button class="btn primary" type="submit">${t("ส่งคำขอสิทธิ์","Submit access request")}</button><span class="inline-note">${t("การส่งคำขอไม่ทำให้เห็นข้อมูลทันที","Submission does not reveal data.")}</span></div>
+    </form>`;
+  document.getElementById("request-form").addEventListener("submit",e=>{e.preventDefault();const purpose=document.getElementById("purpose").value;const scopes=[...document.querySelectorAll('input[name="scope"]:checked')].map(x=>x.value);if(!purpose||!scopes.length){announce("กรุณาเลือกวัตถุประสงค์และชั้นข้อมูล","Choose a purpose and at least one data class");return}state.selected=scopes;state.purpose=purpose;state.reason=document.getElementById("reason").value;state.stage="pending";audit("ส่งคำขอชั่วคราว · PRIV-2026-00127","Temporary request submitted · PRIV-2026-00127");announce("ส่งคำขอแล้ว ยังไม่คืนข้อมูลพอร์ต","Request submitted; no portfolio data returned");render()});
+}
+function renderPending(){
+  setTag("รอการอนุมัติ","Pending approval");
+  const subject=subjectScenarios[state.subjectScenario]||subjectScenarios.primary;
+  workflow.innerHTML=`<div class="request-strip"><span class="symbol" aria-hidden="true">↗</span><div><strong>${t("ส่งคำขอแล้ว · PRIV-2026-00127","Request submitted · PRIV-2026-00127")}</strong><p>${t("ผู้ขอ: กมลวรรณ วัฒนกิจ · งาน TASK-2026-01842 · อำนาจสำหรับบุคคลที่เลือก: " + subject.authorityTh + " · ยังไม่เรียกดูข้อมูลพอร์ต","Requester: Kamolwan Wattanakit · TASK-2026-01842 · Authority for selected subject: " + subject.authorityEn + " · No portfolio data retrieved.")}</p></div></div>
+    <div class="approval-grid" style="margin-top:12px"><div class="meta"><span>${t("วัตถุประสงค์","Purpose")}</span><strong>${state.purpose==="service"?t("บริการตามคำขอ","Customer service"):t("เตรียมทบทวนการลงทุน","Investment review")}</strong></div><div class="meta"><span>${t("ขอบเขตที่ขอ","Requested scope")}</span><strong>${state.selected.map(s=>scopeLabel(s)).join(" · ")}</strong></div><div class="meta"><span>${t("การอนุมัติ","Decision")}</span><strong>${t("ยังไม่มีสิทธิ์ใช้งาน","No usable grant yet")}</strong></div><div class="meta"><span>${t("ระยะเวลา","Duration")}</span><strong>${t("รอนโยบาย/ผู้อนุมัติกำหนด","Pending policy and approver")}</strong></div></div>
+    <p class="privacy-note">${t("หน้าผู้อนุมัติจะแสดงเฉพาะข้อมูลคำขอ ไม่แสดงยอดหรือรายการสินทรัพย์","Approver view contains request metadata only; it does not show values or holdings.")}</p>
+    <div class="actions"><button class="btn" id="show-approver" type="button">${t("เปิดมุมมองผู้อนุมัติ","Open approver view")}</button><span class="inline-note">${t("ผู้ขอยังไม่สามารถเปิดพอร์ตได้","Requester cannot open the portfolio yet.")}</span></div>`;
+  document.getElementById("show-approver").addEventListener("click",()=>setRole("approver"));
+}
+function renderApproval(){
+  setTag("ตรวจคำขอ · ไม่มีข้อมูลพอร์ต","Review · no portfolio values");
+  const requesterStaffId="STAFF-DEMO-101";
+  const reviewerStaffId=state.approverIsRequester?requesterStaffId:"STAFF-DEMO-204";
+  const selfDecision=requesterStaffId===reviewerStaffId;
+  const options=[];
+  const option=(value,th,en)=>`<option value="${value}">${state.lang==="th"?th:en}</option>`;
+  if(state.selected.includes("summary")) options.push(option("summary","ภาพรวมพอร์ตเท่านั้น","Portfolio summary only"));
+  if(state.selected.includes("positions")&&state.selected.includes("summary")) options.push(option("summary-positions","ภาพรวม + รายการสินทรัพย์","Summary + positions"));
+  if(state.selected.includes("positions")&&!state.selected.includes("summary")) options.push(option("positions","รายการสินทรัพย์เท่านั้น","Positions only"));
+  if(state.selected.includes("performance")) options.push(option("performance","ผลตอบแทนเท่านั้น","Performance only"));
+  if(state.selected.includes("transactions")) options.push(option("transactions","ประวัติรายการเท่านั้น","Transactions only"));
+  workflow.innerHTML=`<div class="request-strip"><span class="symbol" aria-hidden="true">✓</span><div><strong>${t("คำขอสิทธิ์ชั่วคราว · PRIV-2026-00127","Temporary access request · PRIV-2026-00127")}</strong><p>${t("ตรวจความจำเป็น ขอบเขต และความสัมพันธ์ของงาน โดยไม่เปิดข้อมูลพอร์ต","Review need, scope, and work relationship without opening the portfolio.")}</p></div></div>
+    <div class="approval-grid" style="margin-top:12px"><div class="meta"><span>${t("ผู้ขอและทีม","Requester and team")}</span><strong>${t("กมลวรรณ วัฒนกิจ · Wealth 04","Kamolwan Wattanakit · Wealth 04")} · ${requesterStaffId}</strong></div><div class="meta"><span>${t("ผู้ทบทวนที่ยืนยันตัวตนแล้ว","Authenticated reviewer")}</span><strong>${selfDecision?t("กมลวรรณ วัฒนกิจ","Kamolwan Wattanakit"):t("นรินทร์ · ผู้ทบทวนสิทธิ์","Narin · Access reviewer")} · ${reviewerStaffId}</strong></div><div class="meta"><span>${t("ลูกค้า / งาน","Customer / task")}</span><strong>${state.subjectScenario==="primary"?"DEMO-10482":"DEMO-LINKED-02"} · TASK-2026-01842</strong></div><div class="meta"><span>${t("อำนาจลูกค้าสำหรับบุคคลนี้","Customer authority for this subject")}</span><strong>${t(subjectScenarios[state.subjectScenario].authorityTh,subjectScenarios[state.subjectScenario].authorityEn)} · ${t("แหล่งอำนาจตัวอย่าง · ตรวจ 09:15 ICT · ไม่ใช่ข้อมูลจริง","Illustrative authority source · checked 09:15 ICT · synthetic")}</strong></div><div class="meta"><span>${t("วัตถุประสงค์","Purpose")}</span><strong>${state.purpose==="service"?t("บริการตามคำขอ","Customer service"):t("เตรียมทบทวนการลงทุน","Investment review")}</strong></div><div class="meta"><span>${t("ชั้นข้อมูลที่ขอ","Requested classes")}</span><strong>${state.selected.map(s=>scopeLabel(s)).join(" · ")}</strong></div></div>
+    <div class="meta" style="margin-top:9px"><span>${t("เหตุผลของผู้ขอ","Requester rationale")}</span><strong>${escapeHtml(state.reason||"")}</strong></div>
+    <div class="form-grid" style="margin-top:12px"><div class="field"><label for="approved-scope">${t("ขอบเขตที่อนุมัติ","Approved scope")}</label><select id="approved-scope">${options.join("")}</select></div><div class="field"><label for="approved-duration">${t("ระยะเวลา","Duration")}</label><select id="approved-duration"><option value="policy">${state.lang==="th"?"ตามนโยบาย · ตัวอย่างเท่านั้น":"Policy-defined · illustrative"}</option><option value="shorter">${state.lang==="th"?"กำหนดระยะสั้นกว่า":"Set a shorter duration"}</option></select></div><div class="field full"><label for="approval-note">${t("เหตุผลการตัดสินใจ *","Decision rationale *")}</label><textarea id="approval-note" required>${state.lang==="th"?"อนุมัติข้อมูลขั้นต่ำเพื่อเตรียมงานที่ระบุ":"Approve minimum data for the linked work"}</textarea></div></div>
+    <div class="privacy-note">${t("แยกหน้าที่: ผู้อนุมัติประเมินคำขอโดยไม่เห็นยอดพอร์ต การขอตามปกติไม่ใช่ช่องทาง break-glass","Separation of duties: the reviewer sees no holdings. An ordinary access request is not a break-glass route.")}</div>
+    ${selfDecision?`<div class="access-state" role="alert" style="margin-top:10px"><div class="access-icon" aria-hidden="true">!</div><div><h3>${t("ไม่สามารถตัดสินคำขอของตนเอง","You cannot decide your own request")}</h3><p>${t("ผู้ขอและผู้ทบทวนเป็นพนักงานคนเดียวกัน คำขอยังคงรออยู่และไม่มีการให้สิทธิ์ ส่งต่อผู้อนุมัติที่มีสิทธิ์อีกคน","Requester and reviewer are the same staff identity. The request stays pending; no access is granted. Route it to another eligible approver.")}</p></div></div>`:""}
+    <div class="actions"><button class="btn primary" id="approve" type="button" ${selfDecision?"disabled":""}>${t("อนุมัติตามขอบเขตขั้นต่ำ","Approve minimum scope")}</button><button class="btn danger" id="deny" type="button" ${selfDecision?"disabled":""}>${t("ปฏิเสธคำขอ","Deny request")}</button><span class="inline-note">${selfDecision?t("เลือกผู้อนุมัติคนอื่น","Choose another eligible approver"):t("บันทึกผู้ตัดสินใจ ขอบเขต เหตุผล และเวลาหมดอายุ","Record reviewer, scope, rationale, and expiry.")}</span></div>`;
+  document.getElementById("approve").addEventListener("click",()=>{if(state.approverIsRequester){audit("ปฏิเสธการตัดสินคำขอด้วยตนเอง","Self-decision rejected");announce("ผู้ขอไม่สามารถตัดสินคำขอของตนเองได้","Requester cannot decide their own request");return}const rationale=document.getElementById("approval-note").value.trim();if(!rationale){announce("กรุณาระบุเหตุผลการตัดสินใจ","Enter a decision rationale");document.getElementById("approval-note").focus();return}state.approvedScope=document.getElementById("approved-scope").value;state.grantDuration=document.getElementById("approved-duration").value;state.decisionReason=rationale;state.stage="stepup";audit("อนุมัติ " + scopeLabelTh(state.approvedScope) + " · ผู้อนุมัติ: นรินทร์ (สาธิต)","Approved " + scopeLabelEn(state.approvedScope) + " · Approver: Narin (demo)");state.role="advisor";render();announce("อนุมัติแล้ว ต้องยืนยันตัวตนขั้นสูงก่อนเปิดข้อมูล","Approved; step-up is required before data access")});
+  document.getElementById("deny").addEventListener("click",()=>{if(state.approverIsRequester){audit("ปฏิเสธการตัดสินคำขอด้วยตนเอง","Self-decision rejected");announce("ผู้ขอไม่สามารถตัดสินคำขอของตนเองได้","Requester cannot decide their own request");return}const rationale=document.getElementById("approval-note").value.trim();if(!rationale){announce("กรุณาระบุเหตุผลการตัดสินใจ","Enter a decision rationale");document.getElementById("approval-note").focus();return}state.decisionReason=rationale;state.stage="denied";audit("ปฏิเสธคำขอ · ไม่คืนข้อมูล","Request denied · no data returned");state.role="advisor";render();announce("ปฏิเสธคำขอ ไม่มีข้อมูลพอร์ตถูกส่งกลับ","Request denied; no portfolio data returned")});
+}
+function renderStepup(){
+  setTag("อนุมัติแล้ว · รอยืนยันขั้นสูง","Approved · step-up required");
+  workflow.innerHTML=`<div class="stepup"><div class="lock" aria-hidden="true">⌑</div><div><h3>${t("ยืนยันตัวตนขั้นสูงก่อนดูข้อมูล","Complete step-up before reveal")}</h3><p>${t("คำขอได้รับอนุมัติเฉพาะ " + scopeLabelTh(state.approvedScope) + " แต่ยังไม่มีข้อมูลถูกส่งกลับ ระบบต้องยืนยันตัวตน ตรวจอำนาจของบุคคลที่เลือก และตรวจสิทธิ์ต้นทางอีกครั้ง","Approved scope: " + scopeLabelEn(state.approvedScope) + ". No data has been returned yet. The service must confirm step-up, customer authority for the selected subject, and live source authorization.")}</p></div></div>
+  <div class="actions"><button class="btn primary" id="stepup" type="button">${t("จำลองยืนยันขั้นสูงและตรวจสิทธิ์ซ้ำผ่าน","Simulate step-up and fresh checks passing")}</button><button class="btn" id="cancel" type="button">${t("ยกเลิกสิทธิ์","Cancel grant")}</button></div><p class="inline-note" style="margin-top:10px">${t("ก่อนแสดงข้อมูลจริงต้องตรวจอำนาจบุคคล สิทธิ์พนักงาน และสิทธิ์ต้นทางอีกครั้ง","Before live data appears, recheck subject authority, employee grant, and source permission.")}</p><p class="inline-note">${t("ไม่มีการรับรหัสผ่านหรือ OTP ในต้นแบบนี้","This prototype does not collect passwords or OTPs.")}</p>`;
+  document.getElementById("stepup").addEventListener("click",()=>{const subject=subjectScenarios[state.subjectScenario];if(!subject?.allowed){state.stage="request";render();announce("ตรวจสิทธิ์ซ้ำไม่ผ่าน · ไม่มีข้อมูลถูกส่งกลับ","Fresh access check failed; no data returned");return}state.stage="active";audit("ผ่าน step-up และตรวจสิทธิ์ซ้ำ · เปิดเฉพาะข้อมูลสรุปแบบอ่านอย่างเดียว","Step-up and fresh checks passed · read-only summary opened");render();announce("เปิดข้อมูลสรุปพอร์ตแบบอ่านอย่างเดียว","Read-only portfolio summary opened")});
+  document.getElementById("cancel").addEventListener("click",()=>revoke("expiry"));
+}
+function renderActive(){
+  setTag("สิทธิ์ชั่วคราวกำลังใช้งาน","Temporary grant active");
+  const approvedScopes=state.approvedScope==="summary-positions"?["summary","positions"]:[state.approvedScope];
+  const hasSummary=approvedScopes.includes("summary");
+  const hasPositions=approvedScopes.includes("positions");
+  const detail=hasPositions?`<div class="card" style="margin-top:12px;box-shadow:none"><div class="card-head"><h2>${t("รายการที่อยู่ในขอบเขต","Positions within approved scope")}</h2><span class="readonly">${t("อ่านอย่างเดียว","Read only")}</span></div><div class="card-body"><div class="row"><strong>${t("พันธบัตรภาครัฐ · THB","Government bond · THB")}</strong><span>฿4,200,000</span></div><hr style="border:0;border-top:1px solid var(--line);margin:9px 0"><div class="row"><strong>${t("กองทุนผสม · THB","Balanced fund · THB")}</strong><span>฿2,800,000</span></div><small class="help">${t("ข้อมูลสังเคราะห์สำหรับต้นแบบ · ไม่ใช่ข้อมูลลูกค้าจริง","Synthetic prototype data · not a real customer's holdings")}</small></div></div>`:"";
+  const performance=state.approvedScope==="performance"?`<div class="card" style="margin-top:12px;box-shadow:none"><div class="card-head"><h2>${t("ผลตอบแทนตามขอบเขตที่อนุมัติ","Performance within approved scope")}</h2><span class="readonly">${t("อ่านอย่างเดียว","Read only")}</span></div><div class="card-body"><strong style="font-size:22px;color:var(--navy)">+4.8%</strong><p class="subtle">${t("ผลตอบแทนตัวอย่าง · ช่วงเวลาและวิธีคำนวณต้องมาจากแหล่งข้อมูลที่ได้รับอนุมัติ","Illustrative return · period and calculation method must come from the authorized source.")}</p></div></div>`:"";
+  const transactions=state.approvedScope==="transactions"?`<div class="card" style="margin-top:12px;box-shadow:none"><div class="card-head"><h2>${t("ประวัติรายการตามขอบเขตที่อนุมัติ","Transactions within approved scope")}</h2><span class="readonly">${t("อ่านอย่างเดียว","Read only")}</span></div><div class="card-body"><div class="row"><strong>${t("ซื้อกองทุน · อ้างอิง •• 4821","Fund purchase · ref •• 4821")}</strong><span>฿25,000</span></div><small class="help">${t("ข้อมูลสังเคราะห์สำหรับต้นแบบ · รายการจริงต้องมาจากระบบต้นทาง","Synthetic prototype data · live activity must come from the source system.")}</small></div></div>`:"";
+  const summary=hasSummary?`<div class="portfolio-summary"><div class="total"><span class="section-label">${t("มูลค่าพอร์ตโดยรวม · ข้อมูลสังเคราะห์","Aggregate portfolio value · synthetic data")}</span><strong>฿18,420,000</strong><p>${t("แสดงเฉพาะข้อมูล Bangkok Bank ที่ได้รับอนุมัติ · ไม่รวมสินทรัพย์ภายนอก","Approved Bangkok Bank data only · external assets are not included")}</p><span class="readonly">${t("อ่านอย่างเดียว","Read only")}</span></div><div class="allocation"><h3>${t("สัดส่วนสินทรัพย์ · สาธิต","Asset mix · demo")}</h3><div class="alloc-row"><span>${t("เงินฝาก","Deposits")}</span><div class="bar"><i style="width:42%"></i></div><b>42%</b></div><div class="alloc-row"><span>${t("ตราสารหนี้","Fixed income")}</span><div class="bar"><i style="width:31%"></i></div><b>31%</b></div><div class="alloc-row"><span>${t("กองทุน","Funds")}</span><div class="bar"><i style="width:27%"></i></div><b>27%</b></div><small class="help">${t("แหล่งข้อมูลสาธิต · 14 ต.ค. 2569 09:15 ICT","Demo source · 14 Oct 2026, 09:15 ICT")}</small></div></div>`:"";
+  const durationTh=state.grantDuration==="shorter"?"ระยะเวลาสั้น · สาธิต":"ระยะเวลาตามนโยบาย (ตัวอย่าง)";
+  const durationEn=state.grantDuration==="shorter"?"Shorter duration · demo":"Policy duration (illustrative)";
+  const authorityStates={current:{th:"อนุมัติปัจจุบันครอบคลุมกิจกรรมตัวอย่าง · IC complex type 1 (ข้อมูลสังเคราะห์)",en:"Current approval covers this demo activity · IC complex type 1 (synthetic)",sourceTh:"แหล่งตรวจสอบสิทธิ์บุคลากรของธนาคาร · ตรวจเมื่อ 15 ต.ค. 2569 · ไม่ใช่การตรวจ SEC แบบสด",sourceEn:"Bank personnel-authority source · checked 15 Oct 2026 · not a live SEC lookup",allowed:true},outOfScope:{th:"สถานะอนุมัติยังใช้ได้ แต่ไม่ครอบคลุมผลิตภัณฑ์/กิจกรรมที่เลือก",en:"Approval is current but does not cover the selected product/activity",sourceTh:"ผลตรวจตามขอบเขตที่ธนาคารกำหนด · ข้อมูลสังเคราะห์",sourceEn:"Bank-mapped scope check · synthetic data",allowed:false},expired:{th:"การอนุมัติหมดอายุแล้ว · บล็อกกิจกรรมคำแนะนำ",en:"Approval has expired · advice activity blocked",sourceTh:"แหล่งตรวจสอบสิทธิ์บุคลากรของธนาคาร · ข้อมูลสังเคราะห์",sourceEn:"Bank personnel-authority source · synthetic data",allowed:false},inactiveEmployer:{th:"ไม่พบการกำหนดผู้ปฏิบัติงานกับสถาบันที่มีผลอยู่ · บล็อกกิจกรรมคำแนะนำ",en:"No active employer/institution designation · advice activity blocked",sourceTh:"แหล่งสถานะการกำหนดบทบาทของธนาคาร · ข้อมูลสังเคราะห์",sourceEn:"Bank employer-designation source · synthetic data",allowed:false},unknown:{th:"ตรวจสอบสิทธิ์ไม่ได้หรือข้อมูลเก่า · ต้องยืนยันก่อนดำเนินการ",en:"Authority unavailable or stale · verify before continuing",sourceTh:"แหล่งข้อมูล/เวลาตรวจสอบไม่พร้อม · ไม่มีการอนุมานสิทธิ์จากตำแหน่งงาน",sourceEn:"Source/check time unavailable · no authority inferred from job title",allowed:false}};
+  const authorityState=authorityStates[state.professionalScenario]||authorityStates.current;
+  const subject=subjectScenarios[state.subjectScenario]||subjectScenarios.primary;
+  const linkedSubject=subject.linked?`<div class="request-strip" style="margin-top:10px"><span class="symbol" aria-hidden="true">✓</span><div><strong>${t("อำนาจลูกค้าและสิทธิ์พนักงานผ่านการตรวจแยกกัน","Customer authority and staff entitlement checked independently")}</strong><p>${t("บุคคล: DEMO-LINKED-02 · " + subject.authorityTh + " · " + subject.staffTh,"Subject: DEMO-LINKED-02 · " + subject.authorityEn + " · " + subject.staffEn)} · ${t("แหล่งอำนาจตัวอย่าง · ตรวจ 09:15 ICT · ข้อมูลสังเคราะห์","Illustrative authority source · checked 09:15 ICT · synthetic")}</p></div></div>`:"";
+  workflow.innerHTML=`<div class="active-banner"><span class="checkmark" aria-hidden="true">✓</span><div><strong>${t("อนุมัติและยืนยันแล้ว · แสดงเฉพาะข้อมูลที่อนุมัติ","Approved and verified · approved scope only")}</strong>${t("ขอบเขต: " + scopeTh(state.approvedScope) + " · " + durationTh,"Scope: " + scopeEn(state.approvedScope) + " · " + durationEn)}</div></div>
+  ${linkedSubject}
+  ${summary}
+  ${detail}
+  ${performance}
+  ${transactions}
+  <div class="authority"><div class="authority-item"><span>${t("อ่านข้อมูลพอร์ต","Portfolio read")}</span><strong>${t("อนุมัติ · " + scopeLabelTh(state.approvedScope),"Approved · " + scopeLabelEn(state.approvedScope))}</strong></div><div class="authority-item"><span>${t("ให้คำแนะนำลงทุน","Investment advice")}</span><strong class="off">${t("ตรวจสิทธิ์แยกต่างหาก","Separate qualification check")}</strong></div><div class="authority-item"><span>${t("ส่งคำสั่งซื้อขาย","Securities orders")}</span><strong class="off">${t("ไม่เปิดใน CRM","Not enabled in CRM")}</strong></div></div>
+  <section class="professional-check" aria-labelledby="professional-title"><div class="professional-head"><strong id="professional-title">${t("สิทธิ์วิชาชีพ · แยกจากสิทธิ์อ่านพอร์ต","Professional authority · separate from portfolio read")}</strong><span class="${authorityState.allowed?"allowed":"blocked"}">${t(authorityState.allowed?"ผ่านสำหรับกิจกรรมตัวอย่าง":"บล็อกหรือยังยืนยันไม่ได้",authorityState.allowed?"Passes for demo activity":"Blocked or not confirmed")}</span></div><p>${t(authorityState.th,authorityState.en)}</p><small>${t(authorityState.sourceTh,authorityState.sourceEn)}</small><div class="professional-controls"><label for="authority-scenario">${t("สถานการณ์จำลอง","Simulated authority state")}<select id="authority-scenario"><option value="current">${state.lang==="en"?"Current and in scope":"ปัจจุบันและอยู่ในขอบเขต"}</option><option value="outOfScope">${state.lang==="en"?"Outside scope":"อยู่นอกขอบเขต"}</option><option value="expired">${state.lang==="en"?"Expired":"หมดอายุ"}</option><option value="inactiveEmployer">${state.lang==="en"?"Inactive employer designation":"ไม่มีการกำหนดสถาบันที่มีผล"}</option><option value="unknown">${state.lang==="en"?"Unavailable / stale":"ไม่พร้อม / ข้อมูลเก่า"}</option></select></label><button class="btn small" id="open-advisory" type="button" ${authorityState.allowed?"":"disabled"}>${t("ไปยังระบบคำแนะนำที่ได้รับอนุญาต","Continue to authorized advisory workflow")}</button></div><small style="margin-top:7px">${t("ต้นแบบนี้ไม่ให้คำแนะนำ ไม่ส่งคำสั่งซื้อขาย และใช้ข้อมูลบุคลากรสังเคราะห์","This prototype gives no advice, submits no order, and uses synthetic personnel data.")}</small></section>
+  <div class="row" style="margin-top:12px"><small class="subtle">${t("สิทธิ์จะถูกตรวจใหม่ทุกครั้งที่ดึงข้อมูล","Authorization is rechecked on each retrieval.")}</small><button class="btn small" id="close-view" type="button">${t("ปิดมุมมอง","Close view")}</button></div>`;
+  document.getElementById("close-view").addEventListener("click",()=>revoke("expiry"));
+  const authoritySelect=document.getElementById("authority-scenario");authoritySelect.value=state.professionalScenario;authoritySelect.addEventListener("change",event=>{state.professionalScenario=event.target.value;const selected=authorityStates[state.professionalScenario];audit(`ตรวจสิทธิ์วิชาชีพ · ${selected.th}`,`Professional authority check · ${selected.en}`);render()});
+  document.getElementById("open-advisory").addEventListener("click",()=>announce("ผ่านการตรวจตัวอย่างแล้ว · ไปต่อในระบบคำแนะนำที่ได้รับอนุญาต","Demo check passed · continue in the authorized advisory system"));
+}
+function renderRevoked(){
+  setTag("สิทธิ์สิ้นสุดแล้ว","Access ended");
+  const why=labels[state.revokeReason]||labels.expiry;
+  workflow.innerHTML=`<div class="revoked"><h3>${t("นำข้อมูลพอร์ตออกจากมุมมองแล้ว","Portfolio values removed from view")}</h3><p>${t(why.th,why.en)}. ${t("การค้นหา รีเฟรช หรือเปิดหน้าต่างใหม่จะไม่คืนข้อมูลเดิม ต้องผ่านการประเมินสิทธิ์ใหม่","A search, refresh, or new view will not restore the previous data. Access must be evaluated again.")}</p></div>
+  <div class="actions"><span class="tag"><span lang="th">บันทึกการเพิกถอนแล้ว · ต้องทบทวนหลังใช้งาน</span><span lang="en">Revocation audited · post-access review queued</span></span><button class="btn" id="new-request" type="button">${t("เริ่มคำขอใหม่","Start a new request")}</button></div>`;
+  document.getElementById("new-request").addEventListener("click",()=>{state.stage="request";state.role="advisor";state.selected=["summary","positions"];audit("เปิดคำขอใหม่หลังการเพิกถอน","New request started after revocation");render()});
+}
+function scopeTh(s){return {summary:"ภาพรวมพอร์ต",positions:"รายการสินทรัพย์",performance:"ผลตอบแทน",transactions:"ประวัติรายการ"}[s]||"ภาพรวมพอร์ต"}
+function scopeEn(s){return {summary:"Portfolio summary",positions:"Positions",performance:"Performance",transactions:"Transactions"}[s]||"Portfolio summary"}
+function scopeLabelTh(s){return s==="summary-positions"?"ภาพรวมพอร์ต + รายการสินทรัพย์":scopeTh(s)}
+function scopeLabelEn(s){return s==="summary-positions"?"Portfolio summary + positions":scopeEn(s)}
+function scopeLabel(s){return t(scopeTh(s),scopeEn(s))}
+function syncSubjectScenarioLabels(){const control=document.getElementById("subject-scenario");control.setAttribute("aria-label",state.lang==="en"?"Simulate linked-party access":"จำลองสิทธิ์ของบุคคลที่เชื่อมโยง");control.value=state.subjectScenario;control.querySelectorAll("option").forEach(option=>{option.textContent=state.lang==="en"?option.dataset.en:option.dataset.th})}
+function render(){
+  syncSubjectScenarioLabels();
+  document.getElementById("advisor-tab").setAttribute("aria-pressed",String(state.role==="advisor"));
+  document.getElementById("approver-tab").setAttribute("aria-pressed",String(state.role==="approver"));
+  document.getElementById("independent-reviewer").setAttribute("aria-pressed",String(!state.approverIsRequester));
+  document.getElementById("same-reviewer").setAttribute("aria-pressed",String(state.approverIsRequester));
+  document.getElementById("profile").innerHTML=state.role==="advisor"?`${t("กมลวรรณ วัฒนกิจ","Kamolwan Wattanakit")}<small>${t("ที่ปรึกษาการลงทุน · สาธิต","Wealth advisor · demo")}</small>`:state.approverIsRequester?`${t("กมลวรรณ วัฒนกิจ","Kamolwan Wattanakit")}<small>${t("ผู้ขอ · จำลองบทบาทผู้ทบทวน","Requester · simulated reviewer role")}</small>`:`${t("นรินทร์ · ผู้อนุมัติสิทธิ์","Narin · Access approver")}<small>${t("ผู้ทบทวนสิทธิ์ · สาธิต","Access reviewer · demo")}</small>`;
+  if(state.role==="approver"){if(state.stage==="pending")renderApproval();else renderNoRequest()}
+  else if(state.stage==="request")renderRequest();
+  else if(state.stage==="pending")renderPending();
+  else if(state.stage==="stepup")renderStepup();
+  else if(state.stage==="active")renderActive();
+  else if(state.stage==="denied")renderDenied();
+  else renderRevoked();
+  renderGates();renderTimeline();
+  document.querySelectorAll("[data-revoke]").forEach(b=>b.disabled=state.stage!=="active");
+}
+function renderNoRequest(){setTag("ไม่มีคำขอรออนุมัติ","No request pending");workflow.innerHTML=`<div class="access-state"><div class="access-icon" aria-hidden="true">i</div><div><h3>${t("ไม่มีข้อมูลพอร์ตแสดงในมุมมองผู้อนุมัติ","No portfolio data in approver view")}</h3><p>${t("มุมมองนี้ใช้ทบทวนคำขอเท่านั้น ผู้อนุมัติไม่จำเป็นต้องเห็นยอดหรือรายการสินทรัพย์","This role reviews request metadata only. Approvers do not need to see portfolio values or holdings.")}</p></div></div><div class="actions"><button class="btn" id="back-advisor" type="button">${t("กลับไปมุมมองที่ปรึกษา","Return to advisor view")}</button></div>`;document.getElementById("back-advisor").addEventListener("click",()=>setRole("advisor"))}
+function renderDenied(){setTag("คำขอถูกปฏิเสธ","Request denied");workflow.innerHTML=`<div class="revoked"><h3>${t("ไม่มีข้อมูลพอร์ตถูกส่งกลับ","No portfolio data returned")}</h3><p>${t("คำขอไม่ได้รับอนุมัติ ภารกิจและข้อมูลลูกค้ายังคงอยู่ภายใต้สิทธิ์เดิม","The request was not approved. Customer data remains restricted under the existing policy.")}</p></div><div class="actions"><button class="btn" id="restart" type="button">${t("กลับไปยังโปรไฟล์ลูกค้า","Return to customer profile")}</button></div>`;document.getElementById("restart").addEventListener("click",()=>{state.stage="request";render()})}
+function revoke(reason){if(state.stage!=="active")return;state.revokeReason=reason;state.stage="revoked";const why=labels[reason];audit(`เพิกถอนสิทธิ์ · ${why.th}`,`Grant revoked · ${why.en}`);announce(`นำข้อมูลพอร์ตออกแล้ว: ${why.th}`,`Portfolio values removed: ${why.en}`);render()}
+function setRole(role){state.role=role;render();if(role==="approver"&&state.stage!=="pending")announce("ไม่มีคำขอรออนุมัติ","No request is awaiting approval")}
+document.getElementById("advisor-tab").addEventListener("click",()=>setRole("advisor"));
+document.getElementById("approver-tab").addEventListener("click",()=>setRole("approver"));
+document.getElementById("independent-reviewer").addEventListener("click",()=>{state.approverIsRequester=false;render();if(state.role==="approver"&&state.stage==="pending")announce("ผู้ทบทวนเป็นคนละพนักงานกับผู้ขอ","Reviewer is a different staff identity from the requester")});
+document.getElementById("same-reviewer").addEventListener("click",()=>{state.approverIsRequester=true;if(state.stage==="pending")audit("บล็อกการตัดสินคำขอด้วยตนเอง · สาธิต","Self-decision blocked · demo");render();if(state.role==="approver"&&state.stage==="pending")announce("บล็อกการตัดสินด้วยตนเอง คำขอยังคงรอผู้อนุมัติคนอื่น","Self-decision blocked; request remains pending for another approver")});
+document.getElementById("subject-scenario").addEventListener("change",event=>{state.subjectScenario=event.target.value;if(state.stage==="active"){revoke("mandate");return}state.role="advisor";state.stage="request";audit("ตรวจอำนาจและสิทธิ์พนักงาน · " + subjectScenarios[state.subjectScenario].authorityTh,"Subject authority and staff entitlement · " + subjectScenarios[state.subjectScenario].authorityEn);render();if(!subjectScenarios[state.subjectScenario].allowed)announce("ข้อมูลถูกจำกัด ไม่มีข้อมูลพอร์ตถูกส่งกลับ","Access restricted; no portfolio data returned")});
+document.getElementById("language").addEventListener("click",()=>{body.classList.toggle("en");state.lang=body.classList.contains("en")?"en":"th";document.documentElement.lang=state.lang;document.getElementById("language").textContent=state.lang==="en"?"TH":"EN";render()});
+document.querySelectorAll("[data-revoke]").forEach(button=>button.addEventListener("click",()=>revoke(button.dataset.revoke)));
+render();
+</script>
+<script src="assets/language-preference.js"></script>
+</body>
+</html>

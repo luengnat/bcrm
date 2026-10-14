@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#10275f">
+  <meta name="description" content="A bilingual concept preview of Bangkok Bank CRM workspaces and service journeys.">
+  <title>Bangkok Bank CRM · Prototype preview</title>
+  <style>
+    :root{--navy:#10275f;--blue:#174a9a;--lotus:#0867e8;--ink:#17243c;--muted:#64728a;--line:#d9e0ea;--paper:#f2f5f9;--surface:#fff;--pale:#edf4ff;--shadow:0 12px 30px rgba(16,39,95,.08)}
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+    a{color:inherit}
+    a:focus-visible,button:focus-visible{outline:3px solid var(--lotus);outline-offset:3px}
+    .shell{max-width:1120px;margin:0 auto;padding:28px 24px 56px}
+    header{display:flex;align-items:center;justify-content:space-between;gap:20px;margin-bottom:42px}
+    .brand{display:flex;align-items:center;gap:12px;color:var(--navy);font-weight:750;letter-spacing:.01em}
+    .mark{display:block;width:31px;height:38px;object-fit:contain}
+    .brand small{display:block;color:var(--muted);font-size:11px;font-weight:650;letter-spacing:.11em;text-transform:uppercase}
+    .language{border:1px solid var(--line);border-radius:9px;background:var(--surface);padding:9px 13px;color:var(--navy);font:inherit;font-size:14px;font-weight:700;cursor:pointer}
+    .hero{max-width:760px;margin-bottom:30px}
+    .eyebrow{margin:0 0 10px;color:var(--blue);font-size:12px;font-weight:750;letter-spacing:.12em;text-transform:uppercase}
+    h1{margin:0;color:var(--navy);font-size:clamp(34px,5vw,52px);letter-spacing:-.035em;line-height:1.12}
+    .lede{max-width:680px;margin:16px 0 0;color:#465570;font-size:18px}
+    .notice{display:flex;align-items:center;gap:10px;margin:26px 0 34px;padding:14px 17px;border:1px solid #cbdcf8;border-radius:12px;background:var(--pale);color:#244478;font-size:14px}
+    .notice strong{color:var(--navy)}
+    .notice-dot{flex:0 0 9px;width:9px;height:9px;border-radius:50%;background:var(--lotus)}
+    .section-head{display:flex;align-items:end;justify-content:space-between;gap:16px;margin:34px 0 14px}
+    h2{margin:0;color:var(--navy);font-size:22px;letter-spacing:-.02em}
+    .count{color:var(--muted);font-size:13px}
+    .grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+    .card{display:flex;min-height:154px;flex-direction:column;align-items:flex-start;padding:20px;border:1px solid var(--line);border-radius:14px;background:var(--surface);text-decoration:none;box-shadow:0 2px 8px rgba(16,39,95,.025);transition:transform .16s ease,border-color .16s ease,box-shadow .16s ease}
+    .card:hover{transform:translateY(-2px);border-color:#a9c4f1;box-shadow:var(--shadow)}
+    .tag{margin-bottom:10px;color:var(--blue);font-size:11px;font-weight:750;letter-spacing:.09em;text-transform:uppercase}
+    .card-title{color:var(--navy);font-size:17px;font-weight:750;line-height:1.3}
+    .card-copy{margin:8px 0 0;color:var(--muted);font-size:14px;line-height:1.45}
+    .arrow{margin-top:auto;padding-top:15px;color:var(--lotus);font-size:13px;font-weight:750}
+    footer{margin-top:42px;padding-top:20px;border-top:1px solid var(--line);color:var(--muted);font-size:13px}
+    [hidden]{display:none!important}
+    @media(max-width:800px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+    @media(max-width:540px){.shell{padding:20px 16px 38px}header{margin-bottom:32px}.brand{font-size:14px}.grid{grid-template-columns:1fr}.card{min-height:130px}.lede{font-size:16px}}
+    @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important}}
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <header>
+      <div class="brand"><img class="mark" src="./assets/bbl-lotus.png" alt=""><span><span data-en>Bangkok Bank</span><span data-th hidden>ธนาคารกรุงเทพ</span><small><span data-en>CRM concept preview</span><span data-th hidden>ตัวอย่างแนวคิดระบบ CRM</span></small></span></div>
+      <button class="language" id="languageToggle" type="button" aria-label="Switch language">ไทย</button>
+    </header>
+    <main>
+      <section class="hero" aria-labelledby="pageTitle">
+        <p class="eyebrow"><span data-en>Employee experience · Product concept</span><span data-th hidden>ประสบการณ์พนักงาน · แนวคิดผลิตภัณฑ์</span></p>
+        <h1 id="pageTitle"><span data-en>Customer relationship and service workbench</span><span data-th hidden>พื้นที่ทำงานด้านความสัมพันธ์และบริการลูกค้า</span></h1>
+        <p class="lede"><span data-en>Explore role-specific workspaces and service journeys for branch teams, relationship managers, wealth advisors, contact center, and specialists.</span><span data-th hidden>สำรวจพื้นที่ทำงานตามบทบาทและเส้นทางบริการสำหรับทีมสาขา ผู้จัดการความสัมพันธ์ลูกค้า ที่ปรึกษาด้านความมั่งคั่ง ศูนย์บริการ และทีมผู้เชี่ยวชาญ</span></p>
+      </section>
+      <div class="notice"><span class="notice-dot" aria-hidden="true"></span><span><strong><span data-en>Design preview.</span><span data-th hidden>ตัวอย่างเพื่อการออกแบบ</span></strong> <span data-en>All examples use synthetic data. This site is not a live banking service.</span><span data-th hidden>ตัวอย่างทั้งหมดใช้ข้อมูลจำลอง เว็บไซต์นี้ไม่ใช่บริการธนาคารจริง</span></span></div>
+
+      <section aria-labelledby="workspacesTitle">
+        <div class="section-head"><h2 id="workspacesTitle"><span data-en>Role workspaces</span><span data-th hidden>พื้นที่ทำงานตามบทบาท</span></h2><span class="count"><span data-en>Start here</span><span data-th hidden>เริ่มที่นี่</span></span></div>
+        <div class="grid">
+          <a class="card" href="./role-workspaces.html"><span class="tag"><span data-en>Compare roles</span><span data-th hidden>เปรียบเทียบบทบาท</span></span><span class="card-title"><span data-en>Role workspaces</span><span data-th hidden>พื้นที่ทำงานตามบทบาท</span></span><span class="card-copy"><span data-en>Compare teller, contact center, RM, Wealth advisor, and IC views.</span><span data-th hidden>เปรียบเทียบมุมมองพนักงานสาขา ศูนย์บริการ RM ที่ปรึกษาด้านความมั่งคั่ง และ IC</span></span><span class="arrow"><span data-en>Open workspace preview →</span><span data-th hidden>เปิดตัวอย่างพื้นที่ทำงาน →</span></span></a>
+          <a class="card" href="./rm-workbench.html"><span class="tag"><span data-en>Relationship manager</span><span data-th hidden>ผู้จัดการความสัมพันธ์ลูกค้า</span></span><span class="card-title"><span data-en>RM client-touch queue</span><span data-th hidden>คิวติดต่อลูกค้าของ RM</span></span><span class="card-copy"><span data-en>Prioritize customer requests, service commitments, and permitted follow-up.</span><span data-th hidden>จัดลำดับคำขอ คำมั่นด้านบริการ และการติดตามลูกค้าที่ได้รับอนุญาต</span></span><span class="arrow"><span data-en>Open RM workbench →</span><span data-th hidden>เปิดพื้นที่ทำงาน RM →</span></span></a>
+          <a class="card" href="./supervisor-queue.html"><span class="tag"><span data-en>Team manager</span><span data-th hidden>หัวหน้าทีม</span></span><span class="card-title"><span data-en>Supervisor queue under load</span><span data-th hidden>คิวทีมภายใต้ภาระสูง</span></span><span class="card-copy"><span data-en>Review team workload, handoffs, and due customer updates without a leaderboard.</span><span data-th hidden>ตรวจสอบภาระงาน การส่งต่อ และการแจ้งลูกค้าที่ครบกำหนด โดยไม่ใช้กระดานจัดอันดับ</span></span><span class="arrow"><span data-en>Open team queue →</span><span data-th hidden>เปิดคิวทีม →</span></span></a>
+        </div>
+      </section>
+
+      <section aria-labelledby="serviceTitle">
+        <div class="section-head"><h2 id="serviceTitle"><span data-en>Service and customer journeys</span><span data-th hidden>เส้นทางบริการและการช่วยเหลือลูกค้า</span></h2><span class="count">8 <span data-en>previews</span><span data-th hidden>ตัวอย่าง</span></span></div>
+        <div class="grid">
+          <a class="card" href="./contact-center.html"><span class="tag"><span data-en>Contact center</span><span data-th hidden>ศูนย์บริการ</span></span><span class="card-title"><span data-en>Contact center workbench</span><span data-th hidden>พื้นที่ทำงานศูนย์บริการ</span></span><span class="card-copy"><span data-en>Carry customer context from the call into safe guidance and handoff.</span><span data-th hidden>เชื่อมโยงบริบทจากการสนทนาไปสู่คำแนะนำและการส่งต่องานอย่างปลอดภัย</span></span><span class="arrow"><span data-en>Open contact center →</span><span data-th hidden>เปิดพื้นที่ศูนย์บริการ →</span></span></a>
+          <a class="card" href="./branch-service.html"><span class="tag"><span data-en>Branch teller</span><span data-th hidden>บริการสาขา</span></span><span class="card-title"><span data-en>Branch service guide</span><span data-th hidden>คู่มือบริการสาขา</span></span><span class="card-copy"><span data-en>Find customer-safe guidance and approved service routes.</span><span data-th hidden>ค้นหาคำแนะนำที่เหมาะสมและช่องทางบริการที่อนุมัติ</span></span><span class="arrow"><span data-en>Open branch guide →</span><span data-th hidden>เปิดคู่มือสาขา →</span></span></a>
+          <a class="card" href="./service-guide.html"><span class="tag"><span data-en>Service guidance</span><span data-th hidden>คำแนะนำบริการ</span></span><span class="card-title"><span data-en>Service guidance</span><span data-th hidden>คำแนะนำบริการ</span></span><span class="card-copy"><span data-en>Guide, resolve, or route common customer requests.</span><span data-th hidden>แนะนำ แก้ไข หรือส่งต่อคำขอทั่วไปของลูกค้า</span></span><span class="arrow"><span data-en>Open service guide →</span><span data-th hidden>เปิดคู่มือบริการ →</span></span></a>
+          <a class="card" href="./case-workspace.html"><span class="tag"><span data-en>Case handling</span><span data-th hidden>จัดการเคส</span></span><span class="card-title"><span data-en>Complaint case workspace</span><span data-th hidden>พื้นที่ทำงานเคสร้องเรียน</span></span><span class="card-copy"><span data-en>Review ownership, next actions, customer updates, and audit history.</span><span data-th hidden>ตรวจสอบผู้รับผิดชอบ ขั้นตอนถัดไป การแจ้งลูกค้า และประวัติการดำเนินงาน</span></span><span class="arrow"><span data-en>Open case workspace →</span><span data-th hidden>เปิดพื้นที่เคส →</span></span></a>
+          <a class="card" href="./complaint-intake.html"><span class="tag"><span data-en>Branch intake</span><span data-th hidden>รับเรื่องที่สาขา</span></span><span class="card-title"><span data-en>Branch complaint intake</span><span data-th hidden>รับเรื่องร้องเรียน ณ สาขา</span></span><span class="card-copy"><span data-en>Capture the issue, route it, and give the customer a tracked reference.</span><span data-th hidden>บันทึกปัญหา ส่งต่อ และให้หมายเลขอ้างอิงแก่ลูกค้า</span></span><span class="arrow"><span data-en>Open intake preview →</span><span data-th hidden>เปิดตัวอย่างการรับเรื่อง →</span></span></a>
+          <a class="card" href="./contact-update-guide.html"><span class="tag"><span data-en>Customer details</span><span data-th hidden>ข้อมูลลูกค้า</span></span><span class="card-title"><span data-en>Contact update guide</span><span data-th hidden>คู่มือเปลี่ยนแปลงข้อมูลติดต่อ</span></span><span class="card-copy"><span data-en>Explain approved update paths while keeping secrets out of CRM.</span><span data-th hidden>แนะนำช่องทางเปลี่ยนข้อมูลที่อนุมัติ โดยไม่บันทึกข้อมูลลับใน CRM</span></span><span class="arrow"><span data-en>Open contact guide →</span><span data-th hidden>เปิดคู่มือข้อมูลติดต่อ →</span></span></a>
+          <a class="card" href="./application-assist.html"><span class="tag"><span data-en>Application support</span><span data-th hidden>ช่วยเหลือการสมัคร</span></span><span class="card-title"><span data-en>Application assistance</span><span data-th hidden>ช่วยเหลือการสมัครผลิตภัณฑ์</span></span><span class="card-copy"><span data-en>Separate product guidance, source status, and follow-up ownership.</span><span data-th hidden>แยกคำแนะนำผลิตภัณฑ์ สถานะจากระบบต้นทาง และผู้รับผิดชอบติดตาม</span></span><span class="arrow"><span data-en>Open application preview →</span><span data-th hidden>เปิดตัวอย่างการสมัคร →</span></span></a>
+          <a class="card" href="./business-access-help.html"><span class="tag"><span data-en>Business banking</span><span data-th hidden>บริการธุรกิจ</span></span><span class="card-title"><span data-en>Business access help</span><span data-th hidden>ช่วยเหลือการเข้าใช้งานธุรกิจ</span></span><span class="card-copy"><span data-en>Guide business users to the right access, authority, or support route.</span><span data-th hidden>แนะนำผู้ใช้ธุรกิจไปยังช่องทางด้านสิทธิ์ อำนาจ หรือการสนับสนุนที่ถูกต้อง</span></span><span class="arrow"><span data-en>Open business help →</span><span data-th hidden>เปิดคู่มือธุรกิจ →</span></span></a>
+        </div>
+      </section>
+
+      <section aria-labelledby="specialistTitle">
+        <div class="section-head"><h2 id="specialistTitle"><span data-en>Specialist and protected journeys</span><span data-th hidden>เส้นทางสำหรับผู้เชี่ยวชาญและข้อมูลที่มีการควบคุม</span></h2><span class="count">5 <span data-en>previews</span><span data-th hidden>ตัวอย่าง</span></span></div>
+        <div class="grid">
+          <a class="card" href="./portfolio-access.html"><span class="tag"><span data-en>Privileged access</span><span data-th hidden>สิทธิ์เข้าถึงพิเศษ</span></span><span class="card-title"><span data-en>Portfolio access</span><span data-th hidden>สิทธิ์เข้าถึงพอร์ตการลงทุน</span></span><span class="card-copy"><span data-en>Request, approve, step up, expire, and revoke read-only portfolio access.</span><span data-th hidden>ขอ อนุมัติ ยืนยันตัวตน กำหนดวันหมดอายุ และเพิกถอนสิทธิ์อ่านพอร์ต</span></span><span class="arrow"><span data-en>Open access preview →</span><span data-th hidden>เปิดตัวอย่างสิทธิ์เข้าถึง →</span></span></a>
+          <a class="card" href="./estate-support.html"><span class="tag"><span data-en>Specialist support</span><span data-th hidden>บริการผู้เชี่ยวชาญ</span></span><span class="card-title"><span data-en>Bereavement support</span><span data-th hidden>ช่วยเหลือกรณีสูญเสียบุคคลใกล้ชิด</span></span><span class="card-copy"><span data-en>Provide clear guidance and a safe handoff for a sensitive life event.</span><span data-th hidden>ให้คำแนะนำและส่งต่ออย่างเหมาะสมสำหรับเหตุการณ์สำคัญที่ละเอียดอ่อน</span></span><span class="arrow"><span data-en>Open support guide →</span><span data-th hidden>เปิดคู่มือช่วยเหลือ →</span></span></a>
+          <a class="card" href="./your-data-assist.html"><span class="tag"><span data-en>Consent and data</span><span data-th hidden>ความยินยอมและข้อมูล</span></span><span class="card-title"><span data-en>Your Data guide</span><span data-th hidden>คู่มือ Your Data</span></span><span class="card-copy"><span data-en>Track consent and authorization states with clear ownership and status.</span><span data-th hidden>ติดตามสถานะความยินยอมและการอนุญาต พร้อมผู้รับผิดชอบและสถานะที่ชัดเจน</span></span><span class="arrow"><span data-en>Open data guide →</span><span data-th hidden>เปิดคู่มือข้อมูล →</span></span></a>
+          <a class="card" href="./privacy-queue.html"><span class="tag"><span data-en>Privacy operations</span><span data-th hidden>งานคุ้มครองข้อมูลส่วนบุคคล</span></span><span class="card-title"><span data-en>Privacy work queue</span><span data-th hidden>คิวงานคุ้มครองข้อมูลส่วนบุคคล</span></span><span class="card-copy"><span data-en>Track request clocks, overdue items, and ownership for the privacy team.</span><span data-th hidden>ติดตามกรอบเวลา รายการเกินกำหนด และผู้รับผิดชอบสำหรับทีมคุ้มครองข้อมูล</span></span><span class="arrow"><span data-en>Open privacy queue →</span><span data-th hidden>เปิดคิวงานคุ้มครองข้อมูล →</span></span></a>
+          <a class="card" href="./fraud-urgent.html"><span class="tag"><span data-en>Urgent response</span><span data-th hidden>การตอบสนองเร่งด่วน</span></span><span class="card-title"><span data-en>Urgent fraud path</span><span data-th hidden>เส้นทางฉุกเฉินกรณีทุจริต</span></span><span class="card-copy"><span data-en>Recognize an urgent report, protect the customer, and route the case.</span><span data-th hidden>รับแจ้งเหตุเร่งด่วน ดูแลความปลอดภัยลูกค้า และส่งต่อเคส</span></span><span class="arrow"><span data-en>Open urgent path →</span><span data-th hidden>เปิดเส้นทางเร่งด่วน →</span></span></a>
+        </div>
+      </section>
+    </main>
+    <footer><span data-en>Bangkok Bank CRM · Product concept for discussion · Synthetic examples only</span><span data-th hidden>Bangkok Bank CRM · แนวคิดผลิตภัณฑ์เพื่อการหารือ · ใช้ตัวอย่างข้อมูลจำลองเท่านั้น</span></footer>
+  </div>
+  <script>
+    (()=>{const button=document.getElementById('languageToggle');let language='en';button.addEventListener('click',()=>{language=language==='en'?'th':'en';document.documentElement.lang=language;document.querySelectorAll('[data-en]').forEach(node=>node.hidden=language!=='en');document.querySelectorAll('[data-th]').forEach(node=>node.hidden=language!=='th');button.textContent=language==='en'?'ไทย':'English';button.setAttribute('aria-label',language==='en'?'Switch language to Thai':'Switch language to English');});})();
+  </script>
+</body>
+</html>

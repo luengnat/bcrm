@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>คิวงานคุ้มครองข้อมูล — Privacy Work Queue · PROTOTYPE</title>
+<!--
+  PROTOTYPE ONLY — synthetic data, placeholder brand (NFR-05).
+  Build-queue #5 from the adversarial review (persona-days verdict: "the
+  single missing screen that would most improve the worst-served persona's
+  day"). Traces: FR-403 (DSAR milestones 15d verify / >=15d cure / ~30d),
+  FR-404 (machine-readable export, auditable completion), FR-408 (72h breach
+  clock from recorded awareness), legal hold, restricted-queue boundary
+  (privacy records excluded from general customer search). Clock component
+  reused from case-workspace per the persona-days recommendation.
+-->
+<style>
+:root{
+  --navy:#10275f;--blue:#174a9a;--ink:#17243c;--muted:#4c5a72;--line:#d9e0ea;
+  --paper:#f1f4f8;--surface:#fff;--red:#8f3136;--red-bg:#fdf0ef;--amber:#7a4e06;
+  --amber-bg:#fff6e4;--green:#06684f;--green-bg:#edf8f3;--info:#274f9e;
+  --focus:0 0 0 3px rgba(8,103,232,.28);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font:15px/1.6 "Sarabun","Noto Sans Thai","Leelawadee UI",sans-serif}
+[lang="en"]{display:none}
+body.en [lang="th"]{display:none}
+body.en [lang="en"]{display:inline}
+.skip{position:absolute;top:-52px;left:12px;z-index:9;padding:9px 14px;background:#fff;color:var(--navy);font-weight:700;border-radius:6px;text-decoration:none}
+.skip:focus{top:10px}
+:focus-visible{outline:none;box-shadow:var(--focus);border-radius:4px}
+.topbar{min-height:62px;padding:0 24px;display:flex;align-items:center;gap:12px;background:var(--navy);color:#fff}
+.brand{display:flex;align-items:center;gap:10px;color:#fff;text-decoration:none;font-weight:700}
+.brand .lotus{width:30px;height:34px;display:inline-flex;align-items:center;justify-content:center;background:#fff;color:var(--navy);border-radius:4px;font-weight:800}
+.env{border-radius:99px;padding:3px 10px;background:#f0b644;color:#2b2b2b;font-size:11px;font-weight:800}
+.restricted{border-radius:99px;padding:3px 10px;background:#5b3a8c;color:#fff;font-size:11px;font-weight:800}
+.spacer{flex:1}
+.staff{text-align:right;font-size:12.5px}
+.staff small{display:block;opacity:.75}
+.langbtn{height:34px;padding:0 12px;border:1px solid rgba(255,255,255,.4);border-radius:5px;background:transparent;color:#fff;cursor:pointer;font-size:13px}
+.nav{display:flex;gap:4px;padding:0 20px;background:#173e85}
+.nav a{padding:10px 15px;color:#fff;text-decoration:none;font-size:13px;opacity:.85}
+.nav a[aria-current]{border-bottom:3px solid #fff;opacity:1;font-weight:700}
+main{max-width:1080px;margin:0 auto;padding:22px 20px 60px}
+h1{font-size:21px;margin:6px 0 2px}
+.crumb{font-size:12.5px;color:var(--muted);margin:0 0 14px}
+.boundary{background:#f2edf9;border:1px solid #5b3a8c;border-radius:8px;padding:11px 15px;font-size:13px;color:#4a2f73;font-weight:600;margin:0 0 16px}
+.row{background:var(--surface);border:1px solid var(--line);border-left:5px solid var(--info);border-radius:8px;padding:14px 16px;margin-bottom:12px;cursor:pointer}
+.row[aria-expanded="true"]{box-shadow:0 2px 10px rgba(16,39,95,.12)}
+.row.breach{border-left-color:var(--red)}
+.row.hold{border-left-color:var(--amber)}
+.row header{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;flex-wrap:wrap}
+.row h2{font-size:15px;margin:0}
+.badge{font-size:11px;font-weight:800;border-radius:99px;padding:2px 10px;letter-spacing:.03em}
+.badge.breach{background:var(--red-bg);color:var(--red)}
+.badge.dsar{background:#eaf0fb;color:var(--info)}
+.badge.hold{background:var(--amber-bg);color:var(--amber)}
+.badge.prop{background:#eef1f5;color:#45536b}
+.clockline{display:flex;gap:18px;flex-wrap:wrap;margin-top:10px;font-size:13px}
+.cl{display:flex;align-items:center;gap:8px}
+.cl .t{font-weight:800;font-variant-numeric:tabular-nums}
+.cl.danger .t{color:var(--red)}
+.cl.warn .t{color:var(--amber)}
+.cl.ok .t{color:var(--green)}
+.dot{width:9px;height:9px;border-radius:50%;display:inline-block}
+.dot.danger{background:var(--red)}.dot.warn{background:var(--amber)}.dot.ok{background:var(--green)}.dot.info{background:var(--info)}
+.detail{display:none;margin-top:12px;border-top:1px dashed var(--line);padding-top:12px;font-size:13.5px}
+.row[aria-expanded="true"] .detail{display:block}
+.detail .kv{display:grid;grid-template-columns:170px 1fr;gap:6px 14px;margin:8px 0}
+.detail .k{color:var(--muted)}
+.btn{font:inherit;font-size:13.5px;border-radius:6px;padding:8px 16px;cursor:pointer;border:1px solid var(--line);background:#fff;color:var(--ink)}
+.btn.primary{background:var(--blue);border-color:var(--blue);color:#fff;font-weight:700}
+.btn[disabled]{opacity:.45;cursor:not-allowed}
+.log{font-size:12.5px;color:var(--muted);margin-top:8px;font-style:italic}
+footer.proto{text-align:center;font-size:12px;color:var(--muted);padding:14px 0 30px}
+</style>
+</head>
+<body>
+<a class="skip" href="#queue"><span lang="th">ข้ามไปยังคิว</span><span lang="en">Skip to the queue</span></a>
+
+<header class="topbar">
+  <a class="brand" href="role-workspaces.html"><span class="lotus" aria-hidden="true">บ</span> Bangkok Bank <small style="font-weight:400;opacity:.75">CRM</small></a>
+  <span class="env">PROTOTYPE</span>
+  <span class="restricted"><span lang="th">พื้นที่จำกัด · DPO</span><span lang="en">RESTRICTED · DPO</span></span>
+  <span class="spacer"></span>
+  <button class="langbtn" id="lang" type="button" aria-label="Switch language">EN</button>
+  <div class="staff"><span lang="th">พลอย ช.</span><span lang="en">Ploy Ch.</span><small><span lang="th">เจ้าหน้าที่คุ้มครองข้อมูลส่วนบุคคล</span><span lang="en">Data Protection Officer</span></small></div>
+</header>
+
+<nav class="nav" aria-label="Main">
+  <a href="role-workspaces.html"><span lang="th">งานของฉัน</span><span lang="en">My work</span></a>
+  <a href="privacy-queue.html" aria-current="page"><span lang="th">คิวคุ้มครองข้อมูล</span><span lang="en">Privacy queue</span></a>
+  <a href="your-data-assist.html"><span lang="th">คำแนะนำ Your Data</span><span lang="en">Your Data guidance</span></a>
+</nav>
+
+<main>
+  <h1><span lang="th">คิวงานคุ้มครองข้อมูล — นาฬิกาต่อรายการ</span><span lang="en">Privacy work queue — one live clock per item</span></h1>
+  <p class="crumb"><span lang="th">15 ต.ค. 2026 · คำขอใช้สิทธิ + เหตุที่สงสัยการละเมิดข้อมูล · นาฬิกายึดตามเวลาที่บันทึกไว้จริง</span><span lang="en">15 Oct 2026 · rights requests + suspected incidents · clocks anchored to recorded times</span></p>
+
+  <div class="boundary"><span lang="th">คิวนี้แยกจากการค้นหาลูกค้าทั่วไป — ระเบียนในนี้ไม่ปรากฏในผลค้นหาทั่วไป · การตอบกลับใช้ช่องทางปลอดภัยที่กำหนด · การตัดสินใจบันทึกผู้อนุมัติและเวลาเสมอ</span><span lang="en">This queue is excluded from general customer search — records here never appear in ordinary results · responses go only via the defined secure channel · every decision records its approver and time</span></div>
+
+  <div id="queue">
+
+    <section class="row breach" aria-expanded="false" tabindex="0" role="button">
+      <header>
+        <h2>INC-2026-0009 · <span lang="th">สงสัยการเปิดเผยข้อมูลลูกค้า ~1,900 ราย (ไฟล์แนบผิดรายชื่อ)</span><span lang="en">Suspected disclosure affecting ~1,900 customers (mis-addressed statement file)</span></h2>
+        <span class="badge breach"><span lang="th">เหตุละเมิด · 72 ชม.</span><span lang="en">INCIDENT · 72H</span></span>
+      </header>
+      <div class="clockline">
+        <span class="cl danger"><span class="dot danger" aria-hidden="true"></span><span lang="th">นาฬิกาแจ้ง PDPC (72 ชม. จากเวลาที่ทราบ 14:20): </span><span lang="en">PDPC notification clock (72h from awareness 14:20): </span><span class="t" id="breach-clock">68:05</span></span>
+        <span class="cl"><span class="dot info" aria-hidden="true"></span><span lang="th">สถานะ: กำลังคัดกรองระดับความรุนแรง</span><span lang="en">status: severity triage in progress</span></span>
+      </div>
+      <div class="detail">
+        <div class="kv">
+          <span class="k"><span lang="th">เวลาที่ทราบเหตุ (บันทึกแล้ว)</span><span lang="en">Awareness time (recorded)</span></span><span>15 Oct 14:20 · <span lang="th">ผู้แจ้ง: ไอที (อีเมลภายใน)</span><span lang="en">reported by IT (internal mail)</span></span>
+          <span class="k"><span lang="th">ขั้นตอนถัดไป</span><span lang="en">Next steps</span></span><span><span lang="th">1) ยืนยันขอบเขตข้อมูลกับเจ้าของระบบ 2) ประเมินความเสี่ยงต่อสิทธิเจ้าของข้อมูล 3) บันทึกคำวินิจฉัยการแจ้ง PDPC (ภายในกฎ 72 ชม. — "โดยไม่ชักช้า") พร้อมผู้อนุมัติ 4) กำหนดช่องทางแจ้งลูกค้าหากจำเป็น</span><span lang="en">1) confirm data scope with the system owner 2) assess risk to data-subject rights 3) record the PDPC-notification decision (within the 72h window — "without undue delay") with approver 4) define the customer-notification channel if required</span></span>
+          <span class="k"><span lang="th">การส่งออกหลักฐาน</span><span class="en">Evidence export</span></span><span><span lang="th">ชุดเหตุการณ์แบบอ่านเครื่องได้ (สำหรับตรวจสอบภายนอก)</span><span lang="en">machine-readable incident pack (for external audit)</span></span>
+        </div>
+        <button class="btn primary" data-act="triage"><span lang="th">บันทึกผลคัดกรอง + คำวินิจฉัยการแจ้ง</span><span lang="en">Record triage + notification decision</span></button>
+        <p class="log" data-log hidden></p>
+      </div>
+    </section>
+
+    <section class="row" aria-expanded="false" tabindex="0" role="button">
+      <header>
+        <h2>PR-1044 · <span lang="th">คำขอเข้าถึง/สำเนาข้อมูล (PDPA ม.30) — ข้อมูลไม่ครบ</span><span lang="en">Access &amp; copy request (PDPA s.30) — incomplete</span></h2>
+        <span class="badge dsar"><span lang="th">คำขอใช้สิทธิ</span><span lang="en">RIGHTS REQUEST</span></span>
+      </header>
+      <div class="clockline">
+        <span class="cl warn"><span class="dot warn" aria-hidden="true"></span><span lang="th">ตรวจความครบถ้วน/อำนาจผู้ขอ (15 วัน จากรับ 14 ต.ค.): </span><span lang="en">Completeness/authority review (15d from receipt 14 Oct): </span><span class="t">13 <span lang="th">วันเหลือ</span><span lang="en">days left</span></span>
+        <span class="cl"><span class="dot info" aria-hidden="true"></span><span lang="th">เป้าหมายรวม ~30 วันนับแต่คำขอครบ/ถูกต้อง · ส่งมอบทางช่องทางปลอดภัย</span><span lang="en">~30-day overall target from complete/valid date · secure delivery</span></span>
+      </div>
+      <div class="detail">
+        <div class="kv">
+          <span class="k"><span lang="th">ผู้ขอ</span><span lang="en">Requester</span></span><span><span lang="th">ตัวแทนโดยชอบ (ทนาย) — </span><span lang="en">authorized representative (counsel) — </span><span lang="th">รอตรวจเอกสารมอบอำนาจ</span><span lang="en">power-of-attorney under review</span></span>
+          <span class="k"><span lang="th">สิ่งที่ต้องส่งคืนผู้ขอ</span><span lang="en">Cure return</span></span><span><span lang="th">หากไม่ครบ: คืนพร้อมระยะเวลาแก้ไข ≥15 วัน — นาฬิกาใหม่เริ่มเมื่อได้ข้อมูลครบ</span><span lang="en">if incomplete: return with a ≥15-day cure window — a new clock starts on receipt</span></span>
+          <span class="k"><span lang="th">ชุดตอบกลับ</span><span lang="en">Response pack</span></span><span><span lang="th">ระบบที่ตรวจแล้ว / รายการที่คืน / ข้อยกเว้น+เหตุผล / ผู้อนุมัติ / วันที่ — ส่งออกอ่านเครื่องได้ (FR-404)</span><span lang="en">systems checked / items returned / exceptions+reasons / approver / dates — machine-readable export (FR-404)</span></span>
+        </div>
+        <button class="btn primary" data-act="verify"><span lang="th">บันทึกผลตรวจอำนาจ/ความครบ</span><span lang="en">Record authority/completeness outcome</span></button>
+        <p class="log" data-log hidden></p>
+      </div>
+    </section>
+
+    <section class="row" aria-expanded="false" tabindex="0" role="button">
+      <header>
+        <h2>PR-1041 · <span lang="th">คัดค้านการประมวลผลเพื่อการตลาดทางตรง (PDPA)</span><span lang="en">Direct-marketing processing objection (PDPA)</span></h2>
+        <span class="badge prop"><span lang="th">การส่งต่อสถานะ</span><span lang="en">PROPAGATION</span></span>
+      </header>
+      <div class="clockline">
+        <span class="cl warn"><span class="dot warn" aria-hidden="true"></span><span lang="th">ระงับในระบบแล้ว · ปลายทาง 1 แห่งยังไม่ยืนยัน: </span><span lang="en">local hold active · 1 destination unconfirmed: </span><span class="t"><span lang="th">รอยืนยัน</span><span lang="en">pending</span></span></span>
+        <span class="cl"><span class="dot info" aria-hidden="true"></span><span lang="th">ห้ามรายงาน "เสร็จสิ้น" จนกว่าการยืนยันจากปลายทางถึง (ตัวอย่างเวลา 24/48 ชม. ของ ธปท. ไม่ใช่ SLA ของธนาคาร)</span><span lang="en">never report complete until the destination confirmation arrives (BOT's 24h/48h examples are not Bank SLAs)</span></span>
+      </div>
+      <div class="detail">
+        <div class="kv">
+          <span class="k"><span lang="th">ประเภทคำขอ</span><span lang="en">Request type</span></span><span><span lang="th">คัดค้านการประมวลผล — แยกจากถอนความยินยอม / ระงับการติดต่อของธนาคาร / ระงับการติดต่อจากผู้รับข้อมูล</span><span lang="en">processing objection — distinct from consent withdrawal / bank contact-stop / recipient contact-stop</span></span>
+          <span class="k"><span lang="th">ปลายทางที่ต้องยืนยัน</span><span lang="en">Destinations</span></span><span><span lang="th">ระบบแคมเปญ (ยืนยันแล้ว) · ผู้รับข้อมูลภายนอก 1 ราย (รอ)</span><span lang="en">campaign system (confirmed) · 1 external recipient (pending)</span></span>
+        </div>
+        <button class="btn" data-act="prop"><span lang="th">ดูสถานะส่งต่อรายปลายทาง</span><span lang="en">View per-destination propagation</span></button>
+        <p class="log" data-log hidden></p>
+      </div>
+    </section>
+
+    <section class="row hold" aria-expanded="false" tabindex="0" role="button">
+      <header>
+        <h2>CASE-2026-04781 · <span lang="th">คำขอกันหนี้งาน (Legal hold) บนเคสที่ปิดแล้ว</span><span lang="en">Legal-hold request on a closed case</span></h2>
+        <span class="badge hold"><span lang="th">กันหนี้งาน</span><span lang="en">LEGAL HOLD</span></span>
+      </header>
+      <div class="clockline">
+        <span class="cl"><span class="dot warn" aria-hidden="true"></span><span lang="th">ห้ามลบ/แก้ระเบียนที่เกี่ยวข้องจนกว่าฝ่ายกฎหมายถอนคำขอ — ตัวจับเวลาไม่เดินจนมีคำตอบ</span><span lang="en">no deletion or amendment of related records until Legal withdraws — no clock runs until answered</span></span>
+      </div>
+      <div class="detail">
+        <div class="kv">
+          <span class="k"><span lang="th">ผู้ขอ</span><span lang="en">Requested by</span></span><span><span lang="th">ฝ่ายกฎหมาย · 15 ต.ค. 11:05 · อ้างอิงคำสั่งศาล</span><span lang="en">Legal · 15 Oct 11:05 · court order reference</span></span>
+          <span class="k"><span lang="th">ขอบเขต</span><span lang="en">Scope</span></span><span>CASE-2026-04781 + <span lang="th">ระเบียนธุรกรรมที่เกี่ยวข้อง</span><span lang="en">related transaction records</span></span>
+        </div>
+        <button class="btn primary" data-act="hold"><span lang="th">บันทึกการรับคำขอกันหนี้งาน</span><span lang="en">Acknowledge the hold</span></button>
+        <p class="log" data-log hidden></p>
+      </div>
+    </section>
+
+  </div>
+
+  <footer class="proto"><span lang="th">ต้นแบบเพื่อการตรวจสอบ — ข้อมูลจำลอง · อ้างอิง FR-403/404/408 · เวลา 72 ชม.ยึดจาก "เวลาที่ทราบ" ที่บันทึกไว้ · งานตรวจสอบ T09/T11</span><span lang="en">Validation prototype — synthetic data · traces FR-403/404/408 · the 72h clock anchors to the recorded awareness time · usability tasks T09/T11</span></footer>
+</main>
+
+<script>
+'use strict';
+const $ = (s)=>document.querySelector(s);
+function applyLang(en){
+  document.documentElement.lang = en ? 'en' : 'th';
+  const b = $('#lang'); b.textContent = en ? 'ไทย' : 'EN';
+  b.setAttribute('aria-label', en ? 'สลับเป็นภาษาไทย' : 'Switch to English');
+}
+$('#lang').addEventListener('click', () => applyLang(document.body.classList.toggle('en')));
+
+// expand/collapse rows (keyboard + click)
+document.querySelectorAll('.row').forEach(row => {
+  const toggle = () => {
+    document.querySelectorAll('.row').forEach(r => { if (r !== row) r.setAttribute('aria-expanded','false'); });
+    row.setAttribute('aria-expanded', row.getAttribute('aria-expanded') === 'true' ? 'false' : 'true');
+  };
+  row.addEventListener('click', (e)=>{ if (!e.target.closest('button')) toggle(); });
+  row.addEventListener('keydown', (e)=>{ if ((e.key==='Enter'||e.key===' ') && e.target===row){ e.preventDefault(); toggle(); } });
+});
+
+// live 72h breach countdown from recorded awareness 15 Oct 14:20 (demo anchor: now = 15 Oct 16:15)
+const AWARE = new Date(); AWARE.setHours(14,20,0,0);
+const DEMO_NOW = new Date(); DEMO_NOW.setHours(16,15,0,0);
+function breachTick(){
+  const elapsed = (DEMO_NOW - AWARE) / 3600000;           // hours since awareness
+  const left = Math.max(0, 72 - elapsed);
+  const h = Math.floor(left), m = Math.floor((left - h) * 60);
+  const el = $('#breach-clock');
+  el.textContent = String(h).padStart(2,'0') + ':' + String(m).padStart(2,'0');
+}
+breachTick();
+
+// action receipts — audited lines, never toast-only
+document.querySelectorAll('[data-act]').forEach(btn => {
+  btn.addEventListener('click', (e)=>{
+    e.stopPropagation();
+    const log = btn.parentElement.querySelector('[data-log]');
+    const now = new Date(); const ts = String(now.getHours()).padStart(2,'0') + ':' + String(now.getMinutes()).padStart(2,'0');
+    const msgs = {
+      triage: {th:'บันทึกผลคัดกรองแล้ว (16:2X) · ผู้บันทึก: พลอย ช. · คำวินิจฉัยการแจ้ง PDPC: รอผู้อนุมัติ — นาฬิกา 72 ชม. ยังเดิน', en:'Triage recorded · by Ploy Ch. · PDPC notification decision: awaiting approver — the 72h clock keeps running'},
+      verify: {th:'บันทึกผลตรวจอำนาจผู้ขอแล้ว · เป้าหมายรวมเริ่มนับเมื่อคำขอครบ/ถูกต้อง · ส่งมอบทางช่องทางปลอดภัยเท่านั้น', en:'Authority review recorded · the overall target starts when the request is complete/valid · secure delivery only'},
+      prop:   {th:'เปิดมุมมองส่งต่อรายปลายทาง: ระบบแคมเปญ = ยืนยันแล้ว · ผู้รับภายนอก = รอ (ห้ามรายงานเสร็จสิ้น)', en:'Per-destination propagation: campaign system = confirmed · external recipient = pending (do not report complete)'},
+      hold:   {th:'รับคำขอกันหนี้งานแล้ว · ระเบียนในขอบเขตถูกป้องกันการลบ/แก้ไขจนมีคำสั่งเพิกถอน', en:'Hold acknowledged · in-scope records protected from deletion/amendment until withdrawn'},
+    };
+    const k = btn.dataset.act;
+    log.hidden = false;
+    log.innerHTML = '<span lang="th">' + msgs[k].th + '</span><span lang="en">' + msgs[k].en + '</span>';
+  });
+});
+</script>
+</body>
+</html>

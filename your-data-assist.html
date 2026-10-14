@@ -1,0 +1,229 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Your Data guide — Bangkok Bank CRM</title>
+<style>
+:root{--navy:#10275f;--blue:#174a9a;--lotus:#0867e8;--ink:#17243c;--muted:#64728a;--line:#d9e0ea;--paper:#f1f4f8;--surface:#fff;--pale:#edf4ff;--teal:#087e82;--teal-bg:#eaf7f5;--amber:#855608;--amber-bg:#fff6e4;--red:#a6383d;--shadow:0 8px 24px rgba(16,39,95,.06);--focus:0 0 0 3px rgba(8,103,232,.28)}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:14px/1.55 "Sarabun","Noto Sans Thai","Leelawadee UI",sans-serif}button,select,input{font:inherit}button{cursor:pointer}a{color:var(--blue)}:focus-visible{outline:none;box-shadow:var(--focus);border-radius:5px}[lang="th"]:not(html){display:none!important}body.th [lang="en"]:not(html){display:none!important}body.th [lang="th"]:not(html){display:inline!important}
+.skip{position:absolute;top:-50px;left:12px;z-index:5;padding:8px 12px;background:white;color:var(--navy);font-weight:700}.skip:focus{top:8px}
+.topbar{min-height:62px;padding:0 26px;display:flex;align-items:center;gap:12px;background:var(--navy);color:white}.brand{display:flex;align-items:center;gap:10px;min-width:230px;color:white;text-decoration:none}.brand img{width:30px;height:35px;object-fit:contain}.brand strong{font-size:14px}.brand small{display:block;font-size:10px;font-weight:400;opacity:.74}.env{margin-left:6px;border-radius:99px;padding:3px 9px;background:#f0b644;color:#2b2b2b;font-size:10px;font-weight:800;letter-spacing:.08em}.spacer{flex:1}.staff{text-align:right;font-size:12px}.staff small{display:block;opacity:.72}.lang{height:34px;padding:0 12px;border:1px solid rgba(255,255,255,.4);border-radius:5px;background:transparent;color:white}
+.nav{display:flex;gap:4px;padding:0 23px;background:#173e85}.nav a{padding:10px 15px;color:white;text-decoration:none;font-size:12px;opacity:.84}.nav a[aria-current]{border-bottom:3px solid white;opacity:1;font-weight:700}
+main{max-width:1420px;margin:auto;padding:24px 28px 42px}.crumb{margin:0 0 8px;color:var(--muted);font-size:12px}.heading{display:flex;align-items:flex-start;justify-content:space-between;gap:18px}.heading h1{margin:0;color:var(--navy);font-size:27px;line-height:1.25;letter-spacing:-.3px}.heading p{max-width:760px;margin:6px 0 0;color:var(--muted);font-size:13px}.review{display:flex;align-items:center;gap:8px;flex:0 0 auto;border:1px solid #c6d8f2;border-radius:6px;padding:7px 10px;background:#f5f9ff;color:#31598d;font-size:11px;font-weight:700;white-space:nowrap}.review .dot{width:8px;height:8px;border-radius:50%;background:var(--blue)}
+.rolebar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:18px 0 15px;padding:11px 13px;border:1px solid var(--line);border-radius:8px;background:white;box-shadow:var(--shadow)}.role-label{color:var(--muted);font-size:12px;font-weight:700}.seg{display:inline-flex;gap:2px;border:1px solid var(--line);border-radius:6px;padding:2px;background:#f7f9fc}.seg button{border:0;border-radius:4px;padding:6px 11px;background:transparent;color:#4c5a71;font-size:12px}.seg button[aria-pressed="true"]{background:var(--navy);color:white}
+.layout{display:grid;grid-template-columns:minmax(0,1fr) 330px;gap:16px;align-items:start}.maincol{min-width:0}.card{overflow:hidden;border:1px solid var(--line);border-radius:8px;background:var(--surface);box-shadow:var(--shadow)}.card+.card{margin-top:15px}.cardhead{display:flex;align-items:center;justify-content:space-between;gap:12px;border-bottom:1px solid #e6eaf0;padding:12px 15px}.cardhead h2{margin:0;color:#394963;font-size:13px;letter-spacing:.04em;text-transform:uppercase}.cardbody{padding:15px}.kicker{color:var(--muted);font-size:10px;font-weight:750;letter-spacing:.07em;text-transform:uppercase}.status-banner{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:18px;border-top:3px solid var(--lotus);padding:16px 18px;background:linear-gradient(110deg,#fff 0%,#fff 58%,#f4f8ff 100%)}.status-banner h2{margin:4px 0;color:var(--navy);font-size:20px;line-height:1.35}.status-banner p{max-width:820px;margin:4px 0 0;color:#536179;font-size:12px}.status-chip{max-width:260px;border:1px solid #e5cd95;border-radius:7px;padding:10px 12px;background:var(--amber-bg);color:#684813}.status-chip strong{display:block;font-size:13px}.status-chip small{display:block;margin-top:2px;font-size:10px;line-height:1.45}
+.category-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.category{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px 12px;border:1px solid #e1e6ee;border-radius:7px;padding:13px;background:#fff}.category h3{margin:0;color:#283a57;font-size:14px}.category p{grid-column:1/-1;margin:0;color:#56647a;font-size:12px}.mechanism{align-self:start;border-radius:99px;padding:3px 8px;background:var(--pale);color:var(--blue);font-size:10px;font-weight:800;white-space:nowrap}.category-foot{grid-column:1/-1;border-top:1px solid #e8edf3;padding-top:7px;color:var(--muted);font-size:10px}
+.steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:0;padding:0;list-style:none}.step{min-height:150px;border:1px solid #dfe6ef;border-radius:7px;padding:12px;background:#fbfcfe}.stepnum{display:grid;place-items:center;width:26px;height:26px;border-radius:50%;background:var(--navy);color:white;font-size:12px;font-weight:800}.step h3{margin:9px 0 5px;color:var(--navy);font-size:13px;line-height:1.4}.step p{margin:0;color:#56647a;font-size:11px}.step-tag{display:inline-block;margin-top:9px;border-radius:4px;padding:3px 6px;background:#f1f4f8;color:#526078;font-size:9px;font-weight:750}
+.boundary{display:flex;gap:10px;margin-top:12px;border-left:3px solid var(--teal);border-radius:0 6px 6px 0;padding:10px 12px;background:var(--teal-bg);color:#315c59;font-size:11px}.boundary strong{color:#195e5a}
+.side .cardhead{padding:11px 13px}.side .cardbody{padding:13px}.role-title{display:flex;align-items:center;justify-content:space-between;gap:10px}.role-title h2{margin:0;color:var(--navy);font-size:15px}.badge{border-radius:99px;padding:4px 8px;background:var(--pale);color:var(--blue);font-size:9px;font-weight:800;white-space:nowrap}.badge.gate{background:var(--amber-bg);color:var(--amber)}.role-copy{margin:9px 0 0;color:#4e5c72;font-size:12px}.rm-gate{margin-top:10px;border:1px solid #e6d4a9;border-radius:6px;padding:9px 10px;background:#fffbf1;color:#70531c;font-size:10px}.callout-script{border-left:3px solid #6285b8;border-radius:0 6px 6px 0;padding:10px 11px;background:#f5f8fc;color:#3c4b63;font-size:12px}.callout-script p{margin:5px 0 0}.btnrow{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}.btn{display:inline-flex;align-items:center;justify-content:center;min-height:36px;border:1px solid #cbd4e1;border-radius:5px;padding:7px 11px;background:white;color:var(--navy);font-size:11px;font-weight:750;text-decoration:none}.btn.primary{border-color:var(--blue);background:var(--blue);color:white}.btn:hover{filter:brightness(.97)}.source-list{display:grid;gap:11px}.source{display:grid;grid-template-columns:24px minmax(0,1fr);gap:8px;align-items:start;font-size:11px}.source-mark{display:grid;place-items:center;width:22px;height:22px;border-radius:4px;background:#eaf0fa;color:var(--blue);font-size:9px;font-weight:800}.source a{font-weight:700;text-decoration:none}.source a:hover{text-decoration:underline}.source small{display:block;margin-top:2px;color:var(--muted);font-size:10px}.source-note{margin:11px 0 0;border-top:1px solid #e7ebf0;padding-top:8px;color:var(--muted);font-size:10px}
+.demo-stamp{margin:18px 0 0;color:#77849a;text-align:center;font-size:10px}
+dialog{width:min(470px,calc(100% - 24px));padding:0;border:1px solid var(--line);border-radius:9px;color:var(--ink);box-shadow:0 16px 60px rgba(8,22,50,.28)}dialog::backdrop{background:rgba(13,28,58,.42)}.dialog-head{display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line);padding:13px 15px}.dialog-head h2{margin:0;color:var(--navy);font-size:15px}.dialog-body{padding:14px 15px}.dialog-body label{display:block;margin:0 0 4px;color:#45536a;font-size:11px;font-weight:700}.dialog-body select,.dialog-body input{width:100%;margin:0 0 11px;padding:8px 9px;border:1px solid #cbd4e1;border-radius:5px;background:white;color:var(--ink)}.dialog-note{margin:3px 0 0;color:var(--muted);font-size:10px}.dialog-actions{display:flex;justify-content:flex-end;gap:8px;padding:0 15px 14px}#toast{position:fixed;right:20px;bottom:20px;z-index:5;display:none;max-width:380px;border-radius:7px;padding:11px 14px;background:var(--navy);color:white;box-shadow:0 6px 24px rgba(0,0,0,.18);font-size:12px}#toast.show{display:block}
+@media(max-width:1050px){.layout{grid-template-columns:1fr}.side{display:grid;grid-template-columns:1fr 1fr;gap:14px}.side .card+.card{margin-top:0}}
+@media(max-width:760px){.topbar{padding:9px 13px;flex-wrap:wrap;gap:8px}.brand{min-width:auto;margin-right:auto}.staff,.env{display:none}.nav{padding:0 8px;overflow-x:auto;white-space:nowrap}.nav a{padding:10px 12px}.lang{order:1}main{padding:18px 12px 30px}.heading{display:block}.heading h1{font-size:22px}.review{display:inline-flex;margin-top:10px}.rolebar{display:block}.role-label{display:block;margin-bottom:7px}.seg{display:flex;width:100%}.seg button{flex:1;padding-inline:7px}.status-banner{grid-template-columns:1fr}.status-chip{max-width:none}.category-grid{grid-template-columns:1fr}.steps{grid-template-columns:1fr}.step{min-height:auto}.side{display:grid;grid-template-columns:1fr}.side .card+.card{margin-top:0}.btnrow .btn{flex:1}.demo-stamp{margin-top:15px}}
+</style>
+<style>
+.preview-state{display:flex;align-items:center;gap:9px;margin:-4px 0 15px;border:1px dashed #b9c7d9;border-radius:6px;padding:8px 11px;background:#f8faff;color:#4e5c72;font-size:11px}.preview-state label{font-weight:700}.preview-state select{min-height:32px;border:1px solid #cbd4e1;border-radius:4px;padding:4px 8px;background:#fff;color:var(--ink)}.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.source-warning{display:none;grid-column:1/-1;margin-top:0;border-left:3px solid #a66a12;border-radius:0 6px 6px 0;padding:10px 12px;background:var(--amber-bg);color:#684813;font-size:12px}.source-warning p{margin:0 0 4px}.source-warning a{font-weight:750}.source-caveat{display:none;padding:14px 15px;color:#684813;font-size:12px}.status-banner[data-source-state="stale"],.status-banner[data-source-state="unavailable"]{border-top-color:#a66a12}.status-banner[data-source-state="stale"] .source-warning,.status-banner[data-source-state="unavailable"] .source-warning{display:block}.status-banner[data-source-state="stale"]~.category-card .category-grid,.status-banner[data-source-state="unavailable"]~.category-card .category-grid{display:none}.status-banner[data-source-state="stale"]~.category-card .source-caveat,.status-banner[data-source-state="unavailable"]~.category-card .source-caveat{display:block}
+@media(max-width:760px){.preview-state{align-items:stretch;flex-direction:column}.preview-state select{width:100%}}
+</style>
+</head>
+<body class="th">
+<a class="skip" href="#main"><span lang="th">ข้ามไปยังเนื้อหา</span><span lang="en">Skip to content</span></a>
+<header class="topbar">
+  <a class="brand" href="case-workspace.html" aria-label="Bangkok Bank CRM home"><img src="assets/bbl-lotus.png" alt=""><strong>Bangkok Bank <small>CRM · Service guidance</small></strong></a>
+  <span class="env">PROTOTYPE</span>
+  <span class="spacer"></span>
+  <button class="lang" id="lang" type="button" aria-label="Switch to English">EN</button>
+  <div class="staff"><span lang="th">สมชาย ใจดี</span><span lang="en">Somchai Jaidi</span><small><span lang="th">บริการลูกค้า</span><span lang="en">Customer service</span></small></div>
+</header>
+<nav class="nav" aria-label="Main navigation">
+  <a href="case-workspace.html"><span lang="th">งานของฉัน</span><span lang="en">My work</span></a>
+  <a href="case-workspace.html"><span lang="th">เคสบริการ</span><span lang="en">Cases</span></a>
+  <a href="case-workspace.html"><span lang="th">คดี</span><span lang="en">Cases</span></a>
+  <a href="service-guide.html"><span lang="th">คำแนะนำบริการ</span><span lang="en">Service guidance</span></a>
+  <a href="your-data-assist.html" aria-current="page"><span lang="th">ข้อมูลของคุณ</span><span lang="en">Your Data</span></a>
+</nav>
+<main id="main">
+  <p class="crumb"><span lang="th">บริการลูกค้า › คำแนะนำบริการ › Your Data</span><span lang="en">Customer service › Service guidance › Your Data</span></p>
+  <div class="heading">
+    <div>
+      <h1><span lang="th">ข้อมูลที่ลูกค้าขอส่งจากธนาคารกรุงเทพได้</span><span lang="en">Data customers can request to share from Bangkok Bank</span></h1>
+      <p><span lang="th">คำแนะนำจากหน้าเผยแพร่ของธนาคาร แยกประเภทข้อมูลและช่องทางออกจากสถานะการส่งข้อมูลของลูกค้าแต่ละราย</span><span lang="en">Use the Bank’s published guidance. Keep data categories and routes separate from any individual customer’s transfer status.</span></p>
+    </div>
+    <div class="review"><span class="dot" aria-hidden="true"></span><span lang="th">ตรวจแหล่งข้อมูล 15 ต.ค. 2569</span><span lang="en">Source checked 15 Oct 2026</span></div>
+  </div>
+
+  <section class="rolebar" aria-label="Employee role">
+    <span class="role-label"><span lang="th">มุมมองพนักงาน</span><span lang="en">Employee view</span></span>
+    <div class="seg" role="group" aria-label="Choose employee role">
+      <button type="button" data-role="teller" aria-pressed="true"><span lang="th">พนักงานสาขา</span><span lang="en">Teller</span></button>
+      <button type="button" data-role="agent" aria-pressed="false"><span lang="th">คอนแทคเซ็นเตอร์</span><span lang="en">Contact center</span></button>
+      <button type="button" data-role="rm" aria-pressed="false"><span lang="th">RM</span><span lang="en">RM</span></button>
+    </div>
+  </section>
+  <div class="preview-state">
+    <label for="source-state"><span lang="th">สถานะแหล่งข้อมูลสำหรับต้นแบบ</span><span lang="en">Prototype source scenario</span></label>
+    <select id="source-state" aria-describedby="preview-state-note">
+      <option value="current" data-en="Current source" data-th="แหล่งข้อมูลปัจจุบัน">แหล่งข้อมูลปัจจุบัน</option>
+      <option value="stale" data-en="Stale source" data-th="แหล่งข้อมูลเก่า">แหล่งข้อมูลเก่า</option>
+      <option value="unavailable" data-en="Source unavailable" data-th="แหล่งข้อมูลใช้ไม่ได้">แหล่งข้อมูลใช้ไม่ได้</option>
+    </select>
+    <span id="preview-state-note"><span lang="th">ตัวควบคุมเพื่อทบทวนเท่านั้น ไม่ใช่สถานะเชื่อมต่อจริง</span><span lang="en">Review control only; not a live integration status.</span></span>
+  </div>
+  <p id="source-announcement" class="sr-only" aria-live="polite"></p>
+
+  <div class="layout">
+    <div class="maincol">
+      <section id="availability-card" class="card status-banner" data-source-state="current" aria-labelledby="availability-title">
+        <div id="current-guidance">
+          <span class="kicker"><span lang="th">สถานะตามประกาศธนาคารกรุงเทพ</span><span lang="en">Bangkok Bank published status</span></span>
+          <h2 id="availability-title"><span lang="th">วันเริ่มให้ลูกค้าใช้สิทธิยังไม่ประกาศ</span><span lang="en">Customer start date has not been announced</span></h2>
+          <p><span lang="th">หน้าข้อมูลธนาคารระบุว่าจะประกาศวันเริ่มให้บริการในภายหลัง ธปท.คาดว่าจะเริ่มกลไกด้วยข้อมูลบัญชีเงินฝากบุคคลธรรมดาภายในสิ้นปี 2569 และทยอยข้อมูลประเภทอื่นในปี 2570–2571 แต่กำหนดดังกล่าวไม่ยืนยันวันเริ่มของธนาคารกรุงเทพหรือสถานะของลูกค้ารายบุคคล</span><span lang="en">Bangkok Bank says it will announce its customer start date later. BOT expects mechanisms to begin with individual deposit data by end-2026, then expand during 2027–2028; that does not confirm Bangkok Bank’s launch date or an individual customer’s status.</span></p>
+        </div>
+        <div id="noncurrent-guidance" hidden>
+          <span class="kicker"><span lang="th">สถานะคำแนะนำ</span><span lang="en">Guidance status</span></span>
+          <h2><span id="noncurrent-title-th" lang="th"></span><span id="noncurrent-title-en" lang="en"></span></h2>
+          <p><span id="noncurrent-copy-th" lang="th"></span><span id="noncurrent-copy-en" lang="en"></span></p>
+        </div>
+        <div class="status-chip"><strong id="status-chip-title"><span lang="th">ยังไม่ประกาศ</span><span lang="en">Not announced</span></strong><small id="status-chip-note"><span lang="th">อ้างอิงหน้า Bangkok Bank ที่ตรวจสอบ 15 ต.ค. 2569</span><span lang="en">Based on the Bangkok Bank page checked 15 Oct 2026</span></small></div>
+        <div class="source-warning">
+          <p><span lang="th">อย่าใช้เนื้อหาเก่าหรือสถานะการเชื่อมต่อนี้เพื่อยืนยันประเภทข้อมูล วันเริ่มบริการ หรือสถานะของลูกค้ารายบุคคล</span><span lang="en">Do not use stale content or this connection state to confirm data categories, launch timing or an individual customer’s status.</span></p>
+          <a href="https://www.bangkokbank.com/th-TH/About-Us/News-and-Media/bbl-your-data-bot" target="_blank" rel="noreferrer"><span lang="th">เปิดข้อมูลทางการของธนาคารกรุงเทพ</span><span lang="en">Open Bangkok Bank’s official information</span></a>
+        </div>
+      </section>
+
+      <section class="card category-card" aria-labelledby="data-types-title">
+        <div class="cardhead"><h2 id="data-types-title"><span lang="th">ประเภทข้อมูลและช่องทางที่ประกาศ</span><span lang="en">Published data categories and routes</span></h2><span class="kicker"><span lang="th">ข้อมูลทั่วไป · ไม่ใช่ข้อมูลรายบัญชี</span><span lang="en">General guide · no account-level data</span></span></div>
+        <div class="source-caveat"><span lang="th">ซ่อนรายละเอียดที่อาจล้าสมัยหรือยืนยันไม่ได้ ให้ใช้เฉพาะหน้าอย่างเป็นทางการจนกว่าเจ้าของเนื้อหาจะยืนยันข้อมูลปัจจุบัน</span><span lang="en">Potentially stale or unverified details are hidden. Use the official page until the content owner confirms current guidance.</span></div>
+        <div class="cardbody category-grid">
+          <article class="category"><h3><span lang="th">บัญชีเงินฝาก</span><span lang="en">Deposit accounts</span></h3><span class="mechanism">API</span><p><span lang="th">ข้อมูลบัญชี ประวัติรายการ และรายการเดินบัญชี</span><span lang="en">Account information, transaction history and statements</span></p><div class="category-foot"><span lang="th">ส่งข้อมูลไปยังผู้ให้บริการรายอื่นผ่าน API</span><span lang="en">Sent to another provider through an API</span></div></article>
+          <article class="category"><h3><span lang="th">เงินอิเล็กทรอนิกส์</span><span lang="en">E-money</span></h3><span class="mechanism">API</span><p><span lang="th">ข้อมูลบัญชี ประวัติรายการ และรายการเดินบัญชี</span><span lang="en">Account information, transaction history and statements</span></p><div class="category-foot"><span lang="th">ส่งข้อมูลไปยังผู้ให้บริการรายอื่นผ่าน API</span><span lang="en">Sent to another provider through an API</span></div></article>
+          <article class="category"><h3><span lang="th">บัตรเครดิต</span><span lang="en">Credit cards</span></h3><span class="mechanism">API</span><p><span lang="th">ข้อมูลบัญชีบัตร ประวัติรายการ และใบแจ้งยอด</span><span lang="en">Card account information, transaction history and statements</span></p><div class="category-foot"><span lang="th">ส่งข้อมูลไปยังผู้ให้บริการรายอื่นผ่าน API</span><span lang="en">Sent to another provider through an API</span></div></article>
+          <article class="category"><h3><span lang="th">บัญชีสินเชื่อ</span><span lang="en">Loan accounts</span></h3><span class="mechanism">NCB</span><p><span lang="th">ข้อมูลบัญชีและประวัติการชำระสินเชื่อ</span><span lang="en">Loan account information and repayment history</span></p><div class="category-foot"><span lang="th">ส่งผ่านบริษัท ข้อมูลเครดิตแห่งชาติ จำกัด</span><span lang="en">Sent through National Credit Bureau</span></div></article>
+        </div>
+      </section>
+
+      <section class="card" aria-labelledby="permission-flow-title">
+        <div class="cardhead"><h2 id="permission-flow-title"><span lang="th">ลูกค้าควบคุมสิทธิ์ในกลไกที่ได้รับอนุมัติ</span><span lang="en">Customer controls permissions in the approved mechanism</span></h2></div>
+        <div class="cardbody">
+          <ol class="steps">
+            <li class="step"><span class="stepnum">1</span><h3><span lang="th">ผู้ให้บริการปลายทางระบุคำขอ</span><span lang="en">Receiving provider defines its request</span></h3><p><span lang="th">ระบุประเภทข้อมูล ผู้ส่ง/ผู้รับ วัตถุประสงค์ และระยะเวลาที่ต้องการ</span><span lang="en">It identifies data type, providers, purpose and requested validity.</span></p><span class="step-tag"><span lang="th">ขอ consent แยกต่างหาก</span><span lang="en">Separate consent request</span></span></li>
+            <li class="step"><span class="stepnum">2</span><h3><span lang="th">ธนาคารกรุงเทพยืนยันการส่ง</span><span lang="en">Bangkok Bank authorizes sending</span></h3><p><span lang="th">กลไกที่ได้รับอนุมัติใช้การยืนยันตัวตนและ authorization ตามขอบเขตที่ลูกค้าอนุญาต</span><span lang="en">The approved mechanism authenticates the customer and applies the sending-provider authorization to the permitted scope.</span></p><span class="step-tag"><span lang="th">แยกจาก consent</span><span lang="en">Separate from consent</span></span></li>
+            <li class="step"><span class="stepnum">3</span><h3><span lang="th">ส่งข้อมูลผ่านช่องทางที่กำหนด</span><span lang="en">Transfer through the designated route</span></h3><p><span lang="th">การส่งและสถานะจริงอยู่ในระบบของผู้ให้บริการ ไม่ใช่ CRM</span><span lang="en">The provider systems own the actual transfer and its status, not CRM.</span></p><span class="step-tag"><span lang="th">ใช้กลไกที่ได้รับอนุมัติ</span><span lang="en">Approved mechanism only</span></span></li>
+          </ol>
+          <div class="boundary"><span aria-hidden="true">ⓘ</span><div><strong><span lang="th">ขอบเขต CRM:</span><span lang="en">CRM boundary:</span></strong> <span lang="th">อธิบายแนวทางและบันทึกการติดตามที่ลูกค้าร้องขอได้เท่านั้น ห้ามเก็บรหัสผ่าน PIN, OTP หรือข้อมูลที่ส่ง และห้ามอ้างว่าความยินยอมหรือการส่งข้อมูลสำเร็จจากสถานะงาน CRM</span><span lang="en">Explain the route and record customer-requested follow-up only. Never capture passwords, PINs, OTPs or transferred data; a CRM task never proves permission or transfer completion.</span></div></div>
+        </div>
+      </section>
+
+      <section class="card" aria-labelledby="role-help-title">
+        <div class="cardhead role-title"><h2 id="role-help-title"><span lang="th">สิ่งที่บทบาทนี้ช่วยลูกค้าได้</span><span lang="en">How this role can help</span></h2><span class="badge" id="role-badge">GUIDE · REFER</span></div>
+        <div class="cardbody">
+          <p class="role-copy" id="role-copy"></p>
+          <div class="btnrow">
+            <a class="btn primary" href="https://www.bangkokbank.com/th-TH/About-Us/News-and-Media/bbl-your-data-bot" target="_blank" rel="noreferrer"><span lang="th">เปิดข้อมูล Your Data ของธนาคาร</span><span lang="en">Open Bangkok Bank’s Your Data page</span></a>
+            <button class="btn" id="follow-up" type="button"><span lang="th">บันทึกการติดตามที่ลูกค้าร้องขอ</span><span lang="en">Record requested follow-up</span></button>
+          </div>
+          <p class="source-note"><span lang="th">การติดตามเป็นงานบริการเท่านั้น ต้องกำหนดผู้รับผิดชอบ วันที่อัปเดต และช่องทางที่ตกลงตามนโยบายติดต่อของธนาคาร ไม่ใช่สถานะ consent, authorization หรือการส่งข้อมูล</span><span lang="en">A follow-up is a service task only. Record an owner, next-update target and permitted agreed channel; it is not consent, authorization or transfer status.</span></p>
+        </div>
+      </section>
+
+      <section class="card" aria-labelledby="issue-triage-title">
+        <div class="cardhead role-title"><h2 id="issue-triage-title"><span lang="th">เมื่อลูกค้าแจ้งปัญหาการส่งข้อมูล</span><span lang="en">When a customer reports a sharing problem</span></h2><span class="badge gate"><span lang="th">ข้อเสนอ · รอยืนยัน</span><span lang="en">PROPOSAL · VALIDATE</span></span></div>
+        <div class="cardbody">
+          <p class="role-copy"><span lang="th">ธปท. กำหนดให้ผู้ให้บริการมีช่องทางรับเรื่องและกระบวนการแก้ปัญหา แต่ผู้รับผิดชอบและ SLA ภายในของธนาคารกรุงเทพยังต้องยืนยัน เลือกประเภทเพื่อดูแนวทางจำลองเท่านั้น</span><span lang="en">BOT expects providers to offer complaint/problem channels and a resolution process. Bangkok Bank's internal owner and clock still need confirmation. Choose an issue type to preview the proposed triage only.</span></p>
+          <div class="btnrow"><button class="btn primary" id="open-issue" type="button"><span lang="th">ดูแนวทางคัดแยกปัญหา</span><span lang="en">Preview issue triage</span></button></div>
+          <p class="source-note"><span lang="th">ปัญหาการส่ง/ข้อมูลคลาดเคลื่อน → ช่องทางร้องเรียนที่ธนาคารอนุมัติ · สงสัยส่งข้อมูลโดยไม่ได้รับอนุญาต → ช่องทางจำกัดสิทธิ์ด้าน Privacy/Security · ไม่มีการส่งเคสจริงจากต้นแบบ</span><span lang="en">Failed/mismatched transfer → Bank-approved complaint path · suspected unauthorized sharing → restricted privacy/security intake · this prototype submits no case.</span></p>
+        </div>
+      </section>
+    </div>
+
+    <aside class="side">
+      <section class="card" aria-labelledby="script-title">
+        <div class="cardhead"><h2 id="script-title"><span lang="th">ตัวอย่างคำอธิบายลูกค้า</span><span lang="en">Customer-safe wording</span></h2><span class="kicker"><span lang="th">ปรับตามกรณี</span><span lang="en">Adapt to the case</span></span></div>
+        <div class="cardbody"><div class="callout-script"><span class="kicker"><span lang="th">แนวทางทั่วไป</span><span lang="en">General explanation</span></span><p id="safe-copy"></p></div><button class="btn" id="copy-script" type="button" style="margin-top:10px"><span lang="th">คัดลอกข้อความ</span><span lang="en">Copy wording</span></button></div>
+      </section>
+      <section class="card" aria-labelledby="sources-title">
+        <div class="cardhead"><h2 id="sources-title"><span lang="th">แหล่งข้อมูล</span><span lang="en">Sources</span></h2></div>
+        <div class="cardbody source-list">
+          <div class="source"><span class="source-mark">BBL</span><div><a href="https://www.bangkokbank.com/th-TH/About-Us/News-and-Media/bbl-your-data-bot" target="_blank" rel="noreferrer"><span lang="th">ข้อมูลรับส่งข้อมูล Your Data ของธนาคารกรุงเทพ</span><span lang="en">Bangkok Bank Your Data data-sharing page</span></a><small><span lang="th">ประเภทข้อมูล ช่องทาง และวันเริ่มที่ระบุ</span><span lang="en">Categories, routes and published launch status</span></small></div></div>
+          <div class="source"><span class="source-mark">BOT</span><div><a href="https://www.bot.or.th/content/dam/bot/fipcs/documents/FPG/2568/ThaiPDF/25680226.pdf" target="_blank" rel="noreferrer"><span lang="th">ประกาศ ธปท. ที่ 47/2568</span><span lang="en">BOT Notification 47/2568</span></a><small><span lang="th">ขอบเขต consent/authorization และการเก็บ audit trail</span><span lang="en">Consent/authorization scope and audit-trail rules</span></small></div></div>
+          <div class="source"><span class="source-mark">BOT</span><div><a href="https://www.bot.or.th/th/faqs/faqs-11.html" target="_blank" rel="noreferrer"><span lang="th">คำถามพบบ่อยโครงการ Your Data</span><span lang="en">BOT Your Data FAQ</span></a><small><span lang="th">ช่องทางร้องเรียนและกระบวนการแก้ปัญหาของผู้ให้บริการ</span><span lang="en">Provider complaint channels and problem-resolution process</span></small></div></div>
+          <p class="source-note" style="margin:0"><span lang="th">เจ้าของเนื้อหาภายในและสัญญาเชื่อมต่อสถานะรายบุคคล: รอธนาคารยืนยัน</span><span lang="en">Internal content owner and customer-status integration contract: Bank confirmation pending.</span></p>
+        </div>
+      </section>
+      <section class="card" aria-labelledby="guardrail-title">
+        <div class="cardhead"><h2 id="guardrail-title"><span lang="th">ห้ามสับสน</span><span lang="en">Keep these states separate</span></h2></div>
+        <div class="cardbody">
+          <div class="source-list">
+            <div><strong><span lang="th">สถานะคำขอติดตาม</span><span lang="en">CRM follow-up state</span></strong><p class="role-copy"><span lang="th">เจ้าของงาน · วันอัปเดต · ช่องทางติดต่อ</span><span lang="en">Owner · next-update target · permitted channel</span></p></div>
+            <div><strong><span lang="th">สถานะ permission / transfer</span><span lang="en">Permission / transfer state</span></strong><p class="role-copy"><span lang="th">อ่านได้เฉพาะจากแหล่งข้อมูลที่ธนาคารอนุมัติและเมื่อมีสิทธิ์</span><span lang="en">Read only from an approved source and only when entitled.</span></p></div>
+          </div>
+        </div>
+      </section>
+    </aside>
+  </div>
+  <p class="demo-stamp"><span lang="th">ต้นแบบเพื่อทบทวน · ไม่มีข้อมูลลูกค้าจริง · เส้นทาง US-412 / FR-302 / FR-407 / FR-408 · สิทธิ์ RM การส่งต่อปัญหา และสถานะรายบุคคลต้องยืนยันกับธนาคาร</span><span lang="en">Review prototype · no live customer data · traces to US-412 / FR-302 / FR-407 / FR-408 · RM access, issue routing, and customer-specific status require Bank validation.</span></p>
+</main>
+
+<dialog id="followup-dialog" aria-labelledby="dialog-title">
+  <form method="dialog" id="followup-form">
+    <div class="dialog-head"><h2 id="dialog-title"><span lang="th">ติดตามตามที่ลูกค้าร้องขอ</span><span lang="en">Customer-requested follow-up</span></h2><button class="btn" id="close-dialog" type="button" aria-label="Close">×</button></div>
+    <div class="dialog-body">
+      <label for="followup-owner"><span lang="th">ผู้รับผิดชอบ</span><span lang="en">Follow-up owner</span></label>
+      <select id="followup-owner"><option value="origin"><span lang="en">Originating service team</span><span lang="th">ทีมบริการต้นทาง</span></option><option value="digital"><span lang="en">Digital service owner · assignment pending</span><span lang="th">เจ้าของบริการดิจิทัล · รอยืนยันการมอบหมาย</span></option></select>
+      <label for="followup-date"><span lang="th">วันที่อัปเดตตามที่ตกลง</span><span lang="en">Agreed next-update date</span></label>
+      <input id="followup-date" type="date" value="2026-10-19">
+      <label for="followup-channel"><span lang="th">ช่องทางติดต่อ</span><span lang="en">Contact route</span></label>
+      <select id="followup-channel"><option value="agreed"><span lang="en">Confirm permitted channel before saving</span><span lang="th">ตรวจช่องทางที่อนุญาตก่อนบันทึก</span></option><option value="branch"><span lang="en">Customer returns to branch</span><span lang="th">ลูกค้ากลับมาติดต่อสาขา</span></option></select>
+      <p class="dialog-note"><span lang="th">บันทึกเฉพาะความช่วยเหลือที่ลูกค้าร้องขอ ไม่บันทึกข้อมูลยืนยันตัวตนหรือ payload และไม่อัปเดตสถานะ Your Data</span><span lang="en">Record the requested help only. Do not store authentication data or payload; this does not update Your Data status.</span></p>
+    </div>
+    <div class="dialog-actions"><button class="btn" id="cancel-dialog" type="button"><span lang="th">ยกเลิก</span><span lang="en">Cancel</span></button><button class="btn primary" type="submit"><span lang="th">บันทึกตัวอย่าง</span><span lang="en">Save prototype preview</span></button></div>
+  </form>
+</dialog>
+<dialog id="issue-dialog" aria-labelledby="issue-dialog-title">
+  <div class="dialog-head"><h2 id="issue-dialog-title"><span lang="th">คัดแยกปัญหาที่ลูกค้ารายงาน</span><span lang="en">Triage a customer-reported issue</span></h2><button class="btn" id="close-issue" type="button" aria-label="Close">×</button></div>
+  <div class="dialog-body">
+    <label for="issue-kind"><span lang="th">ลูกค้าแจ้งว่า</span><span lang="en">Customer reports</span></label>
+    <select id="issue-kind" aria-describedby="issue-route-copy">
+      <option value="failed" data-en="Transfer failed or has not arrived" data-th="ส่งข้อมูลไม่สำเร็จหรือยังไม่ได้รับ">ส่งข้อมูลไม่สำเร็จหรือยังไม่ได้รับ</option>
+      <option value="mismatch" data-en="Information appears incorrect or missing" data-th="ข้อมูลคลาดเคลื่อนหรือไม่ครบถ้วน">ข้อมูลคลาดเคลื่อนหรือไม่ครบถ้วน</option>
+      <option value="unauthorized" data-en="Possible unauthorized sharing or exposure" data-th="สงสัยว่ามีการส่งหรือเปิดเผยข้อมูลโดยไม่ได้รับอนุญาต">สงสัยว่ามีการส่งหรือเปิดเผยข้อมูลโดยไม่ได้รับอนุญาต</option>
+      <option value="unsure" data-en="Other issue or unsure which route applies" data-th="ปัญหาอื่นหรือไม่แน่ใจว่าใช้ช่องทางใด">ปัญหาอื่นหรือไม่แน่ใจว่าใช้ช่องทางใด</option>
+    </select>
+    <div class="callout-script" role="status" aria-live="polite"><strong id="issue-route-title"></strong><p id="issue-route-copy"></p></div>
+    <p class="dialog-note"><span lang="th">บันทึกตามแนวทางที่ธนาคารอนุมัติเท่านั้น ห้ามบันทึกรหัสผ่าน PIN, OTP หรือสำเนาข้อมูลที่ส่ง ไม่ตัดสินว่ามีการละเมิดข้อมูล และไม่รายงานสถานะการส่งข้อมูลจากสถานะเคส CRM</span><span lang="en">Record only under the Bank-approved process. Do not capture passwords, PINs, OTPs, or copies of shared data; do not decide whether a breach occurred or infer transfer status from the CRM case.</span></p>
+  </div>
+  <div class="dialog-actions"><button class="btn primary" id="dismiss-issue" type="button"><span lang="th">ปิดตัวอย่าง</span><span lang="en">Close preview</span></button></div>
+</dialog>
+<div id="toast" role="status" aria-live="polite"></div>
+
+<script>
+const state={lang:"th",role:"teller"};
+const roles={
+  teller:{badge:"GUIDE · REFER",en:"Explain the published categories and routes, then direct the customer to the official mechanism. Continue with a teller workflow only for a separately authorized branch service. This guide does not show a customer’s permissions or transfer status.",th:"อธิบายประเภทข้อมูลและช่องทางตามประกาศ แล้วแนะนำลูกค้าไปยังกลไกทางการ ใช้ระบบ teller เฉพาะบริการสาขาที่ได้รับอนุญาตแยกต่างหาก หน้านี้ไม่แสดงสิทธิ์หรือสถานะการส่งข้อมูลของลูกค้ารายบุคคล"},
+  agent:{badge:"ANSWER · GUIDE · REFER",en:"Explain the published categories and routes within the verified call scope. If the customer asks for help beyond the general guide, record a requested follow-up only after confirming the permitted contact route. Do not infer a transfer from IVR or CRM activity.",th:"อธิบายประเภทข้อมูลและช่องทางตามประกาศภายในขอบเขตการยืนยันตัวตน หากลูกค้าขอความช่วยเหลือเพิ่มเติม ให้บันทึกติดตามเมื่อยืนยันช่องทางติดต่อที่อนุญาตแล้ว อย่าสรุปว่ามีการส่งข้อมูลจากกิจกรรม IVR หรือ CRM"},
+  rm:{badge:"ROLE GATE",en:"Access to this general service guide is a proposed role-map decision. Do not open it for RM users until the Bank approves that role. This screen never grants portfolio access or permission to view individual Your Data status.",th:"สิทธิ์ RM ในการเปิดดูคู่มือทั่วไปนี้ยังเป็นข้อเสนอสำหรับ role map ห้ามเปิดใช้กับ RM จนกว่าธนาคารจะอนุมัติ หน้านี้ไม่ให้สิทธิ์ดูพอร์ตหรือสถานะ Your Data รายบุคคล"}
+};
+const copy={en:"Bangkok Bank’s page lists the data categories and routes shown here, and says the customer start date will be announced later. The actual consent, authorization and transfer are handled through the approved provider mechanism. I can direct you to the current Bank information or record a follow-up if you ask us to.",th:"หน้าเว็บธนาคารกรุงเทพระบุประเภทข้อมูลและช่องทางตามที่แสดง และแจ้งว่าจะประกาศวันเริ่มให้บริการภายหลัง การให้ consent, authorization และการส่งข้อมูลดำเนินการผ่านกลไกของผู้ให้บริการที่ได้รับอนุมัติ ฉันสามารถแนะนำไปยังข้อมูลปัจจุบันของธนาคารหรือบันทึกติดตามได้หากคุณร้องขอ"};
+function applyLanguage(){document.body.classList.toggle("th",state.lang==="th");document.body.classList.toggle("en",state.lang==="en");document.documentElement.lang=state.lang;document.querySelector("#lang").textContent=state.lang==="en"?"ไทย":"EN";document.querySelector("#lang").setAttribute("aria-label",state.lang==="en"?"Switch to Thai":"Switch to English");document.querySelectorAll("#source-state option, #issue-kind option").forEach(option=>option.textContent=option.dataset[state.lang]);renderRole();renderIssue()}
+function renderRole(){const role=roles[state.role];document.querySelector("#role-badge").textContent=role.badge;document.querySelector("#role-badge").classList.toggle("gate",state.role==="rm");document.querySelector("#role-copy").textContent=role[state.lang];document.querySelector("#safe-copy").textContent=copy[state.lang];document.querySelectorAll("[data-role]").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.role===state.role)));const follow=document.querySelector("#follow-up");const issue=document.querySelector("#open-issue");follow.disabled=state.role==="rm";follow.setAttribute("aria-disabled",String(state.role==="rm"));issue.disabled=state.role==="rm";issue.setAttribute("aria-disabled",String(state.role==="rm"));if(state.role==="rm"){follow.title=state.lang==="en"?"RM guide access is pending Bank approval":"สิทธิ์ RM รอธนาคารอนุมัติ";issue.title=follow.title}}
+const issueRoutes={
+  failed:{en:["Standard complaint / service path · Bank route to confirm","Capture only the customer's report, approximate event time, and a Bank-approved masked reference if available. Use the approved complaint/problem process and its owner/clock. Keep this CRM case state separate from the provider's transfer state."],th:["ช่องทางร้องเรียน/บริการทั่วไป · รอยืนยันช่องทางธนาคาร","บันทึกเฉพาะสิ่งที่ลูกค้าแจ้ง เวลาที่เกิดเหตุโดยประมาณ และเลขอ้างอิงแบบปกปิดตามที่ธนาคารอนุมัติ (ถ้ามี) ใช้กระบวนการร้องเรียน/แก้ปัญหาที่ธนาคารอนุมัติและผู้รับผิดชอบ/กำหนดเวลาของช่องทางนั้น สถานะเคส CRM แยกจากสถานะการส่งของผู้ให้บริการ"]},
+  mismatch:{en:["Standard complaint / service path · Bank route to confirm","Capture only the customer's report, approximate event time, and a Bank-approved masked reference if available. Use the approved complaint/problem process and its owner/clock. Keep this CRM case state separate from the provider's transfer state."],th:["ช่องทางร้องเรียน/บริการทั่วไป · รอยืนยันช่องทางธนาคาร","บันทึกเฉพาะสิ่งที่ลูกค้าแจ้ง เวลาที่เกิดเหตุโดยประมาณ และเลขอ้างอิงแบบปกปิดตามที่ธนาคารอนุมัติ (ถ้ามี) ใช้กระบวนการร้องเรียน/แก้ปัญหาที่ธนาคารอนุมัติและผู้รับผิดชอบ/กำหนดเวลาของช่องทางนั้น สถานะเคส CRM แยกจากสถานะการส่งของผู้ให้บริการ"]},
+  unauthorized:{en:["Restricted privacy/security intake · urgent triage","Do not use ordinary service notes. Send a minimal safe report to the restricted privacy/security intake so the authorized team can assess it. Do not copy the shared data or credentials, and do not decide whether a breach occurred."],th:["ช่องทางจำกัดสิทธิ์ด้าน Privacy/Security · คัดกรองเร่งด่วน","ห้ามใช้บันทึกบริการทั่วไป ส่งรายงานขั้นต่ำที่ปลอดภัยไปยังช่องทาง Privacy/Security ที่จำกัดสิทธิ์ เพื่อให้ทีมที่ได้รับอนุญาตประเมิน ห้ามคัดลอกข้อมูลที่ส่งหรือข้อมูลยืนยันตัวตน และห้ามตัดสินเองว่าเกิดเหตุละเมิดข้อมูลหรือไม่"]},
+  unsure:{en:["Use approved complaint intake; escalate uncertainty","Use the Bank's approved complaint/problem route for other issues. If the customer may be describing unauthorized sharing or exposure, prioritize restricted privacy/security triage. Do not invent an owner, deadline, or source transfer status."],th:["ใช้ช่องทางร้องเรียนที่อนุมัติ และยกระดับเมื่อไม่แน่ใจ","ใช้ช่องทางร้องเรียน/แก้ปัญหาที่ธนาคารอนุมัติสำหรับปัญหาอื่น หากลูกค้าอาจกำลังแจ้งการส่งหรือเปิดเผยข้อมูลโดยไม่ได้รับอนุญาต ให้จัดเข้าช่องทาง Privacy/Security ที่จำกัดสิทธิ์ก่อน ห้ามคาดเดาผู้รับผิดชอบ กำหนดเวลา หรือสถานะการส่งจากแหล่งข้อมูล"]}
+};
+function renderIssue(){const item=issueRoutes[document.querySelector("#issue-kind").value][state.lang];document.querySelector("#issue-route-title").textContent=item[0];document.querySelector("#issue-route-copy").textContent=item[1]}
+document.querySelectorAll("[data-role]").forEach(button=>button.addEventListener("click",()=>{state.role=button.dataset.role;renderRole()}));
+document.querySelector("#source-state").addEventListener("change",event=>{const value=event.target.value;const card=document.querySelector("#availability-card");const current=value==="current";card.dataset.sourceState=value;document.querySelector("#current-guidance").hidden=!current;document.querySelector("#noncurrent-guidance").hidden=current;const copy={stale:{en:["Published guide needs review","The saved guide is past its review date. Confirm current information with the Bank before explaining data categories or service timing."],th:["คู่มือที่เผยแพร่รอตรวจสอบ","คู่มือที่บันทึกไว้เกินกำหนดทบทวนแล้ว โปรดยืนยันข้อมูลปัจจุบันกับธนาคารก่อนอธิบายประเภทข้อมูลหรือกำหนดเวลาให้บริการ"]},unavailable:{en:["Published guide unavailable","The approved guide could not be retrieved. Do not rely on cached CRM content for customer guidance."],th:["ไม่สามารถเปิดคู่มือที่เผยแพร่ได้","ไม่สามารถเรียกคู่มือที่ได้รับอนุมัติได้ อย่าใช้เนื้อหา CRM ที่บันทึกไว้เพื่อแนะนำลูกค้า"]}};const selected=current?null:copy[value];if(selected){document.querySelector("#noncurrent-title-en").textContent=selected.en[0];document.querySelector("#noncurrent-title-th").textContent=selected.th[0];document.querySelector("#noncurrent-copy-en").textContent=selected.en[1];document.querySelector("#noncurrent-copy-th").textContent=selected.th[1]}document.querySelector("#status-chip-title").innerHTML=current?'<span lang="th">ยังไม่ประกาศ</span><span lang="en">Not announced</span>':value==="stale"?'<span lang="th">ต้องทบทวน</span><span lang="en">Review required</span>':'<span lang="th">ไม่พร้อมใช้งาน</span><span lang="en">Unavailable</span>';document.querySelector("#status-chip-note").innerHTML=current?'<span lang="th">อ้างอิงหน้า Bangkok Bank ที่ตรวจสอบ 15 ต.ค. 2569</span><span lang="en">Based on the Bangkok Bank page checked 15 Oct 2026</span>':value==="stale"?'<span lang="th">ห้ามอ้างประเภทข้อมูลจนกว่าจะยืนยัน</span><span lang="en">Do not quote categories until confirmed</span>':'<span lang="th">เปิดหน้าอย่างเป็นทางการหรือส่งต่อผู้รับผิดชอบ</span><span lang="en">Open official page or contact content owner</span>';document.querySelector("#source-announcement").textContent=current?(state.lang==="en"?"Current public guidance is displayed.":"แสดงคำแนะนำสาธารณะที่ตรวจสอบแล้ว"):value==="stale"?(state.lang==="en"?"Guidance is stale. Category details are hidden; use the official Bangkok Bank page.":"คำแนะนำล้าสมัย ซ่อนรายละเอียดประเภทข้อมูลแล้ว ให้ใช้หน้าอย่างเป็นทางการของธนาคารกรุงเทพ"): (state.lang==="en"?"Guidance is unavailable. Category details are hidden; use the official Bangkok Bank page.":"ไม่สามารถเข้าถึงคำแนะนำได้ ซ่อนรายละเอียดประเภทข้อมูลแล้ว ให้ใช้หน้าอย่างเป็นทางการของธนาคารกรุงเทพ")});
+document.querySelector("#lang").addEventListener("click",()=>{state.lang=state.lang==="th"?"en":"th";applyLanguage()});
+const dialog=document.querySelector("#followup-dialog");document.querySelector("#follow-up").addEventListener("click",()=>{if(state.role!=="rm")dialog.showModal()});document.querySelector("#close-dialog").addEventListener("click",()=>dialog.close());document.querySelector("#cancel-dialog").addEventListener("click",()=>dialog.close());
+const issueDialog=document.querySelector("#issue-dialog");document.querySelector("#open-issue").addEventListener("click",()=>{if(state.role!=="rm")issueDialog.showModal()});document.querySelector("#close-issue").addEventListener("click",()=>issueDialog.close());document.querySelector("#dismiss-issue").addEventListener("click",()=>issueDialog.close());document.querySelector("#issue-kind").addEventListener("change",renderIssue);
+document.querySelector("#followup-form").addEventListener("submit",event=>{event.preventDefault();dialog.close();const toast=document.querySelector("#toast");toast.textContent=state.lang==="en"?"Prototype preview only. No CRM task or Your Data permission/status was changed.":"แสดงตัวอย่างเท่านั้น ไม่มีการสร้างงาน CRM หรือเปลี่ยนสิทธิ์/สถานะ Your Data";toast.classList.add("show");setTimeout(()=>toast.classList.remove("show"),3800)});
+document.querySelector("#copy-script").addEventListener("click",async()=>{const toast=document.querySelector("#toast");try{await navigator.clipboard.writeText(copy[state.lang]);toast.textContent=state.lang==="en"?"Customer-safe wording copied.":"คัดลอกข้อความสำหรับลูกค้าแล้ว"}catch{toast.textContent=state.lang==="en"?"Select and copy the wording above.":"เลือกและคัดลอกข้อความด้านบน"}toast.classList.add("show");setTimeout(()=>toast.classList.remove("show"),2600)});
+applyLanguage();
+</script>
+<script src="assets/language-preference.js"></script>
+</body>
+</html>

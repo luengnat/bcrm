@@ -1,0 +1,252 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>เส้นทางฉุกเฉิน: ฉ้อโกง — Urgent Fraud Path · PROTOTYPE</title>
+<!--
+  PROTOTYPE ONLY — synthetic data, placeholder brand (NFR-05).
+  Build-queue #3 from the adversarial review (persona-days: Tee 23:40 —
+  "no card-block action, no transaction capture, no sub-15-minute
+  escalation clock"). Traces: FR-708 (urgent incident workflow,
+  structured capture, restricted visibility), FR-709 (restriction
+  review), fraud workflow in functional research. Boundaries: CRM never
+  executes containment, never promises recovery, never reveals
+  investigative signals; 24/7 routing; separate from ordinary complaints.
+-->
+<style>
+:root{
+  --navy:#10275f;--blue:#174a9a;--ink:#17243c;--muted:#4c5a72;--line:#d9e0ea;
+  --paper:#f1f4f8;--surface:#fff;--red:#8f3136;--red-bg:#fdf0ef;--red-line:#c98184;
+  --green:#06684f;--green-bg:#edf8f3;--amber:#7a4e06;--amber-bg:#fff6e4;
+  --focus:0 0 0 3px rgba(8,103,232,.28);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font:15px/1.6 "Sarabun","Noto Sans Thai","Leelawadee UI",sans-serif}
+[lang="en"]{display:none}
+body.en [lang="th"]{display:none}
+body.en [lang="en"]{display:inline}
+.skip{position:absolute;top:-52px;left:12px;z-index:9;padding:9px 14px;background:#fff;color:var(--navy);font-weight:700;border-radius:6px;text-decoration:none}
+.skip:focus{top:10px}
+:focus-visible{outline:none;box-shadow:var(--focus);border-radius:4px}
+.topbar{min-height:62px;padding:0 24px;display:flex;align-items:center;gap:12px;background:var(--navy);color:#fff}
+.brand{display:flex;align-items:center;gap:10px;color:#fff;text-decoration:none;font-weight:700}
+.brand .lotus{width:30px;height:34px;display:inline-flex;align-items:center;justify-content:center;background:#fff;color:var(--navy);border-radius:4px;font-weight:800}
+.env{border-radius:99px;padding:3px 10px;background:#f0b644;color:#2b2b2b;font-size:11px;font-weight:800}
+.urgent-pill{border-radius:99px;padding:3px 10px;background:var(--red);color:#fff;font-size:11px;font-weight:800;letter-spacing:.04em}
+.spacer{flex:1}
+.staff{text-align:right;font-size:12.5px}
+.staff small{display:block;opacity:.75}
+.langbtn{height:34px;padding:0 12px;border:1px solid rgba(255,255,255,.4);border-radius:5px;background:transparent;color:#fff;cursor:pointer;font-size:13px}
+.nav{display:flex;gap:4px;padding:0 20px;background:#173e85}
+.nav a{padding:10px 15px;color:#fff;text-decoration:none;font-size:13px;opacity:.85}
+.nav a[aria-current]{border-bottom:3px solid #fff;opacity:1;font-weight:700}
+main{max-width:1020px;margin:0 auto;padding:22px 20px 60px}
+h1{font-size:21px;margin:6px 0 2px}
+h1 .u{color:var(--red)}
+.crumb{font-size:12.5px;color:var(--muted);margin:0 0 14px}
+/* live elapsed clock */
+.elapsed{display:flex;align-items:center;gap:14px;background:var(--red-bg);border:2px solid var(--red-line);border-radius:8px;padding:12px 16px;margin:0 0 16px}
+.elapsed .clockface{font-size:30px;font-weight:800;font-variant-numeric:tabular-nums;color:var(--red);min-width:120px}
+.elapsed .lbl{font-size:13px}
+.elapsed .lbl b{display:block;font-size:13.5px}
+.elapsed .lbl span{color:var(--muted);font-size:12.5px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:8px;margin-bottom:16px}
+.card h2{font-size:13px;margin:0;padding:11px 16px;border-bottom:1px solid var(--line);color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
+.card .bd{padding:16px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:13px}
+@media(max-width:760px){.grid{grid-template-columns:1fr}}
+label{display:block;font-size:13.5px;font-weight:600;margin-bottom:5px}
+.req{color:var(--red);font-weight:700}
+input,select,textarea{width:100%;padding:9px 11px;border:1px solid var(--line);border-radius:6px;font:inherit;font-size:14px;background:#fff;color:var(--ink)}
+textarea{min-height:70px;resize:vertical}
+.hint{font-size:12px;color:var(--muted);margin-top:4px}
+.err{display:none;font-size:12.5px;color:var(--red);font-weight:600;margin-top:5px}
+.err.show{display:block}
+.tx-row{display:grid;grid-template-columns:1.2fr 1fr 1fr auto;gap:8px;margin-bottom:8px;align-items:end}
+.tx-row button{padding:8px 10px}
+.btn{font:inherit;font-size:14px;border-radius:6px;padding:10px 18px;cursor:pointer;border:1px solid var(--line);background:#fff;color:var(--ink)}
+.btn.primary{background:var(--red);border-color:var(--red);color:#fff;font-weight:800}
+.btn.primary:hover{background:#7a292e}
+.btn.small{padding:7px 12px;font-size:12.5px}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:4px}
+.receipt{display:none;border:2px solid var(--green);background:var(--green-bg);border-radius:8px;padding:16px 18px;margin-bottom:16px}
+.receipt.show{display:block}
+.receipt h2{font-size:14px;margin:0 0 6px;color:var(--green)}
+.receipt .ids{font-size:14.5px;font-weight:700;font-variant-numeric:tabular-nums}
+.receipt .sub{font-size:12.5px;color:var(--muted);margin-top:4px}
+.boundary{border:1px solid var(--red);background:var(--red-bg);border-radius:8px;padding:12px 15px;font-size:13px;margin:0 0 16px;color:var(--red);font-weight:600}
+.words{background:#eef4fb;border:1px solid #b9cbe8;border-radius:8px;padding:12px 15px;font-size:13.5px;margin:0 0 16px}
+.words b{display:block;margin-bottom:4px}
+footer.proto{text-align:center;font-size:12px;color:var(--muted);padding:14px 0 30px}
+</style>
+</head>
+<body>
+<a class="skip" href="#fraud-form"><span lang="th">ข้ามไปยังแบบฟอร์ม</span><span lang="en">Skip to the form</span></a>
+
+<header class="topbar">
+  <a class="brand" href="role-workspaces.html"><span class="lotus" aria-hidden="true">บ</span> Bangkok Bank <small style="font-weight:400;opacity:.75">CRM</small></a>
+  <span class="env">PROTOTYPE</span>
+  <span class="urgent-pill"><span lang="th">ฉุกเฉิน 24 ชม.</span><span lang="en">24-HOUR URGENT</span></span>
+  <span class="spacer"></span>
+  <button class="langbtn" id="lang" type="button" aria-label="Switch language">EN</button>
+  <div class="staff"><span lang="th">ตี๋ จ.</span><span lang="en">Tee J.</span><small><span lang="th">เจ้าหน้าที่ศูนย์บริการ 1333 · กะกลางคืน</span><span lang="en">1333 agent · night shift</span></small></div>
+</header>
+
+<nav class="nav" aria-label="Main">
+  <a href="role-workspaces.html"><span lang="th">งานของฉัน</span><span lang="en">My work</span></a>
+  <a href="contact-center.html"><span lang="th">ศูนย์บริการ</span><span lang="en">Contact center</span></a>
+  <a href="fraud-urgent.html" aria-current="page"><span lang="th">เส้นทางฉุกเฉิน</span><span lang="en">Urgent path</span></a>
+  <a href="case-workspace.html"><span lang="th">เคสบริการ</span><span lang="en">Cases</span></a>
+</nav>
+
+<main>
+  <h1><span class="u"><span lang="th">⚠ ฉ้อโกง — เงินกำลังหายตอนนี้</span><span lang="en">⚠ Fraud — money moving now</span></span></h1>
+  <p class="crumb"><span lang="th">โทรเข้า 23:40 น. · ลูกค้า: รัชนี ก. · บัญชี ••••1097 · ทางนี้แยกจากคิวร้องเรียนทั่วไป</span><span lang="en">Call received 23:40 · customer: Ratchanee K. · account ••••1097 · this path is separate from ordinary complaint queues</span></p>
+
+  <div class="elapsed" role="timer" aria-live="off">
+    <div class="clockface" id="clock">00:00</div>
+    <div class="lbl">
+      <b><span lang="th">นับจากเวลาที่ลูกค้าแจ้งเหตุ (23:40)</span><span lang="en">since the customer reported the event (23:40)</span></b>
+      <span><span lang="th">เป้าหมายภายใน: ส่งเข้าคิวฉุกเฉินภายใน 15 นาที · การชะลอทำให้เงินหายเพิ่ม</span><span lang="en">target: route to the urgent queue within 15 minutes · delay loses money</span></span>
+    </div>
+  </div>
+
+  <div class="boundary">⚠ <span lang="th">ห้ามสัญญาการคืนเงิน · ห้ามเปิดเผยสัญญาณการสืบสวนใด ๆ · ห้ามขอรหัส OTP/PIN ซ้ำ — CRM บันทึกและส่งต่อเท่านั้น การระงับบัญชี/บัตรเป็นอำนาจของระบบต้นทาง</span><span lang="en">Never promise recovery · never reveal investigative signals · never re-ask for OTP/PIN — the CRM captures and routes only; account/card suspension is the source system's authority</span></div>
+
+  <div class="words">
+    <b><span lang="th">ข้อความปลอดภัยต่อลูกค้า (อ่านตามนี้)</span><span lang="en">Customer-safe wording (read as written)</span></b>
+    <span lang="th">"โทรแจ้งถูกต้องแล้วค่ะ เรากำลังบันทึกเหตุการณ์และส่งเข้าทีมฉุกเฉินของธนาคารทันที หากท่านยังไม่ได้แจ้งคดีกับศูนย์ AOC โปรดโทร 1441 หลังวางสาย อย่าโอนเงินหรือแจ้งรหัสใด ๆ กับผู้ที่อ้างว่าเป็นธนาคารอีก"</span>
+    <span lang="en">"You have reached the right place. We are recording the event and routing it to the Bank's urgent team now. If you have not filed a report with the AOC, please call 1441 after this call. Do not transfer money or give any code to anyone claiming to be the Bank."</span>
+  </div>
+
+  <form id="fraud-form" novalidate>
+    <div class="card">
+      <h2><span lang="th">เหตุการณ์และธุรกรรมที่เกี่ยวข้อง</span><span lang="en">Event &amp; related transactions</span></h2>
+      <div class="bd">
+        <div class="grid">
+          <div>
+            <label for="ev-when"><span lang="th">เวลาที่ลูกค้าสังเกตเห็น <span class="req">*</span></span><span lang="en">Time customer noticed <span class="req">*</span></span></label>
+            <input id="ev-when" value="23:15" readonly>
+            <p class="hint"><span lang="th">ตามคำบอกของลูกค้า — บันทึกเวลาแจ้ง 23:40 อัตโนมัติแล้ว</span><span lang="en">Customer-stated — report time 23:40 recorded automatically</span></p>
+          </div>
+          <div>
+            <label for="contacted"><span lang="th">ลูกค้าแจ้งคดีกับ AOC/ตำรวจแล้วหรือไม่</span><span lang="en">Customer filed with AOC/police?</span></label>
+            <select id="contacted">
+              <option value="no"><span lang="th">ยังไม่แจ้ง — แนะนำโทร 1441</span><span lang="en">Not yet — advise calling 1441</span></option>
+              <option value="yes"><span lang="th">แจ้งแล้ว (กรอกอ้างอิงด้านล่าง)</span><span lang="en">Filed (enter reference below)</span></option>
+            </select>
+          </div>
+        </div>
+        <div style="margin-top:13px">
+          <label><span lang="th">รายการที่ลูกค้าแจ้ง (เพิ่มได้หลายรายการ) <span class="req">*</span></span><span lang="en">Reported transactions (add rows) <span class="req">*</span></span></label>
+          <div id="tx-rows">
+            <div class="tx-row">
+              <input placeholder="อ้างอิงธุรกรรม / txn ref" value="TXN-88213-01">
+              <input placeholder="จำนวน (บาท) / amount THB" value="21,500">
+              <input placeholder="เวลา / time" value="23:17">
+              <button class="btn small" type="button" data-del><span lang="th">ลบ</span><span lang="en">Remove</span></button>
+            </div>
+          </div>
+          <button class="btn small" type="button" id="tx-add"><span lang="th">+ เพิ่มรายการ</span><span lang="en">+ Add transaction</span></button>
+          <p class="hint"><span lang="th">จำนวนเงิน "ตามที่ลูกค้าแจ้ง" เท่านั้น — ยอดจริงยืนยันโดยระบบต้นทาง</span><span lang="en">Customer-stated amounts only — authoritative figures come from the source system</span></p>
+        </div>
+        <div style="margin-top:13px">
+          <label for="story"><span lang="th">เหตุการณ์โดยย่อ <span class="req">*</span></span><span lang="en">What happened <span class="req">*</span></span></label>
+          <textarea id="story" minlength="20">ลูกค้าได้สายจากผู้อ้างว่าเป็น "ธนาคาร" ให้แจ้ง OTP แล้วมีการหัก 3 รายการภายใน 25 นาที รวมตามที่แจ้ง 47,000 บาท</textarea>
+          <p class="err" id="story-err"><span lang="th">กรุณาบันทึกเหตุการณ์ (อย่างน้อย 20 ตัวอักษร)</span><span lang="en">Describe the event (min 20 characters)</span></p>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2><span lang="th">การส่งต่อและขอบเขตอำนาจ</span><span lang="en">Routing &amp; authority boundaries</span></h2>
+      <div class="bd">
+        <div class="grid">
+          <div>
+            <label for="queue"><span lang="th">คิวปลายทาง <span class="req">*</span></span><span lang="en">Receiving queue <span class="req">*</span></span></label>
+            <select id="queue">
+              <option value="fraud-24"><span lang="th">ทีมฉ้อโกงฉุกเฉิน 24 ชม. (แยกจากคิวร้องเรียน)</span><span lang="en">24-hour urgent fraud team (separate from complaint queues)</span></option>
+            </select>
+          </div>
+          <div>
+            <label><span lang="th">การระงับบัญชี/บัตร</span><span lang="en">Account/card suspension</span></label>
+            <button class="btn" type="button" id="suspend-ref" disabled title="การระงับทำในระบบต้นทางเท่านั้น / suspension is a source-system action only"><span lang="th">ส่งต่อเรื่องระงับ → ระบบต้นทาง</span><span lang="en">Refer suspension → source system</span></button>
+            <p class="hint"><span lang="th">ปุ่มนี้ปิดไว้โดยออกแบบ: CRM ไม่มีอำนาจระงับ — ทีมฉ้อโกงทำในระบบของตน</span><span lang="en">Deliberately disabled: the CRM has no suspension authority — the fraud team acts in their system</span></p>
+          </div>
+        </div>
+        <p style="font-size:12.5px;color:var(--muted);margin:12px 0 0"><span lang="th">หากลูกค้าถูกจำกัดการใช้งานโดยไม่ถูกต้อง (คิดว่าถูกใช้) — ใช้เส้นทาง "ทบทวนการจำกัด" แยกต่างหาก (FR-709) ไม่ใช่เส้นทางนี้</span><span lang="en">If the customer believes a restriction is mistaken — use the separate restriction-review path (FR-709), not this one</span></p>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button class="btn primary" type="submit" id="route"><span lang="th">ส่งเข้าคิวฉุกเฉินทันที</span><span lang="en">Route to urgent queue now</span></button>
+    </div>
+    <p class="err" id="form-err" role="alert"></p>
+  </form>
+
+  <section class="receipt" id="receipt" role="status" aria-live="polite" tabindex="-1">
+    <h2><span lang="th">ส่งเข้าคิวฉุกเฉินแล้ว — บอกเลขอ้างอิงกับลูกค้า</span><span lang="en">Routed to the urgent queue — give the customer this reference</span></h2>
+    <p class="ids" id="rc-ids"></p>
+    <p class="sub" id="rc-sub"></p>
+  </section>
+
+  <footer class="proto"><span lang="th">ต้นแบบเพื่อการตรวจสอบ — ข้อมูลจำลอง · อ้างอิง FR-708/709 · กระบวนการฉ้อโกงในเอกสารวิจัย · นาฬิกาเดินจริงในการสาธิต</span><span lang="en">Validation prototype — synthetic data · traces FR-708/709 and the fraud workflow · the clock ticks live in demos</span></footer>
+</main>
+
+<script>
+'use strict';
+const $ = (s)=>document.querySelector(s);
+function applyLang(en){
+  document.documentElement.lang = en ? 'en' : 'th';
+  const b = $('#lang'); b.textContent = en ? 'ไทย' : 'EN';
+  b.setAttribute('aria-label', en ? 'สลับเป็นภาษาไทย' : 'Switch to English');
+}
+$('#lang').addEventListener('click', () => applyLang(document.body.classList.toggle('en')));
+
+// live elapsed clock from 23:40 report time (demo anchor: page-open = 23:44)
+const T0 = new Date(); T0.setHours(23,44,0,0);
+function tick(){
+  const now = new Date();
+  const mins = Math.max(0, Math.floor((now - T0)/60000));
+  const m = Math.floor(mins), over = m > 15;
+  $('#clock').textContent = String(m).padStart(2,'0') + ':00';
+  $('#clock').parentElement.style.borderColor = over ? 'var(--red)' : 'var(--red-line)';
+}
+setInterval(tick, 30000); tick();
+
+$('#tx-add').addEventListener('click', ()=>{
+  const row = document.createElement('div');
+  row.className = 'tx-row';
+  row.innerHTML = '<input placeholder="อ้างอิงธุรกรรม / txn ref"><input placeholder="จำนวน (บาท) / amount THB"><input placeholder="เวลา / time"><button class="btn small" type="button" data-del><span lang="th">ลบ</span><span lang="en">Remove</span></button>';
+  $('#tx-rows').appendChild(row);
+});
+document.addEventListener('click', (e)=>{
+  if (e.target.matches('[data-del]') && document.querySelectorAll('.tx-row').length > 1)
+    e.target.closest('.tx-row').remove();
+});
+
+$('#fraud-form').addEventListener('submit', (ev)=>{
+  ev.preventDefault();
+  const err = $('#form-err'); err.classList.remove('show'); err.textContent = '';
+  const story = $('#story').value.trim();
+  const tx = [...document.querySelectorAll('.tx-row')].filter(r => r.querySelector('input').value.trim());
+  if (story.length < 20){
+    err.classList.add('show');
+    err.textContent = document.body.classList.contains('en')
+      ? 'Describe the event (min 20 characters).' : 'กรุณาบันทึกเหตุการณ์ (อย่างน้อย 20 ตัวอักษร)';
+    $('#story').focus(); return;
+  }
+  if (!tx.length){
+    err.classList.add('show');
+    err.textContent = document.body.classList.contains('en')
+      ? 'Add at least one reported transaction.' : 'กรุณาเพิ่มอย่างน้อยหนึ่งรายการธุรกรรม';
+    return;
+  }
+  $('#rc-ids').innerHTML = '<span lang="th">เหตุฉุกเฉิน: FRD-2026-00187 · รายการที่บันทึก: ' + tx.length + ' · สถานะ: รอทีมฉ้อโกงตอบรับ (เจ้าของเดิม: ศูนย์บริการ 1333)</span><span lang="en">Urgent incident FRD-2026-00187 · transactions recorded: ' + tx.length + ' · status: awaiting fraud-team acceptance (origin owner: 1333 contact center)</span>';
+  $('#rc-sub').innerHTML = '<span lang="th">มองเห็นได้เฉพาะทีมฉ้อโกงและผู้ดูแลที่ได้รับสิทธิ์ — ไม่ปรากฏในคิวร้องเรียนทั่วไป · ห้ามบอกลูกค้าว่า "คืนเงินแน่นอน" · แจ้งลูกค้าติดตามได้ทาง 1333 ด้วยเลขอ้างอิงนี้</span><span lang="en">Visible only to the fraud team and authorized reviewers — it does not appear in ordinary complaint queues · never tell the customer recovery is guaranteed · the customer can follow up via 1333 with this reference</span>';
+  const r = $('#receipt'); r.classList.add('show'); r.focus();
+});
+</script>
+</body>
+</html>

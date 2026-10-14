@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RM client-touch queue — Bangkok Bank CRM</title>
+<style>
+:root{--navy:#10275f;--blue:#174a9a;--lotus:#0867e8;--ink:#17243c;--muted:#64728a;--line:#d9e0ea;--paper:#f1f4f8;--surface:#fff;--pale:#edf4ff;--green:#087e62;--green-bg:#edf8f3;--amber:#855608;--amber-bg:#fff6e4;--red:#a6383d;--red-bg:#fff3f2;--shadow:0 8px 24px rgba(16,39,95,.06);--focus:0 0 0 3px rgba(8,103,232,.28)}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:14px/1.55 "Sarabun","Noto Sans Thai","Leelawadee UI",sans-serif}button{font:inherit;cursor:pointer}a{color:var(--blue)}:focus-visible{outline:none;box-shadow:var(--focus);border-radius:5px}[lang="th"]:not(html){display:none!important}body.th [lang="en"]:not(html){display:none!important}body.th [lang="th"]:not(html){display:inline!important}
+.skip{position:absolute;z-index:5;top:-50px;left:12px;padding:8px 13px;border-radius:5px;background:white;color:var(--navy);font-weight:700}.skip:focus{top:8px}
+.topbar{min-height:62px;padding:0 26px;display:flex;align-items:center;gap:12px;background:var(--navy);color:white}.brand{display:flex;align-items:center;gap:10px;min-width:230px;color:white;text-decoration:none}.brand img{width:30px;height:35px;object-fit:contain}.brand-name{font-size:14px;font-weight:750}.brand-name small{display:block;font-size:10px;font-weight:400;opacity:.74}.env{margin-left:6px;border-radius:99px;padding:3px 9px;background:#f0b644;color:#2b2b2b;font-size:10px;font-weight:800;letter-spacing:.08em}.spacer{flex:1}.staff{text-align:right;font-size:12px}.staff small{display:block;opacity:.72}.lang{height:34px;padding:0 12px;border:1px solid rgba(255,255,255,.4);border-radius:5px;background:transparent;color:white}
+.nav{display:flex;gap:4px;padding:0 23px;background:#173e85}.nav a{padding:10px 15px;color:white;text-decoration:none;font-size:12px;opacity:.84}.nav a[aria-current]{border-bottom:3px solid white;opacity:1;font-weight:700}
+main{max-width:1400px;margin:auto;padding:23px 26px 36px}.crumb{margin:0 0 8px;color:var(--muted);font-size:12px}.head{display:flex;justify-content:space-between;align-items:flex-start;gap:18px}.head h1{margin:0;color:var(--navy);font-size:27px;line-height:1.25}.head p{margin:5px 0 0;color:var(--muted);font-size:13px}.mode{display:inline-flex;gap:7px;align-items:center;padding:7px 10px;border:1px solid #b9d7d3;border-radius:6px;background:#eaf7f5;color:#176963;font-size:11px;white-space:nowrap}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:11px;margin:17px 0}.stat{padding:11px 13px;border:1px solid var(--line);border-radius:7px;background:white;box-shadow:var(--shadow)}.stat strong{display:block;color:var(--navy);font-size:19px}.stat span{color:var(--muted);font-size:11px}
+.client{display:flex;align-items:center;gap:11px;margin-bottom:15px;padding:12px 14px;border:1px solid var(--line);border-radius:8px;background:white}.avatar{display:grid;place-items:center;flex:0 0 38px;width:38px;height:38px;border-radius:50%;background:var(--pale);color:var(--blue);font-weight:800}.client strong{display:block;color:var(--navy)}.client small{color:var(--muted)}.client-tags{display:flex;flex-wrap:wrap;gap:6px;margin-left:auto}.tag{padding:4px 8px;border:1px solid #d9e2ef;border-radius:99px;background:#f7f9fc;color:#516079;font-size:10px}
+.layout{display:grid;grid-template-columns:minmax(310px,.78fr) minmax(0,1.4fr);gap:16px;align-items:start}.card{overflow:hidden;border:1px solid var(--line);border-radius:8px;background:white;box-shadow:var(--shadow)}.card-head{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 15px;border-bottom:1px solid #e6eaf0}.card-head h2{margin:0;color:#394963;font-size:13px;letter-spacing:.04em;text-transform:uppercase}.kicker{color:var(--muted);font-size:10px;font-weight:750;letter-spacing:.07em;text-transform:uppercase}.list{display:grid;gap:8px;padding:11px}.item{width:100%;text-align:left;padding:11px 12px;border:1px solid #e0e6ef;border-radius:7px;background:white;color:var(--ink)}.item:hover{border-color:#adc2e0;background:#fbfcff}.item[aria-pressed="true"]{border-color:#7fa3d4;background:var(--pale);box-shadow:inset 3px 0 var(--lotus)}.item-top{display:flex;justify-content:space-between;gap:8px;align-items:center}.item strong{font-size:12px;color:#253754}.item small{display:block;margin-top:3px;color:var(--muted);font-size:10px}.chip{border-radius:99px;padding:3px 7px;background:#edf1f6;color:#526078;font-size:9px;font-weight:750;white-space:nowrap}.chip.ok{background:var(--green-bg);color:var(--green)}.chip.hold{background:var(--amber-bg);color:var(--amber)}.chip.block{background:var(--red-bg);color:var(--red)}
+.detail-body{padding:16px}.summary-row{display:flex;justify-content:space-between;align-items:flex-start;gap:14px}.summary-row h2{margin:0;color:var(--navy);font-size:20px;line-height:1.3}.summary-row p{margin:5px 0 0;color:var(--muted);font-size:12px}.decision{margin-top:14px;padding:13px 14px;border:1px solid;border-radius:7px}.decision.good{border-color:#a8d7c1;background:var(--green-bg);color:#15543e}.decision.blocked{border-color:#ebc4c1;background:var(--red-bg);color:#77393a}.decision.hold{border-color:#e8d29e;background:var(--amber-bg);color:#674915}.decision h3{margin:0 0 3px;font-size:14px}.decision p{margin:0;font-size:12px}.decision small{display:block;margin-top:7px;padding-top:7px;border-top:1px solid rgba(70,90,120,.2);font-size:10px}.facts{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:14px 0}.fact{padding:9px 10px;border:1px solid #e4e9f0;border-radius:6px;background:#fafbfd}.fact span{display:block;color:var(--muted);font-size:9px;font-weight:750;letter-spacing:.06em;text-transform:uppercase}.fact strong{display:block;margin-top:2px;color:#31435f;font-size:11px}.why{padding:11px 12px;border-radius:6px;background:#f4f7fc;color:#465670;font-size:12px}.why strong{display:block;margin-bottom:2px;color:#2d3e59}.actions{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-top:14px}.actions small{max-width:440px;color:var(--muted);font-size:10px}.btn{min-height:39px;padding:8px 13px;border:1px solid #cbd4e1;border-radius:5px;background:white;color:var(--navy);font-size:12px;font-weight:700}.btn.primary{border-color:var(--blue);background:var(--blue);color:white}.btn:disabled{border-color:#bdc7d6;background:#e9edf3;color:#748095;cursor:not-allowed}.btn.secondary{color:var(--blue)}.boundary{display:flex;gap:9px;margin-top:14px;padding:10px 11px;border-radius:6px;background:#f3f6fa;color:#526078;font-size:11px}.boundary b{color:#34445d}.evidence{margin-top:12px;padding:10px 12px;border:1px solid #e1e6ee;border-radius:6px;background:#fff;font-size:11px}.evidence summary{cursor:pointer;color:var(--blue);font-weight:700}.evidence p{margin:7px 0 0;color:var(--muted)}.notice{margin-top:15px;padding:10px 12px;border-left:3px solid var(--lotus);background:#f4f8ff;color:#45546d;font-size:11px}.stamp{margin:18px 0 0;color:#8792a2;text-align:center;font-size:10px}.toast{position:fixed;right:20px;bottom:20px;max-width:370px;padding:12px 15px;border-radius:7px;background:var(--navy);color:white;box-shadow:0 8px 30px #0003;font-size:12px;display:none}.toast.show{display:block}
+ .pref-dialog{width:min(520px,calc(100% - 28px));max-height:90vh;overflow:auto;border:1px solid var(--line);border-radius:9px;padding:0;color:var(--ink);box-shadow:0 20px 60px #10275f44}.pref-dialog::backdrop{background:#10204488}.pref-head{padding:17px 20px;border-bottom:1px solid var(--line)}.pref-head h2{margin:0;color:var(--navy);font-size:19px}.pref-head p{margin:5px 0 0;color:var(--muted);font-size:12px}.pref-content{padding:16px 20px}.pref-content fieldset{margin:0 0 14px;padding:0;border:0}.pref-content legend{margin-bottom:7px;color:#354762;font-weight:750;font-size:12px}.choice{display:flex;gap:9px;align-items:flex-start;padding:9px 10px;margin:6px 0;border:1px solid #dce3ec;border-radius:6px;cursor:pointer;font-size:12px}.choice:has(input:checked){border-color:#83a8d7;background:var(--pale)}.choice input{margin-top:3px;accent-color:var(--blue)}.pref-caveat{padding:9px 10px;border-radius:6px;background:#fff6e4;color:#674915;font-size:11px}.pref-actions{display:flex;justify-content:flex-end;gap:8px;padding:13px 20px;border-top:1px solid var(--line)}
+ .pref-date{display:grid;gap:5px;margin:8px 0 14px;font-size:12px;font-weight:700}.pref-date input{min-height:38px;padding:7px 9px;border:1px solid #cbd4e1;border-radius:5px;font:inherit}.pref-error{margin:0 20px 12px;color:var(--red);font-size:12px;font-weight:700}
+@media(max-width:900px){.layout{grid-template-columns:1fr}.client{align-items:flex-start}.client-tags{justify-content:flex-end}.head{display:block}.mode{margin-top:10px}}
+@media(max-width:570px){.topbar{padding:0 13px}.brand{min-width:0}.brand-name{font-size:12px}.brand img{width:24px;height:30px}.staff{display:none}main{padding:17px 13px 28px}.head h1{font-size:23px}.stats{grid-template-columns:repeat(2,1fr)}.client{flex-wrap:wrap}.client-tags{width:100%;margin-left:49px;justify-content:flex-start}.facts{grid-template-columns:1fr 1fr}.actions{align-items:stretch;flex-direction:column}.actions .btn{width:100%}.nav{overflow:auto}.nav a{white-space:nowrap}}
+</style>
+</head>
+<body>
+<a class="skip" href="#main"><span lang="en">Skip to main content</span><span lang="th">ข้ามไปยังเนื้อหาหลัก</span></a>
+<header class="topbar">
+  <a class="brand" href="#" aria-label="Bangkok Bank CRM home"><img src="assets/bbl-lotus.png" alt=""><span class="brand-name">Bangkok Bank<small>Customer Relationship Workspace</small></span></a>
+  <span class="env">PROTOTYPE</span><span class="spacer"></span>
+  <div class="staff"><span lang="en">Nattaya R. · Relationship Manager</span><span lang="th">ณัฐยา ร. · ผู้จัดการความสัมพันธ์ลูกค้า</span><small><span lang="en">Assigned retail book · synthetic data</span><span lang="th">พอร์ตลูกค้าบุคคลที่ได้รับมอบหมาย · ข้อมูลจำลอง</span></small></div>
+  <button class="lang" id="language" type="button" aria-label="Switch to Thai">ไทย</button>
+</header>
+<nav class="nav" aria-label="Primary navigation">
+  <a href="#" aria-current="page" lang="en">My work</a><a href="#" aria-current="page" lang="th">งานของฉัน</a>
+  <a href="case-workspace.html" lang="en">Cases</a><a href="case-workspace.html" lang="th">เคสบริการ</a>
+  <a href="service-guide.html" lang="en">Service guidance</a><a href="service-guide.html" lang="th">คำแนะนำบริการ</a>
+  <a href="case-workspace.html" lang="en">Cases</a><a href="case-workspace.html" lang="th">เคสบริการ</a>
+</nav>
+<main id="main" tabindex="-1">
+  <p class="crumb"><span lang="en">My work / Relationship management / Client-touch queue</span><span lang="th">งานของฉัน / งานดูแลความสัมพันธ์ / คิวติดต่อลูกค้า</span></p>
+  <div class="head"><div><h1><span lang="en">Client-touch queue</span><span lang="th">คิวติดต่อลูกค้า</span></h1><p><span lang="en">Keep customer requests and service commitments ahead of optional sales work.</span><span lang="th">จัดลำดับคำขอและคำมั่นด้านบริการของลูกค้าก่อนงานเสนอขายทั่วไป</span></p></div><div class="mode">◉ <span lang="en">Human-initiated contact · sample policy</span><span lang="th">พนักงานเป็นผู้เริ่มติดต่อ · นโยบายตัวอย่าง</span></div></div>
+  <section class="stats" aria-label="Queue summary">
+    <div class="stat"><strong>3</strong><span lang="en">Customer commitments due</span><span lang="th">คำมั่นลูกค้าที่ครบกำหนด</span></div>
+    <div class="stat"><strong>2</strong><span lang="en">Service follow-ups</span><span lang="th">ติดตามงานบริการ</span></div>
+    <div class="stat"><strong>1</strong><span lang="en">Marketing action blocked</span><span lang="th">ระงับการเสนอขาย 1 รายการ</span></div>
+    <div class="stat"><strong>1</strong><span lang="en">Source needs refresh</span><span lang="th">ต้องปรับปรุงแหล่งข้อมูล 1 รายการ</span></div>
+  </section>
+  <section class="client" aria-label="Synthetic customer context">
+    <span class="avatar" aria-hidden="true">NP</span><div><strong><span lang="en">Narin P. · synthetic client</span><span lang="th">นรินทร์ พ. · ลูกค้าจำลอง</span></strong><small><span lang="en">Customer ID •••• 2948 · Assigned RM · No portfolio values in this workspace</span><span lang="th">รหัสลูกค้า •••• 2948 · RM ที่ได้รับมอบหมาย · หน้าจอนี้ไม่แสดงมูลค่าพอร์ตลงทุน</span></small></div>
+    <div class="client-tags"><span class="tag"><span lang="en">Retail</span><span lang="th">บุคคล</span></span><span class="tag"><span lang="en">Customer-selected callback</span><span lang="th">ลูกค้าเลือกให้โทรกลับ</span></span></div>
+  </section>
+  <div class="layout">
+    <section class="card" aria-labelledby="queue-heading"><div class="card-head"><h2 id="queue-heading"><span lang="en">Priority work</span><span lang="th">งานตามลำดับความสำคัญ</span></h2><span class="kicker"><span lang="en">Assigned to you</span><span lang="th">มอบหมายให้คุณ</span></span></div><div class="list" id="queue" role="group" aria-labelledby="queue-heading">
+      <button class="item" type="button" data-item="callback" aria-pressed="true"><span class="item-top"><strong><span lang="en">Call back about mobile setup</span><span lang="th">โทรกลับเรื่องการเริ่มใช้ Mobile Banking</span></strong><span class="chip ok"><span lang="en">Due now</span><span lang="th">ถึงกำหนด</span></span></span><small><span lang="en">Customer-requested service · Phone · Today 10:00</span><span lang="th">บริการตามคำขอ · โทรศัพท์ · วันนี้ 10:00</span></small></button>
+      <button class="item" type="button" data-item="recovery" aria-pressed="false"><span class="item-top"><strong><span lang="en">Confirm card replacement update</span><span lang="th">แจ้งความคืบหน้าการเปลี่ยนบัตร</span></strong><span class="chip hold"><span lang="en">Due today</span><span lang="th">วันนี้</span></span></span><small><span lang="en">Service recovery · Update promise by 15:00</span><span lang="th">ติดตามงานบริการ · แจ้งความคืบหน้าภายใน 15:00</span></small></button>
+      <button class="item" type="button" data-item="marketing" aria-pressed="false"><span class="item-top"><strong><span lang="en">Term-deposit product offer</span><span lang="th">ข้อเสนอผลิตภัณฑ์เงินฝากประจำ</span></strong><span class="chip block"><span lang="en">Blocked</span><span lang="th">ระงับ</span></span></span><small><span lang="en">Direct marketing · Active customer objection</span><span lang="th">การตลาดทางตรง · ลูกค้าคัดค้านอยู่</span></small></button>
+      <button class="item" type="button" data-item="review" aria-pressed="false"><span class="item-top"><strong><span lang="en">Planned annual review</span><span lang="th">ทบทวนความสัมพันธ์ประจำปี</span></strong><span class="chip hold"><span lang="en">Source stale</span><span lang="th">ข้อมูลล้าสมัย</span></span></span><small><span lang="en">Review calendar · Contact suggestion on hold</span><span lang="th">ปฏิทินทบทวน · พักคำแนะนำติดต่อ</span></small></button>
+    </div></section>
+    <section class="card" aria-labelledby="detail-title"><div class="card-head"><h2><span lang="en">Suggested touch details</span><span lang="th">รายละเอียดการติดต่อตามคำแนะนำ</span></h2><span id="purpose-chip" class="chip ok"><span lang="en">Servicing</span><span lang="th">บริการ</span></span></div>
+      <div class="detail-body">
+        <div class="summary-row"><div><h2 id="detail-title"></h2><p id="detail-subtitle"></p></div><span id="decision-pill" class="chip ok"></span></div>
+        <section class="decision good" id="decision" role="status" aria-live="polite"><h3 id="decision-title"></h3><p id="decision-copy"></p><small id="decision-meta"></small></section>
+        <div class="facts" id="facts" aria-label="Suggestion facts"></div>
+        <div class="why"><strong><span lang="en">Why this item is here</span><span lang="th">เหตุผลที่แสดงรายการนี้</span></strong><span id="why-copy"></span></div>
+        <div class="actions"><small><span lang="en">Preparing a contact does not place a call. Confirm the current service purpose and identity steps in the approved system; CRM records only the interaction reference and outcome.</span><span lang="th">การเตรียมติดต่อไม่ได้โทรออก ยืนยันประเภทบริการและขั้นตอนตัวตนในระบบที่ได้รับอนุญาต CRM บันทึกเฉพาะเลขอ้างอิงและผลการติดต่อ</span></small><div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end"><button class="btn secondary" id="record-preference" type="button"><span lang="en">Record customer request</span><span lang="th">บันทึกคำขอของลูกค้า</span></button><button class="btn primary" id="prepare" type="button"></button></div></div>
+        <div class="boundary"><span aria-hidden="true">ⓘ</span><span><b><span lang="en">Contact boundary:</span><span lang="th">ขอบเขตการติดต่อ:</span></b> <span lang="en">The CRM never calls, messages, or enrolls a customer automatically. A direct-marketing objection cannot be bypassed by changing the purpose label. Service contact uses a separate Bank-approved rule.</span><span lang="th">CRM ไม่โทร ส่งข้อความ หรือลงทะเบียนลูกค้าโดยอัตโนมัติ ห้ามเปลี่ยนประเภทงานเพื่อเลี่ยงการคัดค้านการตลาด การติดต่อด้านบริการใช้กฎที่ธนาคารอนุมัติแยกต่างหาก</span></span></div>
+        <details class="evidence" id="evidence"><summary><span lang="en">View preference / source evidence</span><span lang="th">ดูหลักฐานการตั้งค่า/แหล่งข้อมูล</span></summary><p id="evidence-copy"></p></details>
+      </div>
+    </section>
+  </div>
+  <div class="notice"><span lang="en">Validation prototype · all customer and policy values are synthetic. “Allowed,” “blocked,” and “stale” are sample policy outcomes, not Bangkok Bank entitlements or live preference data.</span><span lang="th">ต้นแบบสำหรับทบทวน · ข้อมูลลูกค้าและนโยบายทั้งหมดเป็นข้อมูลจำลอง สถานะ “อนุญาต” “ระงับ” และ “ล้าสมัย” เป็นผลนโยบายตัวอย่าง ไม่ใช่สิทธิ์ของธนาคารกรุงเทพหรือข้อมูลจริง</span></div>
+  <p class="stamp"><span lang="en">Traces to US-403, US-409–411, US-P1-01–05, FR-402/405/409/410/713, functional design §6, and usability tasks T34/P1-T08 · contact policy, source ownership and suppression timing require Bank validation.</span><span lang="th">เชื่อมโยง US-403, US-409–411, US-P1-01–05, FR-402/405/409/410/713, functional design §6 และ usability tasks T34/P1-T08 · ต้องให้ธนาคารยืนยันนโยบายการติดต่อ เจ้าของข้อมูล และระยะเวลาระงับ</span></p>
+</main>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<dialog class="pref-dialog" id="preference-dialog" aria-labelledby="preference-title">
+  <div class="pref-head"><h2 id="preference-title"><span lang="en">Record a customer request</span><span lang="th">บันทึกคำขอของลูกค้า</span></h2><p><span lang="en">First identify what the customer wants. These four request types have different scopes and owners.</span><span lang="th">เริ่มจากระบุสิ่งที่ลูกค้าต้องการ คำขอทั้งสี่ประเภทมีขอบเขตและผู้รับผิดชอบต่างกัน</span></p></div>
+  <div class="pref-content">
+    <div class="fact"><span lang="en">Intake context · synthetic</span><span lang="th">บริบทการรับคำขอ · ข้อมูลจำลอง</span><strong><span lang="en">RM interaction INT-1042 · Phone · 15 Oct 2026, 10:14</span><span lang="th">การสนทนา RM INT-1042 · โทรศัพท์ · 15 ต.ค. 2569 เวลา 10:14</span></strong></div>
+    <fieldset><legend><span lang="en">What did the customer ask for?</span><span lang="th">ลูกค้าร้องขอเรื่องใด</span></legend>
+      <label class="choice"><input type="radio" name="request-type" value="consent-withdrawal"><span lang="en">Withdraw consent for a stated purpose</span><span lang="th">ถอนความยินยอมสำหรับวัตถุประสงค์ที่ระบุ</span></label>
+      <label class="choice"><input type="radio" name="request-type" value="processing-objection"><span lang="en">Object to personal-data processing for direct marketing</span><span lang="th">คัดค้านการประมวลผลข้อมูลส่วนบุคคลเพื่อการตลาดทางตรง</span></label>
+      <label class="choice"><input type="radio" name="request-type" value="bank-contact-stop"><span lang="en">Stop Bangkok Bank marketing communications</span><span lang="th">หยุดการสื่อสารการตลาดจากธนาคารกรุงเทพ</span></label>
+      <label class="choice"><input type="radio" name="request-type" value="recipient-contact-stop"><span lang="en">Stop communications from disclosed recipients</span><span lang="th">หยุดการสื่อสารจากผู้รับข้อมูลที่เปิดเผยไว้</span></label>
+    </fieldset>
+    <div id="request-guidance" class="pref-caveat" aria-live="polite"><span lang="en">Choose the request type to see the relevant fields.</span><span lang="th">เลือกประเภทคำขอเพื่อแสดงข้อมูลที่เกี่ยวข้อง</span></div>
+    <fieldset id="consent-options" hidden><legend><span lang="en">Purpose stated by the customer</span><span lang="th">วัตถุประสงค์ตามที่ลูกค้าแจ้ง</span></legend>
+      <label class="choice"><input type="radio" name="consent-purpose" value="marketing-data-disclosure"><span lang="en">Marketing data disclosure</span><span lang="th">การเปิดเผยข้อมูลเพื่อการตลาด</span></label>
+      <label class="choice"><input type="radio" name="consent-purpose" value="needs-review"><span lang="en">Another purpose or unclear scope · route for review</span><span lang="th">วัตถุประสงค์อื่นหรือขอบเขตไม่ชัดเจน · ส่งตรวจสอบ</span></label>
+    </fieldset>
+    <fieldset id="objection-options" hidden><legend><span lang="en">Processing objection scope · confirm under DPO policy</span><span lang="th">ขอบเขตการคัดค้าน · ยืนยันตามนโยบาย DPO</span></legend>
+      <label class="choice"><input type="radio" name="objection-scope" value="direct-marketing"><span lang="en">Personal-data processing for direct marketing</span><span lang="th">การประมวลผลข้อมูลส่วนบุคคลเพื่อการตลาดทางตรง</span></label>
+      <label class="choice"><input type="radio" name="objection-scope" value="review"><span lang="en">Customer's stated scope needs an authorized review</span><span lang="th">ต้องให้ผู้มีอำนาจตรวจสอบขอบเขตตามที่ลูกค้าแจ้ง</span></label>
+    </fieldset>
+    <fieldset id="bank-contact-options" hidden>
+      <legend><span lang="en">Bangkok Bank communication scope · sample options</span><span lang="th">ขอบเขตการสื่อสารจากธนาคารกรุงเทพ · ตัวเลือกตัวอย่าง</span></legend>
+      <label class="choice"><input type="radio" name="scope" value="all"><span lang="en">All Bank direct-marketing channels</span><span lang="th">ทุกช่องทางการตลาดทางตรงของธนาคาร</span></label>
+      <label class="choice"><input type="radio" name="scope" value="specified"><span lang="en">Only channel(s) specified by the customer</span><span lang="th">เฉพาะช่องทางที่ลูกค้าระบุ</span></label>
+      <div id="channel-options" hidden>
+        <label class="choice"><input type="checkbox" name="channel" value="phone"><span lang="en">Phone</span><span lang="th">โทรศัพท์</span></label>
+        <label class="choice"><input type="checkbox" name="channel" value="email"><span lang="en">Email</span><span lang="th">อีเมล</span></label>
+        <label class="choice"><input type="checkbox" name="channel" value="sms"><span lang="en">SMS</span><span lang="th">SMS</span></label>
+        <label class="choice"><input type="checkbox" name="channel" value="digital inbox"><span lang="en">Digital banking inbox</span><span lang="th">กล่องข้อความธนาคารดิจิทัล</span></label>
+      </div>
+      <fieldset id="duration-options"><legend><span lang="en">Duration · policy-approved choices only</span><span lang="th">ระยะเวลา · ใช้เฉพาะตัวเลือกที่ธนาคารอนุมัติ</span></legend>
+        <label class="choice"><input type="radio" name="duration" value="permanent"><span lang="en">Permanent</span><span lang="th">ถาวร</span></label>
+        <label class="choice"><input type="radio" name="duration" value="temporary"><span lang="en">Temporary · enter the approved end date</span><span lang="th">ชั่วคราว · ระบุวันที่สิ้นสุดที่ได้รับอนุมัติ</span></label>
+      </fieldset>
+      <label class="pref-date" id="preference-expiry-row" hidden><span lang="en">Customer-requested end date</span><span lang="th">วันที่สิ้นสุดตามที่ลูกค้าร้องขอ</span><input id="preference-expiry" type="date"></label>
+    </fieldset>
+    <fieldset id="recipient-options" hidden><legend><span lang="en">Recipient scope · sample recipient list</span><span lang="th">ขอบเขตผู้รับข้อมูล · รายชื่อผู้รับตัวอย่าง</span></legend>
+      <div class="why"><strong><span lang="en">List source: synthetic recipient list RL-204 · refreshed 15 Oct 2026</span><span lang="th">แหล่งรายชื่อ: รายชื่อผู้รับจำลอง RL-204 · ปรับปรุง 15 ต.ค. 2569</span></strong><span lang="en">Example recipients: insurance and investment partners. This list is fictional and does not describe Bangkok Bank recipients.</span><span lang="th">ผู้รับตัวอย่าง: พันธมิตรประกันภัยและการลงทุน รายชื่อนี้เป็นข้อมูลสมมติ ไม่ได้ระบุผู้รับข้อมูลของธนาคารกรุงเทพ</span></div>
+      <label class="choice"><input type="radio" name="recipient-scope" value="all"><span lang="en">Stop communications from all listed recipients</span><span lang="th">หยุดการสื่อสารจากผู้รับทุกรายในรายชื่อ</span></label>
+      <label class="choice"><input type="radio" name="recipient-scope" value="review"><span lang="en">Customer needs the recipient list explained first</span><span lang="th">ลูกค้าต้องการให้ชี้แจงรายชื่อผู้รับก่อน</span></label>
+    </fieldset>
+    <div class="pref-caveat"><span lang="en">Demo only: no live consent, preference, or recipient system is updated. The 24-hour and 48-hour values are separate BOT examples for communication-stop requests; they are not consent-withdrawal clocks or default Bank SLAs.</span><span lang="th">ตัวอย่างสาธิตเท่านั้น: ไม่มีการอัปเดตระบบความยินยอม preference หรือรายชื่อผู้รับจริง ตัวอย่าง 24 และ 48 ชั่วโมงของ BOT ใช้กับคำขอหยุดการสื่อสารคนละประเภท ไม่ใช่กรอบเวลาถอนความยินยอมหรือ SLA เริ่มต้นของธนาคาร</span></div>
+  </div>
+  <p id="preference-error" class="pref-error" role="alert" hidden></p>
+  <div class="pref-actions"><button class="btn" id="cancel-preference" type="button"><span lang="en">Cancel</span><span lang="th">ยกเลิก</span></button><button class="btn primary" id="save-preference" type="button"><span lang="en">Record request</span><span lang="th">บันทึกคำขอ</span></button></div>
+</dialog>
+<script>
+const $=(id)=>document.getElementById(id);
+const records={
+  callback:{
+    purpose:'service',tone:'good',pill:{en:'Sample policy · Ready to prepare',th:'นโยบายตัวอย่าง · เตรียมติดต่อได้'},title:{en:'Customer-requested callback',th:'โทรกลับตามคำขอของลูกค้า'},subtitle:{en:'Mobile Banking setup help · Service purpose · Phone',th:'ช่วยเริ่มใช้ Mobile Banking · วัตถุประสงค์ด้านบริการ · โทรศัพท์'},decisionTitle:{en:'Sample policy result: prepare a manual callback',th:'ผลนโยบายตัวอย่าง: เตรียมโทรกลับด้วยตนเอง'},decision:{en:'The customer asked for a call today. The servicing contact rule returned a current “prepare” result for this sample scenario. The RM still starts the call manually.',th:'ลูกค้าขอให้โทรกลับวันนี้ กฎการติดต่อเพื่อให้บริการส่งผล “เตรียมติดต่อ” ปัจจุบันสำหรับสถานการณ์ตัวอย่างนี้ RM ยังต้องเป็นผู้โทรด้วยตนเอง'},meta:{en:'Sample source: interaction INT-1042 · Preference checked 09:10 · Sample rule: 0 of 2 attempts today · synthetic values',th:'แหล่งตัวอย่าง: interaction INT-1042 · ตรวจ preference 09:10 · กฎตัวอย่าง: ติดต่อแล้ว 0 จาก 2 ครั้งวันนี้ · ข้อมูลจำลอง'},why:{en:'Customer asked for help with Mobile Banking registration and selected a phone callback between 10:00 and 12:00.',th:'ลูกค้าขอความช่วยเหลือเรื่องลงทะเบียน Mobile Banking และเลือกให้โทรกลับทางโทรศัพท์ช่วง 10:00–12:00'},source:{en:'Interaction INT-1042 · Customer request · Updated 15 Oct 2026, 09:10 · Contact decision from sample servicing policy.',th:'Interaction INT-1042 · คำขอจากลูกค้า · อัปเดต 15 ต.ค. 2569 เวลา 09:10 · ผลตัดสินการติดต่อจากนโยบายบริการตัวอย่าง'},facts:[['Purpose','Customer-requested service','วัตถุประสงค์','บริการตามคำขอ'],['Owner','Nattaya R.','ผู้รับผิดชอบ','ณัฐยา ร.'],['Due','Today · 10:00','กำหนด','วันนี้ · 10:00']]},
+  recovery:{
+    purpose:'service',tone:'hold',pill:{en:'Sample policy · Check required',th:'นโยบายตัวอย่าง · ต้องตรวจสอบ'},title:{en:'Service recovery update',th:'แจ้งความคืบหน้างานบริการ'},subtitle:{en:'Card replacement request · Service purpose · Phone',th:'คำขอเปลี่ยนบัตร · วัตถุประสงค์ด้านบริการ · โทรศัพท์'},decisionTitle:{en:'Check the current contact rule before preparing',th:'ตรวจสอบกฎการติดต่อปัจจุบันก่อนเตรียมติดต่อ'},decision:{en:'The request is due today, but the relevant contact decision is not attached to this sample item. Open the approved preference/contact source first; do not treat urgency as permission.',th:'คำขอครบกำหนดวันนี้ แต่รายการตัวอย่างนี้ไม่มีผลการติดต่อที่เกี่ยวข้อง ให้ตรวจแหล่ง preference/การติดต่อที่ได้รับอนุญาตก่อน อย่าถือว่าความเร่งด่วนคือการอนุญาต'},meta:{en:'Source: service case SR-2208 · Contact rule result: missing · Outcome: hold',th:'แหล่งข้อมูล: service case SR-2208 · ผลกฎการติดต่อ: ไม่มีข้อมูล · ผล: พักไว้'},why:{en:'The RM promised to provide a customer-safe update by 15:00. Confirm the source-system status before stating what happened.',th:'RM รับปากว่าจะอัปเดตข้อมูลที่เปิดเผยได้อย่างปลอดภัยภายใน 15:00 ตรวจสอบสถานะจากระบบต้นทางก่อนแจ้งความคืบหน้า'},source:{en:'Service case SR-2208 · Owner: Card Operations · Status source and permitted contact route require refresh.',th:'Service case SR-2208 · เจ้าของงาน: Card Operations · ต้องปรับปรุงสถานะจากแหล่งข้อมูลและเส้นทางติดต่อที่อนุญาต'},facts:[['Purpose','Service update','วัตถุประสงค์','แจ้งงานบริการ'],['Owner','Nattaya R.','ผู้รับผิดชอบ','ณัฐยา ร.'],['Due','Today · 15:00','กำหนด','วันนี้ · 15:00']]},
+  marketing:{
+    purpose:'marketing',tone:'blocked',pill:{en:'Blocked · Direct-marketing objection',th:'ระงับ · คัดค้านการตลาดทางตรง'},title:{en:'Direct-marketing product offer',th:'ข้อเสนอผลิตภัณฑ์เพื่อการตลาดทางตรง'},subtitle:{en:'Term-deposit offer · Marketing purpose · Phone',th:'ข้อเสนอเงินฝากประจำ · วัตถุประสงค์การตลาด · โทรศัพท์'},decisionTitle:{en:'Do not contact for this marketing purpose',th:'ห้ามติดต่อตามวัตถุประสงค์การตลาดนี้'},decision:{en:'The synthetic preference record contains an active direct-marketing objection. The contact action stays blocked; do not reclassify this offer as servicing or try another channel.',th:'ระเบียน preference จำลองมีการคัดค้านการตลาดทางตรงที่ยังมีผล ระงับการติดต่อ ห้ามเปลี่ยนข้อเสนอนี้เป็นงานบริการหรือทดลองใช้ช่องทางอื่น'},meta:{en:'Preference source: PREF-3081 · Effective 10 Oct 2026 · Marketing scope · Sample current status',th:'แหล่ง preference: PREF-3081 · มีผล 10 ต.ค. 2569 · ขอบเขตการตลาด · สถานะตัวอย่างปัจจุบัน'},why:{en:'This product suggestion is subordinate to the customer’s active marketing objection. The objection applies to its configured marketing scope; servicing requests are evaluated separately.',th:'คำแนะนำผลิตภัณฑ์นี้อยู่ภายใต้การคัดค้านการตลาดของลูกค้า การคัดค้านครอบคลุมขอบเขตการตลาดที่กำหนด ส่วนคำขอบริการจะประเมินแยกต่างหาก'},source:{en:'Preference record PREF-3081 · Direct-marketing objection · Effective 10 Oct 2026 · Do not call. A preference owner can review/change the record only under Bank policy.',th:'ระเบียน preference PREF-3081 · คัดค้านการตลาดทางตรง · มีผล 10 ต.ค. 2569 · ห้ามโทร เจ้าของ preference ตรวจ/แก้ไขได้ตามนโยบายธนาคาร'},facts:[['Purpose','Direct marketing','วัตถุประสงค์','การตลาดทางตรง'],['Owner','Nattaya R.','ผู้รับผิดชอบ','ณัฐยา ร.'],['Contact','Blocked','การติดต่อ','ระงับ']]},
+  review:{
+    purpose:'review',tone:'hold',pill:{en:'On hold · Source stale',th:'พักไว้ · แหล่งข้อมูลล้าสมัย'},title:{en:'Planned annual relationship review',th:'ทบทวนความสัมพันธ์ประจำปี'},subtitle:{en:'Review calendar · Contact recommendation paused',th:'ปฏิทินทบทวน · พักคำแนะนำการติดต่อ'},decisionTitle:{en:'Refresh the source before suggesting contact',th:'ปรับปรุงแหล่งข้อมูลก่อนแนะนำการติดต่อ'},decision:{en:'The review-calendar signal is past its sample freshness threshold. No contact recommendation is available until the approved source refreshes.',th:'สัญญาณจากปฏิทินทบทวนเกินเกณฑ์ความสดใหม่ตัวอย่าง ยังไม่มีคำแนะนำให้ติดต่อลูกค้าจนกว่าแหล่งข้อมูลที่ได้รับอนุญาตจะปรับปรุง'},meta:{en:'Source: review calendar · Last refreshed 14 Oct 2026 · Sample status: stale',th:'แหล่งข้อมูล: ปฏิทินทบทวน · ปรับปรุงล่าสุด 14 ต.ค. 2569 · สถานะตัวอย่าง: ล้าสมัย'},why:{en:'A planned review can appear when its schedule and any required product-event data are current. This sample does not contain portfolio values.',th:'การทบทวนตามแผนจะแสดงเมื่อกำหนดการและข้อมูลเหตุการณ์ผลิตภัณฑ์ที่ต้องใช้ยังเป็นปัจจุบัน ตัวอย่างนี้ไม่มีมูลค่าพอร์ตลงทุน'},source:{en:'Review calendar · Owner: RM planning · Refresh or ask the named owner to resolve the stale event before contact.',th:'ปฏิทินทบทวน · เจ้าของ: RM planning · ปรับปรุงข้อมูลหรือให้เจ้าของแก้เหตุการณ์ล้าสมัยก่อนติดต่อ'},facts:[['Purpose','Planned review','วัตถุประสงค์','ทบทวนตามแผน'],['Owner','Nattaya R.','ผู้รับผิดชอบ','ณัฐยา ร.'],['Freshness','Stale','ความสดใหม่','ล้าสมัย']]}
+};
+let selected='callback';let thai=false;let preferenceUpdate=null;
+function text(en,th){return thai?th:en}
+function render(){
+ const r=records[selected];const detail=$('decision');detail.className='decision '+r.tone;
+ $('detail-title').textContent=text(r.title.en,r.title.th);$('detail-subtitle').textContent=text(r.subtitle.en,r.subtitle.th);
+ const pending=selected==='marketing'&&preferenceUpdate;
+ const pendingMeta=pending?`${preferenceUpdate.kindEn} · ${preferenceUpdate.scopeEn} · ${preferenceUpdate.statusEn}`:r.meta.en;
+ const pendingMetaTh=pending?`${preferenceUpdate.kindTh} · ${preferenceUpdate.scopeTh} · ${preferenceUpdate.statusTh}`:r.meta.th;
+ $('decision-title').textContent=text(pending?'Request recorded · current objection still applies':r.decisionTitle.en,pending?'บันทึกคำขอแล้ว · การคัดค้านที่มีอยู่ยังคงมีผล':r.decisionTitle.th);
+ $('decision-copy').textContent=text(pending?preferenceUpdate.statusEn:r.decision.en,pending?preferenceUpdate.statusTh:r.decision.th);
+ $('decision-meta').textContent=text(pendingMeta,pendingMetaTh);
+ $('why-copy').textContent=' '+text(pending?preferenceUpdate.nextEn:r.why.en,pending?preferenceUpdate.nextTh:r.why.th);
+ $('evidence-copy').textContent=text(pending?`Demo request ${preferenceUpdate.id} · Phone · Interaction INT-1042 · Received 15 Oct 2026, 10:14 · No live source updated.`:r.source.en,pending?`คำขอตัวอย่าง ${preferenceUpdate.id} · โทรศัพท์ · การสนทนา INT-1042 · รับคำขอ 15 ต.ค. 2569 เวลา 10:14 · ไม่มีการอัปเดตระบบจริง`:r.source.th);
+ const pill=$('decision-pill');pill.className='chip '+(pending?'hold':r.tone==='good'?'ok':r.tone==='blocked'?'block':'hold');pill.textContent=text(pending?'Request recorded · Source confirmation pending':r.pill.en,pending?'บันทึกคำขอแล้ว · รอแหล่งข้อมูลยืนยัน':r.pill.th);
+ const purpose=$('purpose-chip');purpose.className='chip '+(r.purpose==='marketing'?'block':r.tone==='good'?'ok':'hold');purpose.textContent=text(r.purpose==='marketing'?'Direct marketing':r.purpose==='service'?'Servicing':'Review',r.purpose==='marketing'?'การตลาดทางตรง':r.purpose==='service'?'บริการ':'ทบทวน');
+ const displayedFacts=pending?[['Request type',preferenceUpdate.kindEn,'ประเภทคำขอ',preferenceUpdate.kindTh],['Scope',preferenceUpdate.scopeEn,'ขอบเขต',preferenceUpdate.scopeTh],['State','Pending source confirmation','สถานะ','รอแหล่งข้อมูลยืนยัน']]:r.facts;
+ $('facts').replaceChildren(...displayedFacts.map(([keyEn,valueEn,keyTh,valueTh])=>{const d=document.createElement('div');d.className='fact';const label=document.createElement('span');label.textContent=text(keyEn,keyTh);const value=document.createElement('strong');value.textContent=text(valueEn,valueTh);d.append(label,value);return d}));
+ const action=$('prepare');action.disabled=r.tone!=='good';action.textContent=text(r.tone==='good'?'Prepare manual contact':r.tone==='blocked'?'Contact blocked': 'Contact on hold',r.tone==='good'?'เตรียมติดต่อด้วยตนเอง':r.tone==='blocked'?'ระงับการติดต่อ':'พักการติดต่อ');
+ document.querySelectorAll('[data-item]').forEach((button)=>button.setAttribute('aria-pressed',String(button.dataset.item===selected)));
+}
+document.querySelectorAll('[data-item]').forEach((button)=>button.addEventListener('click',()=>{selected=button.dataset.item;render()}));
+$('prepare').addEventListener('click',()=>{if(records[selected].tone!=='good')return;const toast=$('toast');toast.textContent=text('Draft contact prepared; no call was placed. Start it manually in the approved system.','เตรียมร่างการติดต่อแล้ว แต่ไม่มีการโทร ให้เริ่มติดต่อด้วยตนเองในระบบที่ได้รับอนุญาต');toast.classList.add('show');window.setTimeout(()=>toast.classList.remove('show'),4200)});
+function updateRequestFields(type){
+ $('consent-options').hidden=type!=='consent-withdrawal';
+ $('objection-options').hidden=type!=='processing-objection';
+ $('bank-contact-options').hidden=type!=='bank-contact-stop';
+ $('recipient-options').hidden=type!=='recipient-contact-stop';
+ const guidance={
+  'consent-withdrawal':['Route the stated purpose to its consent source. This action does not itself stop all communications or use a BOT contact-stop clock.','ส่งวัตถุประสงค์ที่ระบุไปยังแหล่งข้อมูลความยินยอม คำขอนี้ไม่ได้หยุดการสื่อสารทั้งหมดและไม่ใช้กรอบเวลาหยุดการติดต่อตาม BOT โดยอัตโนมัติ'],
+  'processing-objection':['Record an objection to personal-data processing for direct marketing. Keep its scope separate from consent and channel preferences; follow DPO policy.','บันทึกการคัดค้านการประมวลผลข้อมูลส่วนบุคคลเพื่อการตลาด แยกขอบเขตจากความยินยอมและช่องทางติดต่อ แล้วทำตามนโยบาย DPO'],
+  'bank-contact-stop':['This stops Bangkok Bank communications. A temporary choice must use an approved end date and show the permanent option. BOT timing is an example, not a Bank target.','คำขอนี้หยุดการสื่อสารจากธนาคารกรุงเทพ ตัวเลือกชั่วคราวต้องใช้วันสิ้นสุดที่อนุมัติและแสดงตัวเลือกถาวร กรอบเวลา BOT เป็นตัวอย่าง ไม่ใช่เป้าหมายของธนาคาร'],
+  'recipient-contact-stop':['This applies to disclosed recipients. Check the approved recipient list and track each recipient confirmation separately.','คำขอนี้ใช้กับผู้รับข้อมูลที่เปิดเผยไว้ ตรวจรายชื่อผู้รับที่อนุมัติและติดตามการยืนยันจากผู้รับแต่ละรายแยกกัน']
+ };
+ const copy=guidance[type]||['Choose the request type to see the relevant fields.','เลือกประเภทคำขอเพื่อแสดงข้อมูลที่เกี่ยวข้อง'];
+ $('request-guidance').textContent=text(copy[0],copy[1]);
+}
+function resetPreferenceForm(){
+ $('preference-error').hidden=true;
+ document.querySelectorAll('#preference-dialog input[type="radio"],#preference-dialog input[type="checkbox"]').forEach((input)=>input.checked=false);
+ ['consent-options','objection-options','bank-contact-options','recipient-options','channel-options','preference-expiry-row'].forEach((id)=>$(id).hidden=true);
+ $('preference-expiry').value='';$('preference-expiry').required=false;
+ updateRequestFields('');
+}
+$('record-preference').addEventListener('click',()=>{$('preference-dialog').showModal();resetPreferenceForm()});
+$('cancel-preference').addEventListener('click',()=>$('preference-dialog').close());
+document.querySelectorAll('input[name="request-type"]').forEach((input)=>input.addEventListener('change',()=>{
+ const type=input.value;
+ const groups={
+  'consent-withdrawal':['consent-purpose'],
+  'processing-objection':['objection-scope'],
+  'bank-contact-stop':['scope','channel','duration'],
+  'recipient-contact-stop':['recipient-scope']
+ };
+ Object.entries(groups).forEach(([requestType,names])=>{
+  if(requestType===type)return;
+  names.forEach((name)=>document.querySelectorAll(`#preference-dialog input[name="${name}"]`).forEach((field)=>{field.checked=false}));
+ });
+ if(type!=='bank-contact-stop'){$('preference-expiry').value='';$('preference-expiry').required=false;$('preference-expiry-row').hidden=true;$('channel-options').hidden=true}
+ $('preference-error').hidden=true;
+ updateRequestFields(type);
+}));
+document.querySelectorAll('input[name="scope"]').forEach((input)=>input.addEventListener('change',()=>{
+ $('channel-options').hidden=input.value!=='specified';
+ if(input.value==='all')document.querySelectorAll('input[name="channel"]').forEach((field)=>{field.checked=false});
+}));
+document.querySelectorAll('input[name="duration"]').forEach((input)=>input.addEventListener('change',()=>{$('preference-expiry-row').hidden=input.value!=='temporary';$('preference-expiry').required=input.value==='temporary'}));
+$('save-preference').addEventListener('click',()=>{
+ const type=document.querySelector('input[name="request-type"]:checked')?.value;
+ const purpose=document.querySelector('input[name="consent-purpose"]:checked');
+ const objection=document.querySelector('input[name="objection-scope"]:checked');
+ const scope=document.querySelector('input[name="scope"]:checked');
+ const duration=document.querySelector('input[name="duration"]:checked');
+ const recipient=document.querySelector('input[name="recipient-scope"]:checked');
+ const channels=[...document.querySelectorAll('input[name="channel"]:checked')];
+ const expiry=$('preference-expiry');const error=$('preference-error');
+ let invalid=!type;
+ if(type==='consent-withdrawal') invalid=invalid||!purpose;
+ if(type==='processing-objection') invalid=invalid||!objection;
+ if(type==='bank-contact-stop') invalid=invalid||!scope||!duration||(scope?.value==='specified'&&!channels.length)||(duration?.value==='temporary'&&!expiry.value);
+ if(type==='recipient-contact-stop') invalid=invalid||!recipient;
+ if(invalid){error.textContent=text('Choose the request type and complete its required fields. Do not substitute one request type for another.','เลือกประเภทคำขอและกรอกข้อมูลที่จำเป็น ห้ามใช้ประเภทคำขออื่นแทน');error.hidden=false;return}
+ const typeInfo={
+  'consent-withdrawal':{kindEn:'Consent withdrawal',kindTh:'ถอนความยินยอม',stateEn:'Consent withdrawal received · source and purpose-specific effect review pending. No communication-stop request is inferred.',stateTh:'รับคำขอถอนความยินยอมแล้ว · รอแหล่งข้อมูลตรวจผลตามวัตถุประสงค์ ไม่อนุมานว่าเป็นคำขอหยุดการสื่อสาร',nextEn:'Route to the consent/source owner. The current direct-marketing objection remains active; this demo applies no default withdrawal clock.',nextTh:'ส่งให้เจ้าของข้อมูลความยินยอม/ระบบต้นทางตรวจสอบ การคัดค้านการตลาดทางตรงที่มีอยู่ยังมีผล ตัวอย่างนี้ไม่กำหนดกรอบเวลาถอนความยินยอมโดยอัตโนมัติ'},
+  'processing-objection':{kindEn:'Direct-marketing processing objection',kindTh:'คัดค้านการประมวลผลเพื่อการตลาดทางตรง',stateEn:'Processing objection received · covered direct-marketing use is held in this CRM demo while the authorized source confirms scope.',stateTh:'รับคำคัดค้านการประมวลผลแล้ว · พักการใช้ข้อมูลเพื่อการตลาดที่เกี่ยวข้องในตัวอย่างนี้ระหว่างรอแหล่งข้อมูลยืนยันขอบเขต',nextEn:'Route to the DPO/policy owner. This is broader than a channel-only communication stop; no BOT 24h/48h example is assigned.',nextTh:'ส่งให้ DPO/เจ้าของนโยบายตรวจสอบ ขอบเขตกว้างกว่าการหยุดสื่อสารเฉพาะช่องทาง และไม่ใช้ตัวอย่าง 24/48 ชั่วโมงของ BOT'},
+  'bank-contact-stop':{kindEn:'Bangkok Bank communication stop',kindTh:'หยุดการสื่อสารจากธนาคารกรุงเทพ',stateEn:'Bank marketing communications are held locally in this demo · outbound-system confirmation pending. BOT cites completion without delay (24 hours is an example); the Bank target is unconfirmed.',stateTh:'พักการสื่อสารการตลาดจากธนาคารในตัวอย่างนี้ · รอระบบส่งออกยืนยัน BOT ยกตัวอย่างให้ดำเนินการโดยไม่ชักช้า (เช่น 24 ชั่วโมง) ยังไม่ยืนยันเป้าหมายของธนาคาร',nextEn:'Do not reissue a covered marketing suggestion until the current preference source confirms the stop request.',nextTh:'ห้ามเสนอการตลาดที่อยู่ในขอบเขตอีกจนกว่าแหล่ง preference ปัจจุบันจะยืนยันคำขอหยุดการติดต่อ'},
+  'recipient-contact-stop':{kindEn:'Disclosed-recipient communication stop',kindTh:'หยุดการสื่อสารจากผู้รับข้อมูลที่เปิดเผย',stateEn:'Covered recipient marketing is held locally in this demo · separate recipient confirmations are pending. BOT cites suspension as soon as possible (48 hours is an example); the Bank target is unconfirmed.',stateTh:'พักการตลาดจากผู้รับข้อมูลที่เกี่ยวข้องในตัวอย่างนี้ · รอการยืนยันจากผู้รับแต่ละราย BOT ยกตัวอย่างให้ระงับโดยเร็ว (เช่น 48 ชั่วโมง) ยังไม่ยืนยันเป้าหมายของธนาคาร',nextEn:'Do not state that a recipient has completed suppression until its approved source confirms it.',nextTh:'ห้ามแจ้งว่าผู้รับข้อมูลระงับการติดต่อแล้วจนกว่าแหล่งข้อมูลที่อนุมัติจะยืนยัน'}
+ }[type];
+ let scopeEn='',scopeTh='';
+ if(type==='consent-withdrawal'){scopeEn=purpose.value==='marketing-data-disclosure'?'Marketing data disclosure':'Purpose needs owner review';scopeTh=purpose.value==='marketing-data-disclosure'?'การเปิดเผยข้อมูลเพื่อการตลาด':'รอเจ้าของตรวจสอบวัตถุประสงค์'}
+ if(type==='processing-objection'){scopeEn=objection.value==='direct-marketing'?'Direct-marketing processing':'Scope needs authorized review';scopeTh=objection.value==='direct-marketing'?'การประมวลผลเพื่อการตลาดทางตรง':'รอผู้มีอำนาจตรวจสอบขอบเขต'}
+ if(type==='bank-contact-stop'){const names=channels.map((input)=>({phone:['phone','โทรศัพท์'],email:['email','อีเมล'],sms:['SMS','SMS'],'digital inbox':['digital banking inbox','กล่องข้อความธนาคารดิจิทัล']}[input.value]));scopeEn=scope.value==='all'?'All Bank direct-marketing channels':names.map((name)=>name[0]).join(', ');scopeTh=scope.value==='all'?'ทุกช่องทางการตลาดทางตรงของธนาคาร':names.map((name)=>name[1]).join(', ');if(duration.value==='temporary'){scopeEn+=` · until ${expiry.value}`;scopeTh+=` · ถึง ${expiry.value}`}}
+ if(type==='recipient-contact-stop'){scopeEn=recipient.value==='all'?'All listed recipients · RL-204':'Recipient scope review · RL-204';scopeTh=recipient.value==='all'?'ผู้รับทุกรายในรายชื่อ · RL-204':'ตรวจสอบขอบเขตผู้รับ · RL-204'}
+ preferenceUpdate={id:'DEMO-REQ-042',...typeInfo,scopeEn,scopeTh,statusEn:typeInfo.stateEn,statusTh:typeInfo.stateTh};
+ $('preference-dialog').close();selected='marketing';render();
+ const toast=$('toast');toast.textContent=text(`${typeInfo.kindEn} recorded in demo · No live source updated.`,`${typeInfo.kindTh}ในตัวอย่าง · ไม่มีการอัปเดตระบบจริง`);toast.classList.add('show');window.setTimeout(()=>toast.classList.remove('show'),4500);
+});
+$('language').addEventListener('click',()=>{thai=!thai;document.body.classList.toggle('th',thai);document.documentElement.lang=thai?'th':'en';$('language').textContent=thai?'EN':'ไทย';$('language').setAttribute('aria-label',thai?'Switch to English':'Switch to Thai');render()});
+render();
+</script>
+<script src="assets/language-preference.js"></script>
+</body>
+</html>

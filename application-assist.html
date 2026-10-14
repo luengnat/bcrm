@@ -1,0 +1,279 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BBL CRM Prototype — Application Assistance</title>
+<style>
+:root{--navy:#07345b;--blue:#0755a5;--blue-2:#eaf2fa;--ink:#172536;--muted:#667587;--paper:#f3f6f9;--line:#d8e0e8;--surface:#fff;--green:#17734c;--green-bg:#e9f6ef;--amber:#805c08;--amber-bg:#fff5d9;--red:#9a3e37;--red-bg:#fff0ef;--shadow:0 8px 24px rgba(18,43,70,.06);--focus:0 0 0 3px rgba(7,85,165,.25)}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:14px/1.5 "IBM Plex Sans Thai","Sarabun","Segoe UI",system-ui,sans-serif}button,input,select,textarea{font:inherit}button,a,select{cursor:pointer}a{color:var(--blue)}:focus-visible{outline:none;box-shadow:var(--focus);border-radius:5px}
+.topbar{display:flex;align-items:center;gap:14px;background:var(--navy);color:white;padding:10px 22px}.brand{display:flex;align-items:center;gap:9px;font-weight:700;font-size:15px;white-space:nowrap}.lotus{width:29px;height:31px;object-fit:contain}.crm{font-weight:400;opacity:.78}.badge{font-size:10px;font-weight:800;letter-spacing:.08em;padding:3px 8px;border-radius:20px;background:#f3c764;color:#29230f}.search{display:flex;margin-left:24px;max-width:390px;flex:1}.search input{min-width:0;flex:1;padding:8px 11px;border:0;border-radius:5px 0 0 5px}.search button{border:0;border-radius:0 5px 5px 0;background:#d5e5f4;color:var(--navy);padding:0 14px;font-weight:700}.grow{flex:1}.topbar button.lang{background:transparent;color:#fff;border:1px solid #ffffff66;border-radius:5px;padding:6px 10px}.user{text-align:right;font-size:12px;white-space:nowrap}.user small{display:block;opacity:.7}
+.nav{display:flex;gap:3px;padding:0 18px;background:#0b4b83;overflow:auto}.nav a{color:white;text-decoration:none;padding:10px 13px;border-bottom:3px solid transparent;white-space:nowrap;font-size:12px}.nav a.active{border-color:white;font-weight:700}.nav a:hover{background:#ffffff12}
+main{max-width:1260px;margin:0 auto;padding:22px 22px 50px}.crumb{font-size:12px;color:var(--muted);margin:0 0 8px}.pagehead{display:flex;align-items:flex-start;justify-content:space-between;gap:18px;margin-bottom:16px}.pagehead h1{font-size:25px;line-height:1.2;margin:0}.pagehead p{margin:5px 0 0;color:var(--muted)}.pills{display:flex;gap:7px;flex-wrap:wrap;justify-content:flex-end}.pill{border:1px solid var(--line);border-radius:20px;background:#fff;padding:4px 9px;font-size:11px;color:var(--muted)}.pill.demo{border-color:#efcf81;background:#fff7e1;color:#745813;font-weight:700}
+.demo-note{display:flex;gap:10px;align-items:flex-start;background:#fff9e9;border:1px solid #ecd8a2;border-left:4px solid #d9a827;border-radius:7px;padding:10px 13px;margin:0 0 16px;font-size:12px;color:#51431e}.demo-note strong{color:#30280f}
+.toolbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:12px 14px;border:1px solid var(--line);border-radius:8px;background:white;box-shadow:var(--shadow);margin-bottom:15px}.toolbar .label{color:var(--muted);font-size:12px;font-weight:700}.switches{display:flex;gap:5px;flex-wrap:wrap}.switch{background:white;border:1px solid var(--line);color:var(--ink);padding:6px 11px;border-radius:5px;font-size:12px}.switch[aria-pressed="true"]{background:var(--blue);border-color:var(--blue);color:#fff;font-weight:700}.toolbar select{border:1px solid var(--line);border-radius:5px;padding:6px 25px 6px 9px;background:#fff;color:var(--ink)}
+.layout{display:grid;grid-template-columns:minmax(0,1.65fr) minmax(300px,.9fr);gap:16px;align-items:start}.stack{display:grid;gap:15px}.card{background:var(--surface);border:1px solid var(--line);border-radius:8px;box-shadow:var(--shadow);overflow:hidden}.cardhead{display:flex;justify-content:space-between;align-items:center;gap:12px;border-bottom:1px solid var(--line);padding:12px 16px}.cardhead h2{margin:0;font-size:14px}.cardhead .subhead{font-size:11px;color:var(--muted)}.body{padding:15px 16px}.section-title{font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);font-weight:800;margin:0 0 8px}.request-head{display:flex;justify-content:space-between;gap:14px;align-items:flex-start}.request-head h3{margin:0;font-size:19px}.request-head p{margin:3px 0;color:var(--muted);font-size:12px}.request-id{font:700 12px ui-monospace,SFMono-Regular,Menlo,monospace;color:#405267;background:#f0f4f8;border-radius:5px;padding:6px 8px;white-space:nowrap}.meta{display:flex;gap:8px 18px;flex-wrap:wrap;margin-top:11px;padding-top:10px;border-top:1px solid var(--line);color:var(--muted);font-size:12px}.meta strong{color:var(--ink);font-weight:700}.tag{display:inline-flex;align-items:center;gap:6px;border-radius:20px;padding:4px 9px;font-size:11px;font-weight:700}.tag.open{background:var(--blue-2);color:#174b7a}.tag.fresh{background:var(--green-bg);color:var(--green)}.tag.warn{background:var(--amber-bg);color:var(--amber)}.tag.error{background:var(--red-bg);color:var(--red)}.tag .dot{width:7px;height:7px;border-radius:50%;background:currentColor}
+.status{border:1px solid var(--line);border-radius:7px;background:#fbfcfd;padding:14px}.status-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}.status-top h3{margin:2px 0;font-size:18px}.status-top p{margin:3px 0;color:var(--muted);font-size:12px}.status-meta{font-size:11px;color:var(--muted);margin-top:7px}.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:0;margin:20px 3px 10px}.step{position:relative;text-align:center;font-size:11px;color:#778596;padding-top:19px}.step::before{content:"";position:absolute;top:0;left:50%;transform:translateX(-50%);width:12px;height:12px;border:2px solid #b7c4d1;background:white;border-radius:50%;z-index:1}.step:not(:last-child)::after{content:"";position:absolute;height:2px;top:5px;left:50%;width:100%;background:#d4dde5}.step.done{color:var(--green);font-weight:700}.step.done::before{background:var(--green);border-color:var(--green)}.step.current{color:var(--blue);font-weight:800}.step.current::before{border:3px solid var(--blue);background:white}.notice{border-radius:6px;padding:9px 11px;margin-top:10px;font-size:12px}.notice.info{background:#edf4fb;color:#244c70;border:1px solid #d3e2f0}.notice.warn{background:var(--amber-bg);color:#624b14;border:1px solid #ecdcae}.notice.error{background:var(--red-bg);color:#79342e;border:1px solid #efc9c5}.notice.good{background:var(--green-bg);color:#21583f;border:1px solid #cbe6d7}
+.source{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:11px}.source-item{background:white;border:1px solid var(--line);border-radius:6px;padding:8px 10px}.source-item span{display:block;color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.04em}.source-item strong{display:block;font-size:12px;margin-top:2px}
+.guide{border-left:3px solid var(--blue);padding-left:12px;margin:0 0 12px}.guide h3{font-size:15px;margin:0 0 3px}.guide p{margin:0;color:var(--muted);font-size:12px}.guide ul{margin:9px 0 0;padding-left:18px;font-size:12px}.guide li{padding:2px 0}.guide-foot{font-size:11px;color:var(--muted);border-top:1px dashed var(--line);margin-top:12px;padding-top:9px}
+.side-note{border-radius:7px;background:#f4f7fa;border:1px solid var(--line);padding:12px}.side-note h3{font-size:13px;margin:0 0 5px}.side-note p{font-size:12px;color:var(--muted);margin:0}.role-boundary{font-size:12px;margin-top:11px;background:#f9fbfd;border:1px solid var(--line);border-radius:6px;padding:10px}.role-boundary strong{display:block;margin-bottom:4px}.role-boundary p{margin:0;color:var(--muted)}
+.btn-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:13px}.btn{display:inline-flex;justify-content:center;align-items:center;gap:7px;text-decoration:none;border:1px solid var(--line);background:#fff;color:var(--ink);border-radius:5px;padding:8px 12px;font-size:12px;font-weight:700}.btn.primary{background:var(--blue);border-color:var(--blue);color:white}.btn.primary:hover{background:#064782}.btn:hover{border-color:#8297ab}.btn:disabled{opacity:.45;cursor:not-allowed}
+.owner-row{display:grid;grid-template-columns:1fr 1fr;gap:9px}.owner{border:1px solid var(--line);border-radius:6px;padding:10px}.owner small{display:block;color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.04em}.owner strong{display:block;margin-top:3px;font-size:12px}.owner .state{color:var(--amber);font-size:11px;margin-top:3px}.owner .state.accepted{color:var(--green)}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.field{display:grid;gap:4px}.field.full{grid-column:1/-1}.field label{font-size:11px;font-weight:700;color:#526275}.field input,.field select,.field textarea{width:100%;border:1px solid #bdc9d4;border-radius:5px;padding:8px 9px;background:#fff;color:var(--ink)}.field textarea{resize:vertical;min-height:60px}.help{font-size:10px;color:var(--muted)}.form-foot{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-top:12px}.smallprint{font-size:10px;color:var(--muted)}.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}.hidden{display:none!important}.footer{text-align:center;padding:20px 0 4px;color:var(--muted);font-size:11px}
+@media(max-width:900px){.layout{grid-template-columns:1fr}.search{margin-left:0}.user{display:none}.pagehead{display:block}.pills{justify-content:flex-start;margin-top:10px}}
+@media(max-width:600px){.topbar{padding:9px 12px;gap:8px}.brand{font-size:13px}.search{display:none}.nav{padding:0 6px}.nav a{padding:9px 10px}main{padding:16px 12px 32px}.request-head{display:block}.request-id{display:inline-block;margin-top:8px}.source,.owner-row,.form-grid{grid-template-columns:1fr}.field.full{grid-column:auto}.status-top{display:block}.status-top .tag{margin-top:8px}.toolbar{align-items:flex-start}.toolbar .switches{width:100%}}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <span class="brand"><img class="lotus" src="assets/bbl-lotus.png" alt=""> Bangkok Bank <span class="crm">CRM</span></span>
+  <span class="badge">PROTOTYPE</span>
+  <form class="search" role="search" onsubmit="return false"><label class="sr-only" for="search">Search</label><input id="search" placeholder="Search customer / request"><button type="submit">Search</button></form>
+  <span class="grow"></span>
+  <button class="lang" id="language" type="button" aria-label="Switch language">ไทย</button>
+  <div class="user"><span id="demoUser">Demo user</span><small id="topRole">Relationship Manager</small></div>
+</header>
+<nav class="nav" aria-label="Main navigation">
+  <a href="#" id="navWork">My work</a><a href="#" id="navSearch">Customer search</a><a href="#" id="navInteractions">Interactions</a><a href="service-guide.html" id="navGuidance">Service guidance</a><a class="active" href="#" aria-current="page" id="navApplications">Applications</a><a href="rm-workbench.html" id="navRm">RM workbench</a>
+</nav>
+<main>
+  <p class="crumb" id="breadcrumb">Customer support &nbsp;›&nbsp; Application follow-up &nbsp;›&nbsp; APP-2026-00214</p>
+  <div class="pagehead">
+    <div><h1 id="title">Application assistance</h1><p id="subtitle">Give the customer a clear next step and keep one accountable owner across the handoff.</p></div>
+    <div class="pills"><span class="pill demo" id="syntheticPill">SYNTHETIC DATA</span><span class="pill" id="conceptPill">P1 design concept</span><span class="pill" id="readOnlyPill">Read-only source status</span></div>
+  </div>
+  <div class="demo-note" role="note"><span aria-hidden="true">ⓘ</span><div><strong id="demoHeading">Design prototype only.</strong> <span id="demoText">All customer and application data are synthetic. The source-state selector simulates possible responses; Bangkok Bank has not confirmed a CRM status integration or these permission rules.</span></div></div>
+
+  <section class="toolbar" aria-label="Prototype controls">
+    <span class="label" id="roleLabel">View as</span>
+    <div class="switches" role="group" aria-label="Staff role">
+      <button class="switch role" data-role="rm" aria-pressed="true">RM</button>
+      <button class="switch role" data-role="teller" aria-pressed="false">Teller</button>
+      <button class="switch role" data-role="contact" aria-pressed="false">Contact center</button>
+    </div>
+    <span class="grow"></span>
+    <label class="label" for="product" id="productLabel">Product</label>
+    <select id="product"><option value="card">Credit card</option><option value="home">Home loan</option><option value="savings">e-Savings</option></select>
+    <label class="label" for="sourceMode" id="sourceLabel">Simulated source</label>
+    <select id="sourceMode"><option value="fresh">Fresh sample status</option><option value="none">No CRM connection</option><option value="stale">Stale / unavailable</option><option value="notfound">Tracker says “not found”</option></select>
+  </section>
+
+  <div class="layout">
+    <div class="stack">
+      <section class="card" aria-labelledby="requestHeading">
+        <div class="cardhead"><h2 id="requestHeading">Customer request</h2><span class="tag open"><span class="dot" aria-hidden="true"></span><span id="crmState">Follow-up open</span></span></div>
+        <div class="body">
+          <div class="request-head">
+            <div><p class="section-title" id="customerLabel">Customer · synthetic record</p><h3 id="customerName">Customer 0184</h3><p id="requestNeed">Asked for an update on a credit-card application</p></div>
+            <span class="request-id">APP-2026-00214</span>
+          </div>
+          <div class="meta"><span><span id="ownerText">Originating owner</span>: <strong id="ownerValue">Naree R. · RM</strong></span><span><span id="receivedText">Received</span>: <strong id="receivedAt">15 Oct 2026 · 09:42</strong></span><span><span id="channelText">Channel</span>: <strong id="channelValue">Branch referral</strong></span><span><span id="referenceText">Application reference</span>: <strong>•••• 4821</strong></span></div>
+        </div>
+      </section>
+
+      <section class="card" aria-labelledby="statusHeading">
+        <div class="cardhead"><h2 id="statusHeading">Application status from source</h2><span class="subhead" id="statusBoundary">Separate from CRM follow-up status</span></div>
+        <div class="body">
+          <div class="status">
+            <div class="status-top"><div><p class="section-title" id="customerStatusLabel">Customer-safe milestone</p><h3 id="statusValue">In review</h3><p id="statusDescription">The application has been received and is being reviewed.</p></div><span class="tag fresh" id="freshnessTag"><span class="dot" aria-hidden="true"></span><span id="freshnessText">Fresh sample</span></span></div>
+            <div class="steps" id="progress" aria-label="Application progress"><div class="step done" id="step1">Application received</div><div class="step current" id="step2">In review</div><div class="step" id="step3">Approved</div></div>
+            <div class="source"><div class="source-item"><span id="sourceNameLabel">Status source</span><strong id="sourceName">Card Origination · simulated response</strong></div><div class="source-item"><span id="asOfLabel">Source as of / refreshed</span><strong id="sourceTime">15 Oct 2026 · 10:04</strong></div></div>
+            <div class="notice info" id="statusNotice" role="status" aria-live="polite">Example status only. This prototype does not connect to the Bank’s origination system.</div>
+          </div>
+          <div class="btn-row"><a class="btn primary" id="trackerLink" href="https://www.bangkokbank.com/en/Personal/Cards/Credit-Cards/Credit-Card-Application-Status-Tracking" target="_blank" rel="noreferrer">Open official tracker ↗</a><button class="btn" id="createFollowup" type="button">Create follow-up</button></div>
+          <p class="smallprint" id="trackerHint">Continue through the Bank’s approved customer/source workflow. Do not copy identity inputs, credentials, or documents into CRM.</p>
+        </div>
+      </section>
+
+      <section class="card" aria-labelledby="followupHeading">
+        <div class="cardhead"><h2 id="followupHeading">Follow-up ownership</h2><span class="subhead" id="ownershipHint">Sender remains accountable until accepted</span></div>
+        <div class="body">
+          <div class="owner-row"><div class="owner"><small id="originOwnerLabel">Originating owner</small><strong>Naree R. · RM</strong><div class="state" id="ownerAccountability">Accountable until handoff accepted</div></div><div class="owner"><small id="receivingTeamLabel">Receiving team</small><strong id="receivingTeam">Card Application Support</strong><div class="state" id="acceptanceState">Not yet accepted</div></div></div>
+          <div class="meta"><span><span id="crmRequestLabel">CRM request</span>: <strong>APP-2026-00214</strong></span><span id="nextUpdate">Next customer update: 16 Oct · 15:00 (proposed)</span></div>
+          <div class="btn-row"><button class="btn" id="acceptHandoff" type="button" disabled>Simulate receiving-team acceptance</button><span class="smallprint" id="savedState" aria-live="polite">No new action saved in this demo.</span></div>
+        </div>
+      </section>
+
+      <section class="card hidden" id="followupForm" aria-labelledby="formHeading">
+        <div class="cardhead"><h2 id="formHeading">Create customer-requested follow-up</h2><span class="subhead">Demo form</span></div>
+        <div class="body">
+          <div class="form-grid">
+            <div class="field"><label for="reason" id="reasonLabel">Reason</label><select id="reason"><option>Customer asked for application status</option><option>Help starting an application</option><option>Tracker access / lookup issue</option></select></div>
+            <div class="field"><label for="destination" id="destinationLabel">Receiving team</label><select id="destination"><option>Card Application Support</option><option>Branch Service</option><option>Contact Center</option><option>Home Loan Consumer Center</option></select></div>
+            <div class="field"><label for="ref" id="refLabel">Masked application reference</label><input id="ref" value="•••• 4821" autocomplete="off"><span class="help" id="refHelp">Only use a Bank-approved masked/tokenized reference.</span></div>
+            <div class="field"><label for="updateDate" id="updateDateLabel">Next customer update target</label><input id="updateDate" type="datetime-local" value="2026-10-16T15:00"><span class="help" id="dateHelp">Use the confirmed policy and customer-agreed time.</span></div>
+            <div class="field full"><label for="safeSummary" id="summaryLabel">Minimum context for the receiving team</label><textarea id="safeSummary">Customer requests help checking application progress. No identity documents or authentication details captured.</textarea></div>
+            <div class="field full"><label for="contactDecision" id="contactLabel">Contact permission for this purpose</label><select id="contactDecision"><option value="hold">Not checked — hold any outbound call</option><option value="permitted">Current service-contact decision permits this callback (demo only)</option></select><span class="help" id="contactHelp">Saving a task does not authorize an outbound contact.</span></div>
+          </div>
+          <div class="form-foot"><span class="smallprint" id="formSafety">CRM follow-up is not an application decision or source-system action.</span><div class="btn-row" style="margin:0"><button class="btn" type="button" id="cancelForm">Cancel</button><button class="btn primary" type="button" id="saveForm">Save follow-up</button></div></div>
+        </div>
+      </section>
+    </div>
+
+    <aside class="stack" aria-label="Guidance and role actions">
+      <section class="card" aria-labelledby="guideHeading">
+        <div class="cardhead"><h2 id="guideHeading">Current product guidance</h2><span class="tag fresh" id="guideTag">Public source</span></div>
+        <div class="body">
+          <div class="guide"><p class="section-title" id="guideProduct">Credit card · online status</p><h3 id="guideTitle">Use the customer-facing application tracker</h3><p id="guideBody">Bangkok Bank’s public guidance says card status can be tracked 1–2 weeks after submission.</p>
+            <ul id="guideBullets"><li>Customer completes the lookup in the official Bank channel.</li><li>“Not found” is a tracker result; it does not prove the application was declined or never submitted.</li><li>This published estimate is not a CRM service-level promise.</li></ul>
+          </div>
+          <div class="guide-foot"><span id="guideSource">Source: Bangkok Bank public application-status page</span> · <a id="guideUrl" target="_blank" rel="noreferrer" href="https://www.bangkokbank.com/en/Personal/Cards/Credit-Cards/Credit-Card-Application-Status-Tracking">View source</a> <a id="guideUrl2" class="hidden" target="_blank" rel="noreferrer" href="https://www.bangkokbank.com/en/Personal/Save-And-Invest/Save/e-Savings-Account/MobileID">Mobile ID status notice</a><br><span id="guideAsOf">Reviewed for this prototype: 15 Oct 2026 · internal content owner not confirmed</span></div>
+        </div>
+      </section>
+
+      <section class="card" aria-labelledby="roleActionHeading">
+        <div class="cardhead"><h2 id="roleActionHeading">Your role’s next step</h2><span class="subhead" id="roleName">Relationship Manager</span></div>
+        <div class="body">
+          <div class="role-boundary"><strong id="roleActionTitle">Service follow-up</strong><p id="roleActionText">Keep the request in the service workflow. Check current contact rules before calling; do not turn a status question into a sales prompt.</p></div>
+          <div class="side-note" style="margin-top:11px"><h3 id="decisionBoundaryTitle">Decision boundary</h3><p id="decisionBoundary">Eligibility, KYC, suitability, and approval remain in the authorized product workflow. CRM records the handoff and source-confirmed status only.</p></div>
+          <div class="btn-row"><a class="btn" href="service-guide.html" id="openGuide">Open service guidance</a></div>
+        </div>
+      </section>
+
+      <section class="card" aria-labelledby="discoveryHeading">
+        <div class="cardhead"><h2 id="discoveryHeading">Discovery notes</h2><span class="subhead" id="discoverySubhead">What still needs Bank confirmation</span></div>
+        <div class="body"><ul style="margin:0;padding-left:18px;font-size:12px;color:#5d6c7b"><li>Per-product origination source and CRM integration availability.</li><li>Approved internal-to-customer milestone map and freshness limit.</li><li>Masked-reference, contact, handoff, and retention rules.</li><li>Current owner for content and customer-safe timing.</li></ul></div>
+      </section>
+    </aside>
+  </div>
+  <footer class="footer" id="footer">Bangkok Bank CRM discovery · synthetic data · source and role rules shown here are design hypotheses</footer>
+</main>
+<script>
+const $ = (id) => document.getElementById(id);
+let language = 'en';
+let selectedRole = 'rm';
+let applicationSaved = false;
+let accepted = false;
+
+const copy = {
+    en: {
+    title:'Application assistance', subtitle:'Give the customer a clear next step and keep one accountable owner across the handoff.', demoHeading:'Design prototype only.', demoText:'All customer and application data are synthetic. The source-state selector simulates possible responses; Bangkok Bank has not confirmed a CRM status integration or these permission rules.', roleLabel:'View as', productLabel:'Product', sourceLabel:'Simulated source', statusBoundary:'Separate from CRM follow-up status', customerStatusLabel:'Customer-safe milestone', sourceNameLabel:'Status source', asOfLabel:'Source as of / refreshed', trackerHint:'The customer authenticates in the official Bank channel. Do not copy identity inputs, credentials, or documents into CRM.', ownershipHint:'Sender remains accountable until accepted', originOwnerLabel:'Originating owner', receivingTeamLabel:'Receiving team', reasonLabel:'Reason', destinationLabel:'Receiving team', refLabel:'Masked application reference', refHelp:'Only use a Bank-approved masked/tokenized reference.', updateDateLabel:'Next customer update target', dateHelp:'Use the confirmed policy and customer-agreed time.', summaryLabel:'Minimum context for the receiving team', contactLabel:'Contact permission for this purpose', contactHelp:'Saving a task does not authorize an outbound contact.', formSafety:'CRM follow-up is not an application decision or source-system action.', cancel:'Cancel', save:'Save follow-up', create:'Create follow-up', tracker:'Open official tracker ↗', officialGuide:'Open official product guidance ↗', formHeading:'Create customer-requested follow-up', formDemo:'Demo form', guideHeading:'Current product guidance', roleActionHeading:'Your role’s next step', decisionBoundaryTitle:'Decision boundary', openGuide:'Open service guidance', searchPlaceholder:'Search customer / request', searchButton:'Search', topRole:{rm:'Relationship Manager',teller:'Branch Teller',contact:'Contact Center Agent'}, roleLabelNames:{rm:'RM',teller:'Teller',contact:'Contact center'}, roleActionTitle:{rm:'Service follow-up',teller:'Guide and continue in branch workflow',contact:'Guide through the secure tracker'}, roleActionText:{rm:'Keep the request in the service workflow. Check current contact rules before calling; do not turn a status question into a sales prompt.',teller:'Show the current branch checklist and authorized source-workflow link. Do not infer identity, mandate, eligibility, or approval from this CRM screen.',contact:'Explain the customer-safe stage or guide the customer to the official tracker. Never ask for tracker identity details or authentication secrets in notes.'}, statusNote:'Example status only. This prototype does not connect to the Bank’s origination system.', noIntegration:'No application-status connector is configured in this prototype. Use the official tracker or support route; do not collect identity fields in CRM.', stale:'The last sample response is stale/unavailable. Do not repeat its stage as current; use the official channel or an approved product-team route.', notfound:'The official tracker returned “not found” in this simulated example. This does not establish that the application was declined or never submitted.', freshTag:'Fresh sample', noTag:'No CRM connection', staleTag:'Stale / unavailable', notfoundTag:'Lookup not found', statusMetaFresh:'Card Origination · simulated response', statusMetaNone:'No approved CRM status source', statusMetaStale:'Card Origination · last sample response', statusMetaNotFound:'Official tracker · simulated lookup', sourceFresh:'15 Oct 2026 · 10:04', sourceStale:'Last successful sample: 09 Oct 2026 · stale', sourceNone:'No source timestamp', sourceNotFound:'15 Oct 2026 · 10:04', statusFresh:'In review', statusFreshDesc:'The application has been received and is being reviewed.', statusNone:'Status not available in CRM', statusNoneDesc:'Guide the customer to the official tracker or approved support route.', statusStale:'Last known: In review', statusStaleDesc:'This value is not current and must not be stated as today’s status.', statusNotFound:'Not found in this lookup', statusNotFoundDesc:'A tracker result only. It is not a decline or proof no application exists.', stepReceived:'Application received', stepReview:'In review', stepApproved:'Approved', crmOpen:'Follow-up open', crmSaved:'Follow-up saved in CRM · source action not confirmed', crmAccepted:'Receiving team accepted · source action not confirmed', guidePublic:'Public source', guideConflict:'Content conflict', guideCardTitle:'Use the customer-facing application tracker', guideCardBody:'Bangkok Bank’s public guidance says card status can be tracked 1–2 weeks after submission.', guideCardBullets:['Customer completes the lookup in the official Bank channel.','“Not found” is a tracker result; it does not prove the application was declined or never submitted.','This published estimate is not a CRM service-level promise.'], guideHomeTitle:'Branch-to-specialist application process', guideHomeBody:'The public guide describes the branch officer sending an application to the Consumer Center.', guideHomeBullets:['An appraisal visit is scheduled within 7 days from submission.','The published outcome window is normally 3–10 days from submission.','Use these as published guidance only, not a guaranteed CRM SLA.'], guideSavingsTitle:'Mobile ID suspended · route conflict', guideSavingsBody:'The e-Savings page still lists Mobile ID, but the dedicated notice says Mobile ID authentication for e-Savings was suspended from 29 May 2026 until further notice. Be My ID is a separate physical method.', guideSavingsBullets:['Do not recommend Mobile ID while the Bank pages conflict about its availability.','Be My ID uses a Citizen ID card at service points listed on its separate Bank page; verify the point and current service status before directing the customer.','Use only a current approved alternative or contact 1333/content owner; never copy Citizen ID details or OTP into CRM.'], guideName:{card:'Credit card · online status',home:'Home loan · branch-assisted',savings:'e-Savings · digital onboarding'}, sourceLabelText:{card:'Source: Bangkok Bank public application-status page',home:'Source: Bangkok Bank public home-loan guide',savings:'Sources: Bangkok Bank e-Savings, Mobile ID notice, and Be My ID pages'}, roleBoundary:'Eligibility, KYC, suitability, and approval remain in the authorized product workflow. CRM records the handoff and source-confirmed status only.', ownerAccount:'Accountable until handoff accepted', receiverPending:'Not yet accepted', receiverAccepted:'Accepted · 15 Oct 2026 · 10:12', nextUpdate:'Next customer update: 16 Oct · 15:00 (proposed)', noAction:'No new action saved in this demo.', savedState:'Saved in CRM (demo). Source-system status remains unchanged until confirmed.', acceptedState:'Receiving team acceptance recorded (demo). Source application status is still unchanged.', accept:'Simulate receiving-team acceptance', acceptedButton:'Acceptance recorded', followupTeam:{card:'Card Application Support',home:'Home Loan Consumer Center',savings:'Digital Account Support'}, requestNeed:{card:'Asked for an update on a credit-card application',home:'Asked for help continuing a home-loan application',savings:'Asked how to continue opening an e-Savings account'}, channel:{card:'Branch referral',home:'Branch referral',savings:'Mobile Banking enquiry'}
+  },
+  th: {
+    title:'การช่วยเหลือคำขอผลิตภัณฑ์', subtitle:'ช่วยให้ลูกค้าทราบขั้นตอนถัดไป พร้อมมีผู้รับผิดชอบต่อเนื่องตลอดการส่งต่องาน', demoHeading:'ต้นแบบเพื่อการออกแบบเท่านั้น', demoText:'ข้อมูลลูกค้าและคำขอทั้งหมดเป็นข้อมูลสมมติ ตัวเลือกสถานะแหล่งข้อมูลจำลองผลลัพธ์ที่อาจเกิดขึ้น ธนาคารกรุงเทพยังไม่ได้ยืนยันการเชื่อมต่อสถานะคำขอหรือกฎสิทธิ์เหล่านี้', roleLabel:'ดูในบทบาท', productLabel:'ผลิตภัณฑ์', sourceLabel:'สถานะแหล่งข้อมูลจำลอง', statusBoundary:'แยกจากสถานะงานติดตามของ CRM', customerStatusLabel:'สถานะที่สื่อสารกับลูกค้าได้', sourceNameLabel:'แหล่งสถานะ', asOfLabel:'ข้อมูล ณ / ปรับปรุงล่าสุด', trackerHint:'ลูกค้ายืนยันตัวตนในช่องทางทางการของธนาคาร ห้ามคัดลอกข้อมูลยืนยันตัวตน ข้อมูลลับ หรือเอกสารลง CRM', ownershipHint:'ผู้ส่งยังรับผิดชอบจนกว่าทีมปลายทางจะตอบรับ', originOwnerLabel:'ผู้รับผิดชอบต้นทาง', receivingTeamLabel:'ทีมปลายทาง', reasonLabel:'เหตุผล', destinationLabel:'ทีมปลายทาง', refLabel:'เลขอ้างอิงคำขอแบบปกปิด', refHelp:'ใช้เฉพาะเลขอ้างอิงที่ธนาคารอนุมัติให้ปกปิดหรือแปลงเป็นโทเคนแล้ว', updateDateLabel:'กำหนดอัปเดตลูกค้าครั้งถัดไป', dateHelp:'ใช้ตามนโยบายที่ยืนยันแล้วและเวลาที่ตกลงกับลูกค้า', summaryLabel:'ข้อมูลขั้นต่ำสำหรับทีมปลายทาง', contactLabel:'สิทธิ์ติดต่อสำหรับวัตถุประสงค์นี้', contactHelp:'การบันทึกงานไม่ได้อนุญาตให้ติดต่อออกไป', formSafety:'งานติดตามใน CRM ไม่ใช่การตัดสินใจคำขอหรือการทำรายการในระบบต้นทาง', cancel:'ยกเลิก', save:'บันทึกงานติดตาม', create:'สร้างงานติดตาม', tracker:'เปิดตัวติดตามทางการ ↗', officialGuide:'เปิดคำแนะนำผลิตภัณฑ์ทางการ ↗', formHeading:'สร้างงานติดตามตามคำขอลูกค้า', formDemo:'แบบฟอร์มตัวอย่าง', guideHeading:'คำแนะนำผลิตภัณฑ์ปัจจุบัน', roleActionHeading:'ขั้นตอนถัดไปตามบทบาท', decisionBoundaryTitle:'ขอบเขตการตัดสินใจ', openGuide:'เปิดคำแนะนำบริการ', searchPlaceholder:'ค้นหาลูกค้า / คำขอ', searchButton:'ค้นหา', topRole:{rm:'ผู้จัดการความสัมพันธ์ลูกค้า',teller:'พนักงานสาขา',contact:'เจ้าหน้าที่ศูนย์บริการ'}, roleLabelNames:{rm:'RM',teller:'พนักงานสาขา',contact:'ศูนย์บริการ'}, roleActionTitle:{rm:'ติดตามงานบริการ',teller:'แนะนำและดำเนินการต่อในขั้นตอนสาขา',contact:'แนะนำให้ใช้ตัวติดตามที่ปลอดภัย'}, roleActionText:{rm:'ดูแลคำขอในกระบวนการบริการ ตรวจสอบกฎการติดต่อปัจจุบันก่อนโทร และอย่าเปลี่ยนคำถามสถานะเป็นการเสนอขาย',teller:'แสดงรายการตรวจสอบของสาขาที่เป็นปัจจุบันและลิงก์ไปยังระบบที่ได้รับอนุญาต ห้ามอนุมานตัวตน อำนาจ คุณสมบัติ หรือการอนุมัติจากหน้าจอ CRM',contact:'อธิบายสถานะที่สื่อสารกับลูกค้าได้ หรือแนะนำให้ลูกค้าใช้ตัวติดตามทางการ ห้ามขอข้อมูลยืนยันตัวตนหรือรหัสลับไว้ในบันทึก'}, statusNote:'สถานะตัวอย่างเท่านั้น ต้นแบบนี้ไม่ได้เชื่อมต่อระบบคำขอของธนาคาร', noIntegration:'ต้นแบบนี้ไม่มีตัวเชื่อมต่อสถานะคำขอ ให้ใช้ตัวติดตามหรือช่องทางช่วยเหลือทางการ ห้ามเก็บข้อมูลยืนยันตัวตนใน CRM', stale:'ผลตอบกลับตัวอย่างล่าสุดเก่าแล้วหรือใช้ไม่ได้ ห้ามแจ้งสถานะนั้นว่าเป็นปัจจุบัน ให้ใช้ช่องทางทางการหรือส่งต่อทีมผลิตภัณฑ์ตามขั้นตอน', notfound:'ตัวติดตามทางการตอบว่า “ไม่พบ” ในตัวอย่างจำลอง ไม่ได้ยืนยันว่าคำขอถูกปฏิเสธหรือไม่เคยส่ง', freshTag:'ตัวอย่างข้อมูลล่าสุด', noTag:'ไม่มีการเชื่อมต่อ CRM', staleTag:'ข้อมูลเก่า / ใช้ไม่ได้', notfoundTag:'ไม่พบจากการค้นหา', statusMetaFresh:'ระบบคำขอบัตร · ผลตอบกลับจำลอง', statusMetaNone:'ไม่มีแหล่งสถานะ CRM ที่อนุมัติ', statusMetaStale:'ระบบคำขอบัตร · ผลตอบกลับตัวอย่างล่าสุด', statusMetaNotFound:'ตัวติดตามทางการ · ผลจำลอง', sourceFresh:'15 ต.ค. 2026 · 10:04', sourceStale:'ผลตัวอย่างล่าสุด: 9 ต.ค. 2026 · ข้อมูลเก่า', sourceNone:'ไม่มีเวลาจากแหล่งข้อมูล', sourceNotFound:'15 ต.ค. 2026 · 10:04', statusFresh:'อยู่ระหว่างพิจารณา', statusFreshDesc:'ได้รับคำขอแล้วและกำลังพิจารณา', statusNone:'ไม่มีสถานะใน CRM', statusNoneDesc:'แนะนำให้ลูกค้าใช้ตัวติดตามหรือช่องทางช่วยเหลือทางการ', statusStale:'สถานะล่าสุดที่ทราบ: อยู่ระหว่างพิจารณา', statusStaleDesc:'ข้อมูลนี้ไม่เป็นปัจจุบัน ห้ามแจ้งว่าเป็นสถานะวันนี้', statusNotFound:'ไม่พบจากการค้นหานี้', statusNotFoundDesc:'เป็นเพียงผลการค้นหา ไม่ใช่การปฏิเสธหรือหลักฐานว่าไม่มีคำขอ', stepReceived:'ได้รับคำขอแล้ว', stepReview:'อยู่ระหว่างพิจารณา', stepApproved:'อนุมัติแล้ว', crmOpen:'เปิดงานติดตาม', crmSaved:'บันทึกงานติดตามใน CRM · ยังไม่ยืนยันการดำเนินการต้นทาง', crmAccepted:'ทีมปลายทางตอบรับแล้ว · ยังไม่ยืนยันสถานะจากระบบต้นทาง', guidePublic:'แหล่งข้อมูลสาธารณะ', guideConflict:'เนื้อหาขัดแย้ง', guideCardTitle:'ใช้ตัวติดตามคำขอสำหรับลูกค้า', guideCardBody:'คำแนะนำสาธารณะของธนาคารระบุว่าสามารถติดตามสถานะบัตรได้หลังยื่นคำขอ 1–2 สัปดาห์', guideCardBullets:['ลูกค้าดำเนินการค้นหาในช่องทางทางการของธนาคาร','“ไม่พบ” เป็นผลการค้นหา ไม่ได้ยืนยันว่าคำขอถูกปฏิเสธหรือไม่เคยส่ง','ระยะเวลาที่เผยแพร่ไม่ใช่ SLA ของ CRM'], guideHomeTitle:'กระบวนการสินเชื่อบ้านจากสาขาสู่ทีมผู้เชี่ยวชาญ', guideHomeBody:'คำแนะนำสาธารณะระบุว่าเจ้าหน้าที่สาขาส่งคำขอไปยังศูนย์สินเชื่อเพื่อผู้บริโภค', guideHomeBullets:['มีการนัดหมายเข้าประเมินทรัพย์สินภายใน 7 วันนับจากยื่นคำขอ','ระยะเวลาพิจารณาผลที่เผยแพร่โดยทั่วไปคือ 3–10 วันนับจากยื่นคำขอ','ใช้เป็นคำแนะนำที่เผยแพร่เท่านั้น ไม่ใช่ SLA ที่รับประกันจาก CRM'], guideSavingsTitle:'ระงับ Mobile ID · ข้อมูลเส้นทางขัดแย้ง', guideSavingsBody:'หน้า e-Savings ยังระบุ Mobile ID แต่ประกาศเฉพาะแจ้งว่าระงับการยืนยันตัวตนด้วย Mobile ID สำหรับ e-Savings ตั้งแต่ 29 พ.ค. 2569 จนกว่าจะมีประกาศเปลี่ยนแปลง ส่วน Be My ID เป็นวิธีแบบพบหน้าอีกวิธีหนึ่ง', guideSavingsBullets:['อย่าแนะนำ Mobile ID ขณะที่หน้าเว็บของธนาคารยังให้ข้อมูลขัดแย้งกัน','Be My ID ใช้บัตรประชาชนที่จุดบริการตามหน้าข้อมูลเฉพาะ โปรดยืนยันจุดและสถานะบริการปัจจุบันก่อนแนะนำ','ใช้วิธีอื่นที่คู่มือปัจจุบันอนุมัติ หรือโทร 1333/สอบถามเจ้าของเนื้อหา ห้ามคัดลอกเลขบัตรประชาชนหรือ OTP ลง CRM'], guideName:{card:'บัตรเครดิต · สถานะออนไลน์',home:'สินเชื่อบ้าน · ดำเนินการผ่านสาขา',savings:'e-Savings · เปิดบัญชีดิจิทัล'}, sourceLabelText:{card:'แหล่งข้อมูล: หน้าติดตามคำขอบัตรเครดิตของธนาคาร',home:'แหล่งข้อมูล: คำแนะนำสินเชื่อบ้านของธนาคาร',savings:'แหล่งข้อมูล: หน้า e-Savings ประกาศ Mobile ID และหน้า Be My ID ของธนาคาร'}, roleBoundary:'การพิจารณาคุณสมบัติ KYC ความเหมาะสม และการอนุมัติอยู่ในกระบวนการผลิตภัณฑ์ที่ได้รับอนุญาต CRM บันทึกการส่งต่องานและสถานะที่ระบบต้นทางยืนยันเท่านั้น', ownerAccount:'รับผิดชอบจนกว่าทีมปลายทางจะตอบรับ', receiverPending:'ยังไม่ตอบรับ', receiverAccepted:'ตอบรับแล้ว · 15 ต.ค. 2026 · 10:12', nextUpdate:'อัปเดตลูกค้าครั้งถัดไป: 16 ต.ค. · 15:00 (เสนอ)', noAction:'ยังไม่มีการบันทึกการดำเนินการใหม่ในตัวอย่างนี้', savedState:'บันทึกใน CRM แล้ว (ตัวอย่าง) สถานะระบบต้นทางยังไม่เปลี่ยนจนกว่าจะยืนยัน', acceptedState:'บันทึกการตอบรับของทีมปลายทางแล้ว (ตัวอย่าง) สถานะคำขอต้นทางยังไม่เปลี่ยน', accept:'จำลองการตอบรับของทีมปลายทาง', acceptedButton:'บันทึกการตอบรับแล้ว', followupTeam:{card:'ทีมสนับสนุนคำขอบัตร',home:'ศูนย์สินเชื่อเพื่อผู้บริโภค',savings:'ทีมสนับสนุนบัญชีดิจิทัล'}, requestNeed:{card:'สอบถามความคืบหน้าคำขอบัตรเครดิต',home:'ขอความช่วยเหลือดำเนินการต่อคำขอสินเชื่อบ้าน',savings:'สอบถามวิธีดำเนินการเปิดบัญชี e-Savings ต่อ'}, channel:{card:'ส่งต่อจากสาขา',home:'ส่งต่อจากสาขา',savings:'สอบถามผ่าน Mobile Banking'}
+  }
+};
+
+const sharedText = {
+ en:{breadcrumb:'Customer support › Application follow-up › APP-2026-00214',syntheticPill:'SYNTHETIC DATA',conceptPill:'P1 design concept',readOnlyPill:'Read-only source status',navWork:'My work',navSearch:'Customer search',navInteractions:'Interactions',navGuidance:'Service guidance',navApplications:'Applications',navRm:'RM workbench',requestHeading:'Customer request',statusHeading:'Application status from source',followupHeading:'Follow-up ownership',customerLabel:'Customer · synthetic record',ownerText:'Originating owner',receivedText:'Received',channelText:'Channel',referenceText:'Application reference',crmRequestLabel:'CRM request',discoveryHeading:'Discovery notes',discoverySubhead:'What still needs Bank confirmation',discovery1:'Per-product origination source and CRM integration availability.',discovery2:'Approved internal-to-customer milestone map and freshness limit.',discovery3:'Masked-reference, contact, handoff, and retention rules.',discovery4:'Current owner for content and customer-safe timing.',footer:'Bangkok Bank CRM discovery · synthetic data · source and role rules shown here are design hypotheses',trackerHint:'Continue through the Bank’s approved customer/source workflow. Do not copy identity inputs, credentials, or documents into CRM.',searchPlaceholder:'Search customer / request',searchButton:'Search',guideAsOf:'Reviewed for this prototype: 15 Oct 2026 · internal content owner not confirmed',demoUser:'Demo user',receivedAt:'15 Oct 2026 · 09:42',roleButtons:['RM','Teller','Contact center'],products:['Credit card','Home loan','e-Savings']},
+ th:{breadcrumb:'บริการลูกค้า › ติดตามคำขอผลิตภัณฑ์ › APP-2026-00214',syntheticPill:'ข้อมูลสมมติ',conceptPill:'แนวคิด P1',readOnlyPill:'สถานะจากแหล่งข้อมูลแบบอ่านอย่างเดียว',navWork:'งานของฉัน',navSearch:'ค้นหาลูกค้า',navInteractions:'ประวัติการติดต่อ',navGuidance:'คำแนะนำบริการ',navApplications:'คำขอผลิตภัณฑ์',navRm:'งาน RM',requestHeading:'คำขอของลูกค้า',statusHeading:'สถานะคำขอจากระบบต้นทาง',followupHeading:'ผู้รับผิดชอบการติดตาม',customerLabel:'ลูกค้า · ข้อมูลสมมติ',ownerText:'ผู้รับผิดชอบต้นทาง',receivedText:'รับเรื่องเมื่อ',channelText:'ช่องทาง',referenceText:'เลขอ้างอิงคำขอ',crmRequestLabel:'เลขคำขอ CRM',discoveryHeading:'ประเด็นค้นคว้า',discoverySubhead:'สิ่งที่ต้องยืนยันกับธนาคาร',discovery1:'ระบบต้นทางและการเชื่อมต่อ CRM ของแต่ละผลิตภัณฑ์',discovery2:'การแปลงสถานะภายในเป็นสถานะที่สื่อสารกับลูกค้าได้และเกณฑ์ความสดใหม่',discovery3:'กฎเลขอ้างอิงแบบปกปิด การติดต่อ การส่งต่องาน และการเก็บรักษา',discovery4:'เจ้าของเนื้อหาปัจจุบันและกรอบเวลาที่สื่อสารกับลูกค้าได้',footer:'งานค้นคว้า CRM ธนาคารกรุงเทพ · ข้อมูลสมมติ · กฎแหล่งข้อมูลและบทบาทเป็นข้อเสนอเพื่อออกแบบ',trackerHint:'ดำเนินการต่อผ่านกระบวนการลูกค้าหรือระบบต้นทางที่ธนาคารอนุมัติ ห้ามคัดลอกข้อมูลยืนยันตัวตน รหัสลับ หรือเอกสารลง CRM',searchPlaceholder:'ค้นหาลูกค้า / คำขอ',searchButton:'ค้นหา',guideAsOf:'ทบทวนสำหรับต้นแบบนี้: 15 ต.ค. 2026 · ยังไม่ยืนยันเจ้าของเนื้อหาภายใน',demoUser:'ผู้ใช้ตัวอย่าง',receivedAt:'15 ต.ค. 2026 · 09:42',roleButtons:['RM','พนักงานสาขา','ศูนย์บริการ'],products:['บัตรเครดิต','สินเชื่อบ้าน','e-Savings']}
+};
+
+function setText(id, value){ const el=$(id); if(el) el.textContent=value; }
+function setAttr(id, attr, value){ const el=$(id); if(el) el.setAttribute(attr,value); }
+function renderRole(){
+ const c=copy[language], role=selectedRole;
+ document.querySelectorAll('.role').forEach(button=>button.setAttribute('aria-pressed',String(button.dataset.role===role)));
+ setText('topRole',c.topRole[role]); setText('roleName',c.topRole[role]);
+ let title=c.roleActionTitle[role],body=c.roleActionText[role];
+ if($('product').value==='savings'&&role!=='rm'){
+   title=language==='en'?'Confirm the current route before advising':'ยืนยันช่องทางปัจจุบันก่อนให้คำแนะนำ';
+   body=language==='en'?'The public e-Savings and Mobile ID pages conflict. Hold the disputed step, check the current product guidance owner, and give only the approved route.':'หน้า e-Savings และ Mobile ID ที่เผยแพร่มีข้อมูลขัดแย้ง ให้งดขั้นตอนที่มีข้อขัดแย้ง ตรวจสอบกับเจ้าของคำแนะนำปัจจุบัน และแจ้งเฉพาะช่องทางที่ได้รับอนุมัติ';
+ } else if($('product').value==='home'&&role==='contact'){
+   title=language==='en'?'Use the approved product-support route':'ใช้ช่องทางสนับสนุนผลิตภัณฑ์ที่ได้รับอนุมัติ';
+   body=language==='en'?'Explain the published branch-to-Consumer Center process and route the case through the approved team. This CRM view has no home-loan status feed.':'อธิบายขั้นตอนที่เผยแพร่จากสาขาสู่ศูนย์สินเชื่อเพื่อผู้บริโภค แล้วส่งต่องานผ่านทีมที่ได้รับอนุมัติ หน้าจอ CRM นี้ไม่มีฟีดสถานะสินเชื่อบ้าน';
+ }
+ setText('roleActionTitle',title); setText('roleActionText',body);
+}
+function renderLanguage(){
+ const c=copy[language]; document.documentElement.lang=language;
+ Object.entries(sharedText[language]).forEach(([id,value])=>setText(id,value));
+ setText('language',language==='en'?'ไทย':'EN');
+ const staticKeys=['title','subtitle','demoHeading','demoText','roleLabel','productLabel','sourceLabel','statusBoundary','customerStatusLabel','sourceNameLabel','asOfLabel','ownershipHint','originOwnerLabel','receivingTeamLabel','reasonLabel','destinationLabel','refLabel','refHelp','updateDateLabel','dateHelp','summaryLabel','contactLabel','contactHelp','formSafety','formHeading','guideHeading','roleActionHeading','decisionBoundaryTitle','openGuide'];
+ staticKeys.forEach(k=>{if($(k))setText(k,c[k])});
+ setText('trackerHint',sharedText[language].trackerHint);
+ setText('cancelForm',c.cancel); setText('saveForm',c.save); setText('createFollowup',c.create); setText('trackerLink',c.tracker); setText('requestHeading',language==='en'?'Customer request':'คำขอของลูกค้า');
+ $('search').placeholder=c.searchPlaceholder; document.querySelector('.search button').textContent=c.searchButton;
+ setText('decisionBoundary',c.roleBoundary);
+ setText('nextUpdate',c.nextUpdate);
+ setText('ownerAccountability',accepted?c.receiverAccepted:c.ownerAccount);
+ $('ownerAccountability').classList.toggle('accepted',accepted);
+ setText('acceptanceState',accepted?c.receiverAccepted:c.receiverPending);
+ setText('crmState',applicationSaved?(accepted?c.crmAccepted:c.crmSaved):c.crmOpen);
+ setText('savedState',applicationSaved?(accepted?c.acceptedState:c.savedState):c.noAction);
+ $('acceptHandoff').disabled=!applicationSaved||accepted;
+ setText('acceptHandoff',accepted?c.acceptedButton:c.accept);
+ setText('guideUrl',language==='en'?'View source':'ดูแหล่งข้อมูล');
+ if(language==='th'){$('safeSummary').value='ลูกค้าขอความช่วยเหลือตรวจสอบความคืบหน้าคำขอ ไม่มีการเก็บเอกสารยืนยันตัวตนหรือข้อมูลลับ';}
+ else{$('safeSummary').value='Customer requests help checking application progress. No identity documents or authentication details captured.';}
+ const sourceOptions=language==='en'?['Fresh sample status','No CRM connection','Stale / unavailable','Tracker says “not found”']:['สถานะตัวอย่างล่าสุด','ไม่มีการเชื่อมต่อ CRM','ข้อมูลเก่า / ใช้ไม่ได้','ตัวติดตามแจ้งว่า “ไม่พบ”'];
+ [...$('sourceMode').options].forEach((option,i)=>option.textContent=sourceOptions[i]);
+ const reasonOptions=language==='en'?['Customer asked for application status','Help starting an application','Tracker access / lookup issue']:['ลูกค้าสอบถามสถานะคำขอ','ช่วยเริ่มคำขอผลิตภัณฑ์','ปัญหาเข้าใช้ตัวติดตาม / ค้นหา'];
+ [...$('reason').options].forEach((option,i)=>option.textContent=reasonOptions[i]);
+ const destinationOptions=language==='en'?['Card Application Support','Branch Service','Contact Center','Home Loan Consumer Center']:['ทีมสนับสนุนคำขอบัตร','บริการสาขา','ศูนย์บริการลูกค้า','ศูนย์สินเชื่อเพื่อผู้บริโภค'];
+ [...$('destination').options].forEach((option,i)=>option.textContent=destinationOptions[i]);
+ const contactOptions=language==='en'?['Not checked — hold any outbound call','Current service-contact decision permits this callback (demo only)']:['ยังไม่ตรวจสอบ — ระงับการโทรออก','ผลตรวจสอบปัจจุบันอนุญาตให้โทรติดตามเรื่องบริการ (ตัวอย่าง)'];
+ [...$('contactDecision').options].forEach((option,i)=>option.textContent=contactOptions[i]);
+ setText('discoverySubhead',sharedText[language].discoverySubhead);
+ [...document.querySelectorAll('[aria-labelledby="discoveryHeading"] .body li')].forEach((li,i)=>li.textContent=sharedText[language][`discovery${i+1}`]);
+ setText('footer',sharedText[language].footer);
+ setText('demoUser',sharedText[language].demoUser); setText('receivedAt',sharedText[language].receivedAt);
+ document.querySelectorAll('.role').forEach((button,i)=>button.textContent=sharedText[language].roleButtons[i]);
+ [...$('product').options].forEach((option,i)=>option.textContent=sharedText[language].products[i]);
+ const formDemo=document.querySelector('#followupForm .subhead');if(formDemo)formDemo.textContent=c.formDemo;
+ renderRole(); renderProduct(); renderSource();
+}
+function renderProduct(){
+ const c=copy[language],product=$('product').value;
+ setText('guideProduct',c.guideName[product]); setText('requestNeed',c.requestNeed[product]); setText('channelValue',c.channel[product]);
+ setText('receivingTeam',c.followupTeam[product]);
+ const title=product==='card'?c.guideCardTitle:product==='home'?c.guideHomeTitle:c.guideSavingsTitle;
+ const body=product==='card'?c.guideCardBody:product==='home'?c.guideHomeBody:c.guideSavingsBody;
+ const bullets=product==='card'?c.guideCardBullets:product==='home'?c.guideHomeBullets:c.guideSavingsBullets;
+ setText('guideTitle',title); setText('guideBody',body);
+ const list=$('guideBullets');list.replaceChildren(...bullets.map(text=>{const li=document.createElement('li');li.textContent=text;return li;}));
+ setText('guideSource',c.sourceLabelText[product]);
+ const defaultTeam=c.followupTeam[product];
+ const otherTeams=Object.values(c.followupTeam).filter(team=>team!==defaultTeam);
+ const teamOptions=[defaultTeam,...otherTeams];
+ $('destination').replaceChildren(...teamOptions.map(team=>{const option=document.createElement('option');option.textContent=team;return option;}));
+ if(product==='card'){
+   $('guideUrl').href='https://www.bangkokbank.com/en/Personal/Cards/Credit-Cards/Credit-Card-Application-Status-Tracking';
+   $('trackerLink').href='https://www.bangkokbank.com/en/Personal/Cards/Credit-Cards/Credit-Card-Application-Status-Tracking';
+   setText('guideUrl',language==='en'?'View source':'ดูแหล่งข้อมูล');setText('trackerLink',c.tracker);
+ } else if(product==='home'){
+   $('guideUrl').href='https://www.bangkokbank.com/en/Personal/My-Home/Home-Loan/4-things-to-know-before-applying-for-a-loan';
+   $('trackerLink').href='https://www.bangkokbank.com/en/Personal/My-Home/Home-Loan/4-things-to-know-before-applying-for-a-loan';
+   setText('guideUrl',language==='en'?'View source':'ดูแหล่งข้อมูล');setText('trackerLink',c.officialGuide);
+ } else {
+   $('guideUrl').href='https://www.bangkokbank.com/en/Personal/Save-And-Invest/Save/e-Savings-Account';
+   $('trackerLink').href='https://www.bangkokbank.com/en/Personal/Save-And-Invest/Save/e-Savings-Account';
+   setText('guideUrl',language==='en'?'View source':'ดูแหล่งข้อมูล');setText('trackerLink',c.officialGuide);
+ }
+ if(product==='savings'){$('guideUrl2').classList.remove('hidden');setText('guideUrl2',language==='en'?'Mobile ID status notice':'ประกาศสถานะ Mobile ID');}else{$('guideUrl2').classList.add('hidden');}
+ $('trackerLink').target='_blank'; setText('guideTag',product==='savings'?c.guideConflict:c.guidePublic);
+ if(product==='card'){$('sourceMode').disabled=false;}else{$('sourceMode').value='none';$('sourceMode').disabled=true;}
+ renderRole();
+ renderSource();
+}
+function renderSource(){
+ const c=copy[language],product=$('product').value,mode=product==='card'?$('sourceMode').value:'none';
+ const modeName={fresh:c.freshTag,none:c.noTag,stale:c.staleTag,notfound:c.notfoundTag};
+ const state={fresh:['statusFresh','statusFreshDesc','statusMetaFresh','sourceFresh','freshTag','info'],none:['statusNone','statusNoneDesc','statusMetaNone','sourceNone','noTag','info'],stale:['statusStale','statusStaleDesc','statusMetaStale','sourceStale','staleTag','warn'],notfound:['statusNotFound','statusNotFoundDesc','statusMetaNotFound','sourceNotFound','notfoundTag','error']}[mode];
+ setText('statusValue',c[state[0]]);setText('statusDescription',c[state[1]]);setText('sourceName',c[state[2]]);setText('sourceTime',c[state[3]]);setText('freshnessText',modeName[mode]);
+ const tag=$('freshnessTag');tag.className='tag '+(mode==='fresh'?'fresh':mode==='none'?'warn':mode==='stale'?'warn':'error');
+ const note=$('statusNotice');note.className='notice '+state[5];setText('statusNotice',c[mode==='fresh'?'statusNote':mode==='none'?'noIntegration':mode==='stale'?'stale':'notfound']);
+ if(product!=='card'&&mode==='none'){
+   setText('statusDescription',language==='en'?'No application status is available in this CRM view. Use the approved customer channel or product support route.':'ไม่มีสถานะคำขอในหน้าจอ CRM นี้ ให้ใช้ช่องทางลูกค้าหรือทีมผลิตภัณฑ์ที่ได้รับอนุมัติ');
+   setText('statusNotice',language==='en'?'No CRM status feed is configured for this product in the prototype. The link opens published guidance, not a status lookup.':'ต้นแบบนี้ไม่มีฟีดสถานะ CRM สำหรับผลิตภัณฑ์นี้ ลิงก์จะเปิดคำแนะนำที่เผยแพร่ ไม่ใช่การค้นหาสถานะ');
+ }
+ const steps=$('progress');steps.classList.toggle('hidden',mode!=='fresh'||product!=='card');
+ setText('step1',c.stepReceived);setText('step2',c.stepReview);setText('step3',c.stepApproved);
+ if(product==='savings'){
+   setText('guideTag',c.guideConflict); $('guideTag').className='tag warn';
+ } else {$('guideTag').className='tag fresh';setText('guideTag',c.guidePublic)}
+}
+function resetAcceptance(){accepted=false;setText('acceptanceState',copy[language].receiverPending);$('acceptanceState').classList.remove('accepted');$('acceptHandoff').disabled=!applicationSaved;setText('acceptHandoff',copy[language].accept);}
+document.querySelectorAll('.role').forEach(btn=>btn.addEventListener('click',()=>{selectedRole=btn.dataset.role;renderRole()}));
+$('product').addEventListener('change',()=>{applicationSaved=false;accepted=false;setText('crmState',copy[language].crmOpen);setText('savedState',copy[language].noAction);$('acceptHandoff').disabled=true;renderProduct();resetAcceptance()});
+$('sourceMode').addEventListener('change',renderSource);
+$('language').addEventListener('click',()=>{language=language==='en'?'th':'en';renderLanguage();if(accepted){setText('acceptanceState',copy[language].receiverAccepted);setText('acceptHandoff',copy[language].acceptedButton)}});
+$('createFollowup').addEventListener('click',()=>{$('followupForm').classList.remove('hidden');$('formHeading').focus?.();});
+$('cancelForm').addEventListener('click',()=>{$('followupForm').classList.add('hidden')});
+$('saveForm').addEventListener('click',()=>{applicationSaved=true;accepted=false;const c=copy[language];setText('crmState',c.crmSaved);setText('ownerAccountability',c.ownerAccount);$('ownerAccountability').classList.remove('accepted');setText('acceptanceState',c.receiverPending);$('acceptanceState').classList.remove('accepted');setText('receivingTeam',$('destination').value);$('acceptHandoff').disabled=false;setText('acceptHandoff',c.accept);setText('savedState',c.savedState);$('followupForm').classList.add('hidden')});
+$('acceptHandoff').addEventListener('click',()=>{if(!applicationSaved)return;accepted=true;setText('acceptanceState',copy[language].receiverAccepted);$('acceptanceState').classList.add('accepted');setText('ownerAccountability',copy[language].receiverAccepted);$('ownerAccountability').classList.add('accepted');setText('crmState',copy[language].crmAccepted);setText('savedState',copy[language].acceptedState);$('acceptHandoff').disabled=true;setText('acceptHandoff',copy[language].acceptedButton)});
+renderLanguage();
+</script>
+<script src="assets/language-preference.js"></script>
+</body>
+</html>

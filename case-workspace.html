@@ -1,0 +1,446 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BBL CRM Prototype — Complaint Case Workspace</title>
+<!--
+  PROTOTYPE ONLY. Uses the Lotus mark supplied for this discovery prototype;
+  colors and typography remain placeholders pending the Bank's approved design
+  tokens (NFR-05). Validates the UI/UX design shell:
+  top bar, nav, status strip, SLA clocks, masked party panel, consent chips,
+  case timeline. Traceability: docs/design/ui-ux-design.md §2–3; FR-301–308;
+  demo scenario S1 (docs/vendor-evaluation-kit.md).
+-->
+<style>
+:root {
+  /* ponytail: placeholder tokens — swap for Bank design tokens when provided */
+  --ink: oklch(24% 0.03 265);
+  --ink-2: oklch(38% 0.03 265);
+  --paper: oklch(97.5% 0.005 265);
+  --surface: oklch(100% 0 0);
+  --line: oklch(88% 0.01 265);
+  --bbl-blue: oklch(38% 0.13 265);      /* placeholder for BBL navy */
+  --bbl-blue-deep: oklch(28% 0.11 265);
+  --accent: oklch(62% 0.14 250);
+  --ok: oklch(52% 0.12 150);
+  --warn: oklch(58% 0.13 75);
+  --danger: oklch(50% 0.16 25);
+  --info: oklch(52% 0.11 240);
+  --text-base: 15px;
+  --text-sm: 13px;
+  --text-xs: 12px;
+  --radius: 8px;
+  --radius-sm: 5px;
+  --focus: 0 0 0 2px var(--paper), 0 0 0 4px var(--accent);
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0; font-family: "IBM Plex Sans Thai", "Sarabun", "Segoe UI", system-ui, sans-serif;
+  font-size: var(--text-base); color: var(--ink); background: var(--paper); line-height: 1.5;
+}
+[lang="en"] { display: none; }
+body.en [lang="th"] { display: none; }
+body.en [lang="en"] { display: inline; }
+
+a { color: var(--bbl-blue); }
+:focus-visible { outline: none; box-shadow: var(--focus); border-radius: var(--radius-sm); }
+
+/* ---- shell ---- */
+.topbar { background: var(--bbl-blue-deep); color: #fff; display: flex; align-items: center; gap: 16px; padding: 8px 20px; }
+.brand { display: flex; align-items: center; gap: 10px; font-weight: 600; letter-spacing: .2px; }
+.lotus { width: 30px; height: 32px; object-fit: contain; }
+.env { font-size: var(--text-xs); background: var(--warn); color: var(--ink); padding: 2px 8px; border-radius: 99px; font-weight: 700; letter-spacing: .5px; }
+.searchbox { flex: 1; max-width: 460px; display: flex; }
+.searchbox input { flex: 1; border: 0; border-radius: var(--radius-sm) 0 0 var(--radius-sm); padding: 7px 12px; font: inherit; font-size: var(--text-sm); }
+.searchbox button { border: 0; background: var(--accent); color: #fff; padding: 0 14px; border-radius: 0 var(--radius-sm) var(--radius-sm) 0; cursor: pointer; font: inherit; font-size: var(--text-sm); }
+.topbar .spacer { flex: 1; }
+.iconbtn { background: none; border: 1px solid rgba(255,255,255,.35); color: #fff; border-radius: var(--radius-sm); padding: 5px 12px; cursor: pointer; font: inherit; font-size: var(--text-sm); }
+.iconbtn:hover { background: rgba(255,255,255,.12); }
+.user { font-size: var(--text-sm); text-align: right; }
+.user small { display: block; opacity: .75; font-size: var(--text-xs); }
+
+.nav { background: var(--bbl-blue); display: flex; gap: 4px; padding: 0 16px; }
+.nav a { color: #fff; text-decoration: none; padding: 10px 16px; font-size: var(--text-sm); border-bottom: 3px solid transparent; }
+.nav a[aria-current] { border-bottom-color: #fff; font-weight: 600; }
+.nav a:hover { background: rgba(255,255,255,.1); }
+
+main { max-width: 1240px; margin: 0 auto; padding: 20px 20px 48px; }
+
+/* ---- status strip ---- */
+.strip { display: flex; flex-wrap: wrap; gap: 8px 22px; align-items: center; background: var(--surface);
+  border: 1px solid var(--line); border-left: 4px solid var(--bbl-blue); border-radius: var(--radius);
+  padding: 12px 16px; margin: 14px 0; font-size: var(--text-sm); }
+.strip .k { color: var(--ink-2); }
+.strip strong { font-variant-numeric: tabular-nums; }
+
+/* ---- clocks ---- */
+.clocks { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; margin: 16px 0; }
+.clock { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 12px 14px; }
+.clock h3 { margin: 0 0 6px; font-size: var(--text-xs); text-transform: uppercase; letter-spacing: .6px; color: var(--ink-2); display: flex; gap: 8px; align-items: center; }
+.clock .val { font-size: 22px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.clock .sub { font-size: var(--text-xs); color: var(--ink-2); }
+.clock.warn { border-color: var(--warn); background: oklch(97% 0.03 85); }
+.clock.danger { border-color: var(--danger); background: oklch(96% 0.03 25); }
+.dot { width: 9px; height: 9px; border-radius: 50%; display: inline-block; }
+.dot.ok { background: var(--ok); } .dot.warn { background: var(--warn); } .dot.danger { background: var(--danger); } .dot.info { background: var(--info); }
+
+/* ---- layout ---- */
+.cols { display: grid; grid-template-columns: minmax(0, 1fr) 340px; gap: 20px; align-items: start; }
+@media (max-width: 980px) { .cols { grid-template-columns: 1fr; } }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); }
+.card h2 { font-size: var(--text-sm); margin: 0; padding: 10px 16px; border-bottom: 1px solid var(--line);
+  color: var(--ink-2); text-transform: uppercase; letter-spacing: .6px; }
+.card .bd { padding: 14px 16px; }
+
+/* ---- case header ---- */
+.casehead h1 { font-size: 20px; margin: 0; display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+.caseid { font-weight: 700; letter-spacing: .4px; }
+.chip { font-size: var(--text-xs); padding: 3px 10px; border-radius: 99px; border: 1px solid var(--line); background: var(--paper); }
+.chip.complaint { border-color: var(--danger); color: var(--danger); font-weight: 600; }
+.chip.inquiry { border-color: var(--info); color: var(--info); font-weight: 600; }
+.crumb { font-size: var(--text-xs); color: var(--ink-2); margin: 4px 0 0; }
+
+/* ---- timeline ---- */
+.tl { list-style: none; margin: 0; padding: 8px 0; }
+.tl li { display: grid; grid-template-columns: 92px 22px 1fr; gap: 8px; padding: 7px 16px; font-size: var(--text-sm); }
+.tl time { color: var(--ink-2); font-variant-numeric: tabular-nums; white-space: nowrap; font-size: var(--text-xs); padding-top: 2px; }
+.tl .node { position: relative; }
+.tl .node::before { content: ""; position: absolute; left: 5px; top: 6px; width: 9px; height: 9px; border-radius: 50%; background: var(--bbl-blue); }
+.tl li:not(:last-child) .node::after { content: ""; position: absolute; left: 9px; top: 17px; bottom: -12px; width: 1px; background: var(--line); }
+.tl .what b { font-weight: 600; }
+.tl .what .actor { color: var(--ink-2); font-size: var(--text-xs); }
+.tl .flag { font-size: var(--text-xs); color: var(--warn); font-weight: 600; }
+
+/* ---- party panel ---- */
+.party .name { font-size: 17px; font-weight: 700; }
+.masked { font-variant-numeric: tabular-nums; letter-spacing: 1px; background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius-sm); padding: 2px 8px; font-size: var(--text-sm); white-space: nowrap; }
+.kv { display: grid; grid-template-columns: auto 1fr; gap: 6px 14px; font-size: var(--text-sm); margin: 10px 0; }
+.kv .k { color: var(--ink-2); }
+.asof { font-size: var(--text-xs); color: var(--ink-2); display: flex; gap: 6px; align-items: center; margin-top: 8px; padding-top: 8px; border-top: 1px dashed var(--line); }
+.stale { color: var(--warn); font-weight: 600; }
+
+/* ---- consent ---- */
+.consent { display: flex; flex-wrap: wrap; gap: 6px; }
+.cchip { font-size: var(--text-xs); border: 1px solid var(--line); border-radius: 99px; padding: 3px 10px; display: inline-flex; gap: 6px; align-items: center; }
+.cchip.no { border-color: var(--danger); color: var(--danger); }
+.cchip.yes { border-color: var(--ok); color: var(--ok); }
+
+/* ---- actions ---- */
+.actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 18px; }
+.btn { font: inherit; font-size: var(--text-sm); border-radius: var(--radius-sm); padding: 9px 18px; cursor: pointer; border: 1px solid var(--line); background: var(--surface); color: var(--ink); }
+.btn.primary { background: var(--bbl-blue); border-color: var(--bbl-blue); color: #fff; font-weight: 600; }
+.btn.primary:hover { background: var(--bbl-blue-deep); }
+.btn:hover { border-color: var(--ink-2); }
+.btn[disabled] { opacity: .45; cursor: not-allowed; }
+
+/* ---- linked duplicates banner ---- */
+.dup { background: oklch(96% 0.02 250); border: 1px solid var(--info); border-radius: var(--radius); padding: 10px 14px; font-size: var(--text-sm); margin-bottom: 16px; display: flex; gap: 10px; align-items: flex-start; }
+.dup .dot { margin-top: 5px; }
+footer.proto { text-align: center; font-size: var(--text-xs); color: var(--ink-2); padding: 18px 0 28px; }
+</style>
+</head>
+<body>
+<header class="topbar">
+  <span class="brand"><img class="lotus" src="assets/bbl-lotus.png" alt=""> Bangkok Bank <span style="font-weight:400;opacity:.8">CRM</span></span>
+  <span class="env">PROTOTYPE</span>
+  <form class="searchbox" role="search" onsubmit="return false">
+    <label class="sr-only" for="q" style="position:absolute;left:-9999px">Search</label>
+    <input id="q" data-ph-th="ค้นหาลูกค้า / เลขคดี" data-ph-en="Search customer / case">
+    <button type="submit"><span lang="th">ค้นหา</span><span lang="en">Search</span></button>
+  </form>
+  <span class="spacer"></span>
+  <button class="iconbtn" id="lang" aria-label="Switch language">EN</button>
+  <div class="user"><span lang="th">สมชาย ใจดี</span><span lang="en">Somchai Jaidi</span><small><span lang="th">ฝ่ายคุณภาพบริการ</span><span lang="en">Service Quality</span></small></div>
+</header>
+
+<nav class="nav" aria-label="Main">
+  <a href="#"><span lang="th">งานของฉัน</span><span lang="en">My work</span></a>
+  <a href="#"><span lang="th">ค้นหาลูกค้า</span><span lang="en">Customer search</span></a>
+  <a href="#" aria-current="page"><span lang="th">คดี</span><span lang="en">Cases</span></a>
+  <a href="service-guide.html"><span lang="th">คำแนะนำบริการ</span><span lang="en">Service guidance</span></a>
+  <a href="#"><span lang="th">รายงาน</span><span lang="en">Reports</span></a>
+</nav>
+
+<main>
+  <section class="casehead">
+    <h1>
+      <span class="caseid">CASE-2026-004817</span>
+      <span class="chip complaint"><span lang="th">ร้องเรียน · ธนาคารทำธุรกรรมซ้ำ</span><span lang="en">Complaint · duplicated debit</span></span>
+      <span class="chip"><span lang="th">ช่องทาง: สาขา</span><span lang="en">Channel: Branch</span></span>
+      <span class="chip"><span lang="th">ความรุนแรง: ปานกลาง</span><span lang="en">Severity: Medium</span></span>
+    </h1>
+    <p class="crumb"><span lang="th">คดี → ทีมคุณภาพบริการ → รับเรื่องแล้ว</span><span lang="en">Cases → Service Quality → Accepted</span></p>
+  </section>
+
+  <div class="strip" role="status">
+    <span><span class="k"><span lang="th">เจ้าของคดี</span><span lang="en">Owner</span>:</span> <strong>มาลี ศรีทอง (SQ-2)</strong></span>
+    <span><span class="k"><span lang="th">รับเรื่อง</span><span lang="en">Received</span>:</span> <strong><span lang="th">12 ต.ค. 2026 10:42</span><span lang="en">12 Oct 2026 10:42</span></strong></span>
+    <span><span class="k"><span lang="th">ยืนยันแล้ว (Acknowledged)</span><span lang="en">Acknowledged</span>:</span> <strong><span class="dot ok" aria-hidden="true"></span><span lang="th">ทันที — 12 ต.ค. 10:43</span><span lang="en">Immediate — 12 Oct 10:43</span></strong></span>
+    <span><span class="k"><span lang="th">การอัปเดตลูกค้าครั้งถัดไป</span><span lang="en">Next customer update</span>:</span> <strong><span lang="th">19 ต.ค. 2026</span><span lang="en">19 Oct 2026</span></strong></span>
+    <span><span class="k"><span lang="th">ช่องทางที่อนุญาตให้ติดต่อ</span><span lang="en">Permitted contact</span>:</span> <strong><span lang="th">โทรศัพท์ (09:00–18:00)</span><span lang="en">Phone (09:00–18:00)</span></strong></span>
+  </div>
+
+  <div class="clocks">
+    <p style="grid-column:1/-1;margin:0;font-size:var(--text-xs);color:var(--ink-2)"><span lang="th">สถานะ ณ 14 ต.ค. 2026 09:00 — รับเรื่อง 12 ต.ค. 10:42</span><span lang="en">As of 14 Oct 2026 09:00 — received 12 Oct 10:42</span></p>
+    <div class="clock">
+      <h3><span class="dot ok" aria-hidden="true"></span><span lang="th">ระยะเวลายืนยันการรับเรื่อง</span><span lang="en">Acknowledgement clock</span></h3>
+      <div class="val">0 <span lang="th">วัน</span><span lang="en">days</span></div>
+      <div class="sub"><span lang="th">เป้าหมาย: ทันที (ช่องทางสาขา) — บันทึกแล้ว 10:43</span><span lang="en">Target: immediate (branch channel) — recorded 10:43</span></div>
+    </div>
+    <div class="clock warn">
+      <h3><span class="dot warn" aria-hidden="true"></span><span lang="th">นาฬิกาความคืบหน้า (อัปเดตลูกค้า)</span><span lang="en">Progress-update clock</span></h3>
+      <div class="val">3 <span lang="th">วันทำการเหลือ</span><span lang="en">business days left</span></div>
+      <div class="sub"><span lang="th">ครบกำหนด 19 ต.ค. — ส่งการแจ้งเตือนอัตโนมัติ</span><span lang="en">Due 19 Oct — auto-reminder fires</span></div>
+    </div>
+    <div class="clock">
+      <h3><span class="dot info" aria-hidden="true"></span><span lang="th">นาฬิกาแก้ไขหรือแจ้งความคืบหน้า</span><span lang="en">Resolve-or-update clock (customer-facing)</span></h3>
+      <div class="val">13 <span lang="th">วันทำการเหลือ</span><span lang="en">business days left</span></div>
+      <div class="sub"><span lang="th">ครบกำหนด 2 พ.ย. — เป้าหมาย 15 วันทำการ (แก้ไข หรือ แจ้งความคืบหน้า) · แยกจากงานภายใน</span><span lang="en">Due 2 Nov — 15-business-day resolve-or-notify target · separate from internal tasks</span></div>
+    </div>
+    <div class="clock">
+      <h3><span class="dot warn" aria-hidden="true"></span><span lang="th">งานภายใน: ตรวจสอบธุรกรรม</span><span lang="en">Internal task: transaction check</span></h3>
+      <div class="val">1 <span lang="th">วันทำการเหลือ</span><span lang="en">business day left</span></div>
+      <div class="sub"><span lang="th">มอบหมาย: ฝ่ายปฏิบัติการสาขา · ครบกำหนด 15 ต.ค. — เป้าหมายตัวอย่างที่ตั้งได้ (รอธนาคารยืนยัน)</span><span lang="en">Assignee: Branch Ops · due 15 Oct — example configurable target (Bank confirmation pending)</span></div>
+    </div>
+  </div>
+
+  <div class="dup">
+    <span class="dot info" aria-hidden="true"></span>
+    <div><strong><span lang="th">ตรวจพบเรื่องที่อาจซ้ำซ้อน</span><span lang="en">Possible duplicate detected</span>:</strong>
+    <span lang="th">CASE-2026-004810 (ช่องทางศูนย์บริการ 13 ต.ค.) — </span><span lang="en">CASE-2026-004810 (contact center, 13 Oct) — </span>
+    <a href="#" id="dup-link" onclick="return false"><span lang="th">ดูและเชื่อมโยง</span><span lang="en">review &amp; link</span></a></div>
+  </div>
+
+  <div class="cols">
+    <div>
+      <section class="card">
+        <h2><span lang="th">ลำดับเหตุการณ์คดี</span><span lang="en">Case timeline</span></h2>
+        <ol class="tl">
+          <li><time>12 Oct 10:42</time><span class="node" aria-hidden="true"></span><span class="what"><b><span lang="th">รับเรื่องร้องเรียน (สาขาสีลม)</span><span lang="en">Complaint received (Silom branch)</span></b><span class="actor"> — <span lang="th">พนักงาน: ธนกฤต ส.</span><span lang="en">staff: Thanakit S.</span></span></span></li>
+          <li><time>12 Oct 10:43</time><span class="node" aria-hidden="true"></span><span class="what"><b><span lang="th">ยืนยันการรับเรื่องกับลูกค้า</span><span lang="en">Customer acknowledged</span></b><span class="actor"> — <span lang="th">ตามนโยบายช่องทาง: ทันที</span><span lang="en">per channel policy: immediate</span></span></li>
+          <li><time>12 Oct 11:05</time><span class="node" aria-hidden="true"></span><span class="what"><b><span lang="th">มอบหมาย → ทีมคุณภาพบริการ</span><span lang="en">Routed → Service Quality</span></b><span class="actor"> — <span lang="th">ระบบ (กฎ: ประเภท×ช่องทาง)</span><span lang="en">system (rule: type×channel)</span></span></li>
+          <li><time>12 Oct 14:20</time><span class="node" aria-hidden="true"></span><span class="what"><b><span lang="th">รับมือคดี</span><span lang="en">Case accepted</span></b><span class="actor"> — มาลี ศรีทอง</span></li>
+          <li><time>13 Oct 09:15</time><span class="node" aria-hidden="true"></span><span class="what"><b><span lang="th">สร้างงานภายใน: ตรวจสอบธุรกรรมซ้ำ</span><span lang="en">Internal task: duplicate-transaction check</span></b><span class="actor"> — <span lang="th">ฝ่ายปฏิบัติการสาขา · กำหนด 2 วันทำการ (ค่าตัวอย่างที่ตั้งได้ — รอธนาคารยืนยัน)</span><span lang="en">Branch Ops · 2-business-day deadline (example configurable target — Bank confirmation pending)</span></span></li>
+          <li><time>13 Oct 16:02</time><span class="node" aria-hidden="true"></span><span class="what"><b><span lang="th">ตรวจสอบตัวตนลูกค้าผ่านช่องทางโทรศัพท์</span><span lang="en">Customer identity verified (phone)</span></b><span class="actor"> — <span class="flag"><span lang="th">ผลการตรวจสอบ: ผ่าน — ใช้ประกอบการเปิดเผยข้อมูลเท่านั้น</span><span lang="en">verification: passed — gates disclosure only</span></span></span></li>
+        </ol>
+      </section>
+
+      <section class="card" style="margin-top:16px">
+        <h2><span lang="th">บันทึกการแก้ไข / การสื่อสาร</span><span lang="en">Resolution &amp; communication log</span></h2>
+        <div class="bd" style="font-size:var(--text-sm)">
+          <p><span lang="th">ประเด็น: ลูกค้าระบุการหักบัญชีซ้ำจากการชำระเงิน 2 รายการเมื่อ 10 ต.ค. หลักฐานอ้างอิงถูกเก็บในคลังเอกสาร (DMS-1142)</span><span lang="en">Issue: customer reports a duplicated debit from two payments on 10 Oct. Evidence stored by reference in DMS-1142.</span></p>
+          <p style="color:var(--danger);font-weight:600">⚠ <span lang="th">ห้ามบันทึกรหัสผ่าน / PIN / OTP ในบันทึกนี้</span><span lang="en">Never record passwords / PINs / OTPs in this log</span></p>
+        </div>
+      </section>
+    </div>
+
+    <aside>
+      <section class="card party">
+        <h2><span lang="th">ข้อมูลลูกค้า (ปกปิดบางส่วน)</span><span lang="en">Party (masked)</span></h2>
+        <div class="bd">
+          <div class="name"><span lang="th">นางสาว อรพรรณ ว.</span><span lang="en">Ms. Orapun W.</span></div>
+          <div class="kv">
+            <span class="k"><span lang="th">บัตรประชาชน</span><span lang="en">National ID</span></span><span class="masked">3-XXXX-XXXXX-XX-7</span>
+            <span class="k"><span lang="th">ความสัมพันธ์</span><span lang="en">Relationship</span></span><span><span lang="th">เจ้าของร่วมบัญชีออมทรัพย์</span><span lang="en">Joint savings account holder</span></span>
+            <span class="k"><span lang="th">RM ประจำ</span><span lang="en">Assigned RM</span></span><span><span lang="th">ปิยะ ค. (สาขาสีลม)</span><span lang="en">Piya K. (Silom)</span></span>
+          </div>
+          <div class="asof"><span class="dot info" aria-hidden="true"></span><span>CIF <span lang="th">ปรับปรุงล่าสุด</span><span lang="en">last refresh</span>: 14 ต.ค. 05:30 · <span lang="th">แหล่งข้อมูล: ระบบหลัก</span><span lang="en">source: core</span></span></div>
+          <div class="asof"><span class="dot warn" aria-hidden="true"></span><span class="stale"><span lang="th">ประวัติธุรกรรม: ข้อมูลเก่า (รอซิงก์)</span><span lang="en">Transaction history: stale — pending sync</span></span></div>
+        </div>
+      </section>
+
+      <section class="card" style="margin-top:16px">
+        <h2><span lang="th">สิทธิ์การติดต่อและการระงับ (รายวัตถุประสงค์)</span><span lang="en">Contact permissions &amp; stops (per purpose)</span></h2>
+        <div class="bd">
+          <div class="consent">
+            <span class="cchip no"><span class="dot danger" aria-hidden="true"></span><span lang="th">การตลาดทางโทรศัพท์: คัดค้าน (คำขอตาม PDPA)</span><span lang="en">Telemarketing: objected (PDPA request)</span></span>
+            <span class="cchip no"><span class="dot danger" aria-hidden="true"></span><span lang="th">การตลาดทางอีเมล: ระงับในระบบแล้ว · รอยืนยันระบบภายนอก</span><span lang="en">Email marketing: local hold active · outbound confirmation pending</span></span>
+            <span class="cchip yes"><span class="dot ok" aria-hidden="true"></span><span lang="th">ติดต่อเรื่องบริการ: อนุญาต</span><span lang="en">Service contact: allowed</span></span>
+          </div>
+          <p style="font-size:var(--text-xs);color:var(--ink-2);margin:10px 0 0"><span lang="th">การติดต่อเรื่องบริการแยกจากการขาย — ห้ามใช้คดีนี้เป็นโอกาสขาย · การระงับแต่ละประเภทมีสถานะการส่งต่อแยกกัน</span><span lang="en">Service contact is separate from sales — this case must not become a sales prompt. Each stop carries its own propagation state.</span></p>
+        </div>
+      </section>
+    </aside>
+  </div>
+
+  <div class="actions" id="case-actions">
+    <button class="btn primary" id="act-update" type="button"><span lang="th">อัปเดตสถานะลูกค้า</span><span lang="en">Update customer</span></button>
+    <button class="btn" id="act-investigate" type="button"><span lang="th">บันทึกผลตรวจสอบ</span><span lang="en">Log investigation</span></button>
+    <button class="btn" id="act-escalate" type="button"><span lang="th">ส่งต่อ (Escalate)</span><span lang="en">Escalate</span></button>
+    <button class="btn" id="act-close" type="button" disabled><span lang="th">ปิดคดี</span><span lang="en">Resolve &amp; close</span></button>
+    <button class="btn" id="act-reopen" type="button" hidden><span lang="th">เปิดใหม่ (อุทธรณ์)</span><span lang="en">Reopen (appeal)</span></button>
+    <span class="hint" id="close-hint" style="align-self:center"><span lang="th">เปิดใช้เมื่อกรอกสาเหตุหลักผ่านหน้าปิดคดี</span><span lang="en">enabled by completing the closure panel</span></span>
+  </div>
+
+  <footer class="proto"><span lang="th">ต้นแบบเพื่อทบทวน — ใช้เครื่องหมาย Lotus ที่ได้รับจากผู้ใช้; สีและตัวอักษรยังรอโทเคนแบรนด์ที่ธนาคารอนุมัติ (NFR-05)</span><span lang="en">Validation prototype — uses the Lotus mark supplied for discovery; color and typography tokens still require Bank approval (NFR-05).</span></footer>
+
+<dialog id="act-dialog" aria-labelledby="dlg-title">
+  <form method="dialog" id="dlg-form" novalidate style="min-width:min(520px,86vw)">
+    <h2 id="dlg-title" style="font-size:16px;margin:0 0 4px"></h2>
+    <p id="dlg-consequence" style="font-size:12.5px;color:var(--ink-2);margin:0 0 12px"></p>
+    <div id="dlg-fields"></div>
+    <p class="err" id="dlg-err" role="alert" hidden style="color:var(--danger);font-weight:600;font-size:12.5px"></p>
+    <div style="display:flex;gap:10px;margin-top:14px">
+      <button class="btn primary" id="dlg-submit" type="submit"></button>
+      <button class="btn" type="button" onclick="document.getElementById('act-dialog').close()"><span lang="th">ยกเลิก</span><span lang="en">Cancel</span></button>
+    </div>
+  </form>
+</dialog>
+
+<script>
+'use strict';
+// case-action state machine — adversarial review ux-H7: guard consequential
+// actions with reason + receipt; make duplicate-link reversible; enable
+// closure behind the root-cause gate. Bilingual entries use lang spans so
+// the language toggle never re-renders state (review lesson H3).
+(function(){
+  const $ = (s)=>document.querySelector(s);
+  const dlg = $('#act-dialog'), fields = $('#dlg-fields'), err = $('#dlg-err');
+  const state = { linked:false, closed:false };
+
+  const F = {
+    update: {title:{th:'อัปเดตสถานะลูกค้า',en:'Update customer'},
+      consequence:{th:'ระบบจะบันทึกการแจ้งลูกค้าและตั้งการแจ้งเตือนครั้งถัดไป — นาฬิกาความคืบหน้าเริ่มนับใหม่',en:'Records the customer update and schedules the next reminder — the progress clock restarts'},
+      submit:{th:'ส่งการแจ้ง',en:'Send update'},
+      fields:[
+        {tag:'select',id:'f-tmpl',label:{th:'แม่แบบข้อความที่อนุมัติ',en:'Approved wording template'},opts:[
+          {v:'progress',th:'แจ้งความคืบหน้า: อยู่ระหว่างตรวจสอบกับฝ่ายปฏิบัติการ',en:'Progress: under review with Branch Operations'},
+          {v:'more-time',th:'ต้องใช้เวลาเพิ่ม — จะแจ้งผลภายในกำหนด',en:'More time needed — outcome by the committed date'}]},
+        {tag:'textarea',id:'f-note',label:{th:'หมายเหตุภายใน (ไม่ส่งถึงลูกค้า)',en:'Internal note (not sent to customer)'},req:false}]},
+    investigate: {title:{th:'บันทึกผลตรวจสอบ',en:'Log investigation'},
+      consequence:{th:'บันทึกเข้าไทม์ไลน์เคส — การตัดสินใจทางการเงินยังอยู่กับระบบต้นทาง',en:'Appends to the case timeline — financial decisions stay with the source system'},
+      submit:{th:'บันทึก',en:'Log'},
+      fields:[{tag:'textarea',id:'f-find',label:{th:'ผลการตรวจสอบ',en:'Finding'},req:true,min:15},
+              {tag:'input',id:'f-src',label:{th:'อ้างอิงระบบต้นทาง',en:'Source reference'},req:true}]},
+    escalate: {title:{th:'ส่งต่อ (Escalate)',en:'Escalate'},
+      consequence:{th:'เจ้าของเดิมยังรับผิดชอบจนกว่าคิวปลายทางจะตอบรับ — ต้องระบุเหตุผล',en:'The origin owner stays accountable until the receiving queue accepts — a reason is required'},
+      submit:{th:'ส่งต่อ',en:'Escalate'},
+      fields:[{tag:'select',id:'f-queue',label:{th:'คิวปลายทาง',en:'Receiving queue'},req:true,opts:[
+          {v:'sq-senior',th:'ผู้บริหารทีมคุณภาพบริการ',en:'Service Quality senior'},
+          {v:'ops',th:'ฝ่ายปฏิบัติการสาขา',en:'Branch Operations'},
+          {v:'digital',th:'ทีมช่องทางดิจิทัล',en:'Digital channel team'}]},
+        {tag:'textarea',id:'f-why',label:{th:'เหตุผลการส่งต่อ',en:'Escalation reason'},req:true,min:15}]},
+    close: {title:{th:'ปิดคดี',en:'Resolve & close'},
+      consequence:{th:'ต้องกรอกเหตุผลการปิดและสาเหตุหลัก — เปรียบเทียบการเยียวยากับเคสลักษณะเดียวกัน',en:'Closure reason and root-cause code are required — redress is checked against similar cases'},
+      submit:{th:'ปิดคดี',en:'Close case'},
+      fields:[{tag:'select',id:'f-creason',label:{th:'เหตุผลการปิด',en:'Closure reason'},req:true,opts:[
+          {v:'resolved',th:'แก้ไขแล้ว — คืนเงินตามที่ตกลง',en:'Resolved — refund as agreed'},
+          {v:'explained',th:'อธิบาย/ชี้แจงแล้ว — ลูกค้าเข้าใจ',en:'Explained — customer accepts'},
+          {v:'withdrawn',th:'ลูกค้าถอนเรื่อง',en:'Withdrawn by customer'}]},
+        {tag:'select',id:'f-rca',label:{th:'รหัสสาเหตุหลัก',en:'Root-cause code'},req:true,opts:[
+          {v:'r-op',th:'R-OP กระบวนการปฏิบัติการ',en:'R-OP operational process'},
+          {v:'r-sys',th:'R-SYS ระบบ/ไอที',en:'R-SYS system/IT'},
+          {v:'r-staff',th:'R-STAFF พฤติกรรมพนักงาน',en:'R-STAFF conduct'},
+          {v:'r-comms',th:'R-COMMS สื่อสาร/ข้อมูลไม่ชัด',en:'R-COMMS unclear information'}]},
+        {tag:'static',html:'<div class="card" style="margin:10px 0;padding:10px 12px;background:var(--paper)"><b><span lang="th">ตรวจสอบความสม่ำเสมอของการเยียวยา</span><span lang="en">Redress consistency check</span></b><br><span lang="th" style="font-size:12.5px;color:var(--ink-2)">เคสลักษณะเดียวกัน (CASE-2026-004610): คืนเงินเต็มจำนวนภายใน 3 วันทำการ — การเยียวยานี้ต้องสอดคล้อง (SVG 1/2561 ข้อ 7.2)</span><span lang="en" style="font-size:12.5px;color:var(--ink-2)">Similar case (CASE-2026-004610): full refund within 3 business days — this remedy must be consistent (SVG 1/2561 cl. 7.2)</span></div>'}]},
+    dup: {title:{th:'เชื่อมโยงเรื่องที่ซ้ำกัน',en:'Link possible duplicate'},
+      consequence:{th:'การเชื่อมโยงย้อนกลับได้ — ทั้งสองเคสคงสถานะของตนเอง ไม่รวมประวัติ',en:'Linking is reversible — both cases keep their own status and history'},
+      submit:{th:'เชื่อมโยง',en:'Link cases'},
+      fields:[{tag:'static',html:'<div style="font-size:13px;border:1px solid var(--line);border-radius:6px;padding:10px 12px"><b>CASE-2026-004817</b> <span lang="th">· สาขา · 12 ต.ค. · หักซ้ำ</span><span lang="en">· branch · 12 Oct · duplicated debit</span><br><b>CASE-2026-004810</b> <span lang="th">· ศูนย์บริการ · 13 ต.ค. · หักซ้ำ (ลูกค้ารายอื่น)</span><span lang="en">· contact center · 13 Oct · duplicated debit (different party)</span></div>'}]},
+  };
+
+  function bi(o){ return `<span lang="th">${o.th}</span><span lang="en">${o.en}</span>`; }
+  function buildFields(list){
+    fields.innerHTML = list.map(f=>{
+      if (f.tag==='static') return f.html;
+      const req = f.req ? ' <span style="color:var(--danger)">*</span>' : '';
+      if (f.tag==='select'){
+        return `<div style="margin-bottom:10px"><label for="${f.id}" style="font-size:13px;font-weight:600">${f.label.th?bi(f.label):f.label}${req}</label><select id="${f.id}" style="width:100%;padding:8px 10px;border:1px solid var(--line);border-radius:5px;font:inherit"><option value="">—</option>${(f.opts||[]).map(o=>`<option value="${o.v}">${o.th} / ${o.en}</option>`).join('')}</select></div>`;
+      }
+      return `<div style="margin-bottom:10px"><label for="${f.id}" style="font-size:13px;font-weight:600">${bi(f.label)}${req}</label><${f.tag} id="${f.id}" style="width:100%;padding:8px 10px;border:1px solid var(--line);border-radius:5px;font:inherit${f.tag==='textarea'?';min-height:70px':''}"></${f.tag}></div>`;
+    }).join('');
+  }
+  function open(kind){
+    const cfg = F[kind]; err.hidden = true;
+    document.getElementById('dlg-title').innerHTML = bi(cfg.title);
+    document.getElementById('dlg-consequence').innerHTML = bi(cfg.consequence);
+    document.getElementById('dlg-submit').innerHTML = bi(cfg.submit);
+    buildFields(cfg.fields);
+    dlg.dataset.kind = kind; dlg.showModal();
+  }
+  function entry(what, actor){
+    const li = document.createElement('li');
+    li.innerHTML = `<time>15 Oct 09:2X</time><span class="node" aria-hidden="true"></span><span class="what"><b>${bi(what)}</b><span class="actor"> — ${actor}</span></span>`;
+    document.querySelector('.tl').appendChild(li);
+  }
+  function validate(cfg){
+    for (const f of cfg.fields){
+      if (!f.req) continue;
+      const el = document.getElementById(f.id); if (!el) continue;
+      const v = el.value.trim();
+      if (!v || (f.min && v.length < f.min)){
+        err.hidden = false;
+        err.innerHTML = bi({th:'กรุณากรอก: '+f.label.th, en:'Required: '+f.label.en});
+        el.focus(); return false;
+      }
+    }
+    return true;
+  }
+  $('#dlg-form').addEventListener('submit', (ev)=>{
+    const kind = dlg.dataset.kind, cfg = F[kind];
+    if (kind==='dup'){ ev.preventDefault(); doLink(); dlg.close(); return; }
+    if (!validate(cfg)){ ev.preventDefault(); return; }
+    ev.preventDefault(); dlg.close();
+    if (kind==='update') entry({th:'แจ้งความคืบหน้าลูกค้า (แม่แบบที่อนุมัติ)',en:'Customer update sent (approved template)'}, 'มาลี ศรีทอง');
+    if (kind==='investigate') entry({th:'บันทึกผลตรวจสอบจากฝ่ายปฏิบัติการ',en:'Investigation finding logged'}, 'มาลี ศรีทอง');
+    if (kind==='escalate'){
+      const q = document.getElementById('f-queue');
+      entry({th:'ส่งต่อ → '+q.options[q.selectedIndex].text.split(' / ')[0]+' (พร้อมเหตุผล)',en:'Escalated → '+q.options[q.selectedIndex].text.split(' / ')[1]+' (with reason)'}, 'มาลี ศรีทอง · <span lang="th">เจ้าของเดิมรับผิดชอบจนตอบรับ</span><span lang="en">origin owner accountable until acceptance</span>');
+    }
+    if (kind==='close') doClose();
+  });
+  function doLink(){
+    state.linked = true;
+    const d = document.querySelector('.dup');
+    d.innerHTML = `<span class="dot ok" aria-hidden="true"></span><div><b><span lang="th">เชื่อมโยงแล้ว</span><span lang="en">Linked</span></b> — CASE-2026-004810 · <a href="#" id="dup-unlink" onclick="return false"><span lang="th">ยกเลิกการเชื่อมโยง</span><span lang="en">unlink</span></a></div>`;
+    entry({th:'เชื่อมโยงกับ CASE-2026-004810 (ย้อนกลับได้)',en:'Linked with CASE-2026-004810 (reversible)'}, 'มาลี ศรีทอง');
+    document.getElementById('dup-unlink').addEventListener('click', ()=>{
+      state.linked = false;
+      d.innerHTML = `<span class="dot info" aria-hidden="true"></span><div><strong><span lang="th">ตรวจพบเรื่องที่อาจซ้ำซ้อน</span><span lang="en">Possible duplicate detected</span>:</strong> <span lang="th">CASE-2026-004810 (ช่องทางศูนย์บริการ 13 ต.ค.) — </span><span lang="en">CASE-2026-004810 (contact center, 13 Oct) — </span><a href="#" id="dup-link" onclick="return false"><span lang="th">ดูและเชื่อมโยง</span><span lang="en">review &amp; link</span></a></div>`;
+      entry({th:'ยกเลิกการเชื่อมโยงกับ CASE-2026-004810',en:'Unlinked from CASE-2026-004810'}, 'มาลี ศรีทอง');
+      document.getElementById('dup-link').addEventListener('click', ()=>open('dup'));
+    });
+  }
+  function doClose(){
+    state.closed = true;
+    const chip = document.querySelector('.casehead .chip.complaint');
+    if (chip) chip.insertAdjacentHTML('beforeend','');
+    document.getElementById('close-hint').hidden = true;
+    ['act-update','act-investigate','act-escalate','act-close'].forEach(id=>document.getElementById(id).disabled = true);
+    document.getElementById('act-reopen').hidden = false;
+    document.querySelector('h1 .caseid').insertAdjacentHTML('afterend',' <span class="chip" style="border-color:var(--ok);color:var(--ok);font-weight:700"><span lang="th">ปิดแล้ว 15 ต.ค.</span><span lang="en">Closed 15 Oct</span></span>');
+    entry({th:'ปิดคดี — กรอกสาเหตุหลักและตรวจความสม่ำเสมอของการเยียวยาแล้ว',en:'Case closed — root cause coded, redress consistency checked'}, 'มาลี ศรีทอง');
+  }
+  document.getElementById('act-reopen').addEventListener('click', ()=>{
+    state.closed = false;
+    ['act-update','act-investigate','act-escalate'].forEach(id=>document.getElementById(id).disabled = false);
+    document.getElementById('act-close').disabled = true;
+    document.getElementById('act-reopen').hidden = true;
+    entry({th:'เปิดคดีใหม่ (อุทธรณ์ของลูกค้า)',en:'Reopened (customer appeal)'}, 'ระบบ');
+  });
+  document.getElementById('act-update').addEventListener('click', ()=>open('update'));
+  document.getElementById('act-investigate').addEventListener('click', ()=>open('investigate'));
+  document.getElementById('act-escalate').addEventListener('click', ()=>open('escalate'));
+  document.getElementById('act-close').addEventListener('click', ()=>open('close'));
+  document.getElementById('dup-link').addEventListener('click', ()=>open('dup'));
+})();
+</script>
+</main>
+
+<script>
+// ponytail: dictionary toggle only — no framework needed for a static prototype
+const langBtn = document.getElementById('lang');
+const searchInput = document.getElementById('q');
+function applyLang(en) {
+  document.documentElement.lang = en ? 'en' : 'th';
+  langBtn.textContent = en ? 'ไทย' : 'EN';
+  langBtn.setAttribute('aria-label', en ? 'สลับเป็นภาษาไทย' : 'Switch to English');
+  if (searchInput) searchInput.placeholder = en ? searchInput.dataset.phEn : searchInput.dataset.phTh;
+}
+langBtn.addEventListener('click', () => applyLang(document.body.classList.toggle('en')));
+applyLang(false);
+</script>
+<script src="assets/language-preference.js"></script>
+</body>
+</html>
