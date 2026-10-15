@@ -151,6 +151,7 @@ h1 { margin: 0; color: var(--navy); font-size: 27px; line-height: 1.25; letter-s
 .service-result h3 { margin: 0 0 5px; color: var(--navy); font-size: 14px; }
 .service-result p { margin: 4px 0; color: #4b5a71; font-size: 12px; }
 .service-result .route-channel { color: var(--blue); font-weight: 750; }
+.service-result .official-guide { display: inline-block; margin: 5px 0; color: var(--blue); font-size: 12px; font-weight: 750; }
 .service-result .role-note { margin-top: 8px; border-top: 1px solid #dce5f1; padding-top: 7px; color: #465773; }
 .service-result .empty { color: var(--muted); }
 .script { position: relative; border-left: 3px solid #5e84ba; border-radius: 0 6px 6px 0; background: #f4f7fc; padding: 11px 12px; color: #384860; font-size: 12px; }
@@ -356,7 +357,8 @@ dialog::backdrop { background: rgba(13, 28, 58, .42); }
               <optgroup id="map-payments" label="Payments and accounts">
                 <option value="transfers">Transfers, top-ups and bill pay</option>
                 <option value="accountActivity">Account summaries and transaction history</option>
-                <option value="scheduled">Scheduled transfers or bill payments</option>
+                <option value="scheduledTransfer">Scheduled transfer</option>
+                <option value="scheduledBill">Scheduled bill payment or top-up</option>
                 <option value="directDebit">Direct Debit service</option>
                 <option value="international">International money transfer</option>
                 <option value="fcd">Foreign currency deposit account (FCD)</option>
@@ -462,7 +464,8 @@ const state = { lang: "th", role: "agent", context: "osConflict", phase: "before
 const serviceRoutes = {
   transfers: { th:["โอน เติมเงิน และชำระบิล","Bangkok Bank Mobile Banking","ตรวจสอบว่าลูกค้าใช้งานแอปได้และมีสิทธิ์ใช้บริการที่ต้องการ"], en:["Transfers, top-ups and bill pay","Bangkok Bank Mobile Banking","Confirm that the customer can use the app and is eligible for the requested service."] },
   accountActivity: { th:["ดูสรุปบัญชีและประวัติรายการ","Bangkok Bank Mobile Banking","การดูข้อมูลรายบัญชียังต้องผ่านการยืนยันตัวตนของลูกค้า"], en:["Account summaries and transaction history","Bangkok Bank Mobile Banking","Customer-specific information still requires the Bank's verification process."] },
-  scheduled: { th:["ตั้งรายการโอนหรือชำระบิลล่วงหน้า","Bangkok Bank Mobile Banking","รายการ iBanking ที่ถึงกำหนดตั้งแต่ 15 ธ.ค. 2569 จะถูกยกเลิกอัตโนมัติ; CRM ไม่เห็นหรือย้ายกำหนดการของลูกค้า"], en:["Schedule transfers or bill payments","Bangkok Bank Mobile Banking","iBanking items due from 15 Dec 2026 are cancelled automatically; CRM cannot see or move the customer's schedule."] },
+  scheduledTransfer: { th:["ตั้งโอนเงินล่วงหน้า","Bangkok Bank Mobile Banking · เมนูโอนเงิน / ตั้งรายการล่วงหน้า","ธนาคารระบุว่าตั้งโอนรายครั้ง รายสัปดาห์ หรือรายเดือนได้ล่วงหน้าไม่เกิน 1 ปี ให้ลูกค้าตรวจรายการ iBanking เดิมในเมนูรายการโอนที่ตั้งล่วงหน้า แล้วตั้งรายการใหม่ด้วยตนเองหากยังจำเป็นและเข้าเงื่อนไข CRM ไม่เห็น ไม่ย้าย หรือเปลี่ยนรายการของลูกค้า"], en:["Schedule a transfer","Bangkok Bank Mobile Banking · Transfer / Create a schedule","The Bank publishes one-time, weekly, or monthly transfers up to one year ahead. Have the customer review existing iBanking items in the future-dated transfer list, then set up any needed eligible item themselves in Mobile Banking. CRM cannot see, migrate, or change an individual item."] },
+  scheduledBill: { th:["ตั้งจ่ายบิลหรือเติมเงินล่วงหน้า","Bangkok Bank Mobile Banking · เมนูจ่ายบิล / เติมเงิน","ธนาคารระบุว่าตั้งจ่ายรายครั้ง รายสัปดาห์ หรือรายเดือนได้ตามบริการและผู้ให้บริการที่รองรับ ให้ลูกค้าตรวจรายการ iBanking เดิมแยกต่างหาก และตั้งรายการใหม่ด้วยตนเองหากยังจำเป็นและเข้าเงื่อนไข Direct Debit ที่ลงทะเบียนไว้ยังดำเนินต่อ"], en:["Schedule a bill payment or top-up","Bangkok Bank Mobile Banking · Pay bills / Top up","The Bank publishes one-time, weekly, or monthly payments for supported services/providers. Have the customer review existing iBanking items separately and set up any needed eligible item themselves in Mobile Banking. Registered Direct Debit continues."] },
   directDebit: { th:["บริการ Direct Debit","Bangkok Bank Mobile Banking","รายการ Direct Debit ที่ลงทะเบียนผ่าน iBanking ยังดำเนินต่อ; อย่าขอให้ลูกค้าตั้งรายการซ้ำ"], en:["Direct Debit service","Bangkok Bank Mobile Banking","Direct Debit instructions registered through iBanking continue; do not ask the customer to recreate them."] },
   international: { th:["โอนเงินระหว่างประเทศ","Bangkok Bank Mobile Banking","ผู้รับเงินที่ลงทะเบียนสำหรับการโอนระหว่างประเทศเป็นข้อยกเว้นที่ย้ายข้อมูลให้อัตโนมัติ"], en:["International money transfer","Bangkok Bank Mobile Banking","Registered international-transfer beneficiaries are the stated automatic-transfer exception."] },
   fcd: { th:["บริการบัญชีเงินฝากเงินตราต่างประเทศ (FCD)","Bangkok Bank Mobile Banking","ตรวจสอบข้อกำหนดอุปกรณ์และสิทธิ์ของลูกค้าก่อนแนะนำ"], en:["Foreign currency deposit account (FCD)","Bangkok Bank Mobile Banking","Check device prerequisites and customer eligibility before advising."] },
@@ -481,6 +484,18 @@ const serviceRoutes = {
   rewards: { th:["ขอแลกคะแนนสะสมบัตรเครดิต","สาขาและ Call Center","เส้นทางลูกค้าที่ประกาศไม่ยืนยันว่าสิทธิ์ agent ปัจจุบันทำรายการแลกคะแนนได้"], en:["Redeem credit-card reward points","Bank branches and Call Center","The published customer route does not confirm that an agent's current permission includes redemption."] },
   cardPin: { th:["ขอ PIN บัตรเครดิต","ลูกค้าส่ง SMS คำว่า PIN เว้นวรรค ตามด้วยเลขบัตร 4 หลักท้าย ไปที่ 4711333","ให้คำแนะนำตามข้อความที่ธนาคารอนุมัติ ลูกค้าส่งเอง; ห้ามบันทึกข้อมูลบัตรใน CRM"], en:["Request a credit-card PIN","Customer sends SMS: PIN, a space, then the last four digits of the card number to 4711333","Use Bank-approved wording and have the customer send it themselves; never store card details in CRM."] },
   studentPrepaid: { th:["เติมเงิน Student Prepaid Card","ตู้ ATM ธนาคารกรุงเทพ","แนะนำให้ใช้ตู้ ATM; อย่าส่งต่อไปยังขั้นตอน Mobile Banking"], en:["Top up a Student Prepaid Card","Bangkok Bank ATM","Direct the customer to an ATM; do not route them to the Mobile Banking flow."] }
+};
+const routeGuides = {
+  scheduledTransfer: {
+    url: "https://www.bangkokbank.com/en/Personal/Digital-Banking/Bualuang-mBanking/How-to-Use/Scheduled-Transfer-Service",
+    label: {en:"Open Bangkok Bank scheduled-transfer guidance ↗", th:"เปิดคำแนะนำการตั้งโอนล่วงหน้าของธนาคารกรุงเทพ ↗"},
+    source: {en:"Sources: BBL iBanking retirement notice and Mobile Banking scheduled-transfer guide · checked 15 Oct 2026 · internal content owner pending.", th:"ที่มา: ประกาศยุติ iBanking และคู่มือการตั้งโอนล่วงหน้าผ่าน Mobile Banking ของธนาคารกรุงเทพ · ตรวจสอบ 15 ต.ค. 2569 · รอระบุเจ้าของเนื้อหาภายใน"}
+  },
+  scheduledBill: {
+    url: "https://www.bangkokbank.com/en/Personal/Digital-Banking/Bualuang-mBanking/How-to-Use/Schedule-Bill-Payments-and-Top-ups",
+    label: {en:"Open Bangkok Bank bill-payment and top-up guidance ↗", th:"เปิดคำแนะนำการตั้งจ่ายบิลและเติมเงินของธนาคารกรุงเทพ ↗"},
+    source: {en:"Sources: BBL iBanking retirement notice and Mobile Banking bill-payment/top-up guide · checked 15 Oct 2026 · internal content owner pending.", th:"ที่มา: ประกาศยุติ iBanking และคู่มือการตั้งจ่ายบิล/เติมเงินผ่าน Mobile Banking ของธนาคารกรุงเทพ · ตรวจสอบ 15 ต.ค. 2569 · รอระบุเจ้าของเนื้อหาภายใน"}
+  }
 };
 const content = {
   roles: {
@@ -511,7 +526,7 @@ const content = {
       label: {en:"Mobile Banking user", th:"ผู้ใช้ Mobile Banking"},
       title: {en:"Review future items in Mobile Banking", th:"ตรวจรายการล่วงหน้าใน Mobile Banking"},
       summary: {en:"The app is the published alternative for supported transfers, top-ups, bill payments and scheduled items.", th:"แอปเป็นช่องทางทดแทนที่ประกาศไว้สำหรับรายการโอน เติมเงิน จ่ายบิล และรายการล่วงหน้าที่รองรับ"},
-      steps: {en:["Ask the customer to review future-dated instructions in the app.","If an eligible item is still needed, the customer can schedule it in Mobile Banking.","Direct Debit remains active; do not ask the customer to recreate it."], th:["ให้ลูกค้าตรวจรายการที่ตั้งล่วงหน้าไว้ในแอป","หากต้องการใช้รายการที่รองรับ ให้ลูกค้าตั้งรายการใน Mobile Banking","Direct Debit ยังดำเนินต่อ ไม่ต้องตั้งรายการซ้ำ"]},
+      steps: {en:["Ask the customer to review existing iBanking instructions in the Bank's future-dated transaction list.","For a new item, select the separate Mobile Banking route for a transfer or for a bill payment/top-up; check current service/provider eligibility.","Registered Direct Debit continues; do not ask the customer to recreate it. This CRM cannot confirm that a legacy schedule migrated."], th:["ให้ลูกค้าตรวจรายการ iBanking เดิมในเมนูรายการที่ตั้งล่วงหน้าของธนาคาร","หากต้องการตั้งรายการใหม่ ให้เลือกช่องทาง Mobile Banking แยกตามประเภทโอนเงินหรือจ่ายบิล/เติมเงิน และตรวจสอบบริการหรือผู้ให้บริการที่รองรับ","Direct Debit ที่ลงทะเบียนไว้ยังดำเนินต่อ ไม่ต้องตั้งรายการซ้ำ และ CRM นี้ยืนยันไม่ได้ว่ากำหนดการเดิมถูกย้ายแล้ว"]},
       script: {en:"Bualuang iBanking scheduling ends on 1 November, and iBanking ends on 15 December 2026. Please review any future-dated transfers or payments in Mobile Banking. Registered Direct Debit continues.", th:"บริการตั้งรายการล่วงหน้าในบัวหลวง iBanking สิ้นสุด 1 พฤศจิกายน และ iBanking สิ้นสุด 15 ธันวาคม 2569 กรุณาตรวจรายการโอนหรือชำระเงินล่วงหน้าใน Mobile Banking ส่วน Direct Debit ที่ลงทะเบียนไว้ยังดำเนินต่อ"}
     },
     overseas: {
@@ -639,15 +654,24 @@ function renderServiceMap() {
   channel.append(channelValue);
   const note = document.createElement("p");
   note.textContent = localized[2];
+  const guide = routeGuides[select.value];
+  const guideLink = guide ? document.createElement("a") : null;
+  if (guideLink) {
+    guideLink.className = "official-guide";
+    guideLink.href = guide.url;
+    guideLink.target = "_blank";
+    guideLink.rel = "noopener noreferrer";
+    guideLink.textContent = guide.label[state.lang];
+  }
   const role = document.createElement("p");
   role.className = "role-note";
   role.textContent = copy[state.role];
   const source = document.createElement("p");
   source.className = "source-foot route-source";
-  source.textContent = state.lang === "en"
+  source.textContent = guide ? guide.source[state.lang] : state.lang === "en"
     ? "Source: Bangkok Bank iBanking retirement notice · checked 15 Oct 2026 · internal content owner pending."
     : "ที่มา: ประกาศยุติ Bualuang iBanking ของธนาคารกรุงเทพ · ตรวจสอบ 15 ต.ค. 2569 · รอระบุเจ้าของเนื้อหาภายใน";
-  result.replaceChildren(title, channel, note, role, source);
+  result.replaceChildren(...[title, channel, note, ...(guideLink ? [guideLink] : []), role, source]);
 }
 document.querySelectorAll("[data-role]").forEach((button) => button.addEventListener("click", () => {
   state.role = button.dataset.role;
