@@ -78,6 +78,16 @@ tr.sel td{background:var(--paper)}
 .btn[disabled]{opacity:.45;cursor:not-allowed}
 .unknown{background:#eef1f5;border:1px solid var(--line);border-radius:8px;padding:11px 14px;font-size:13px;color:#45536b;margin:0 0 16px}
 .unknown b{color:var(--ink)}
+.quality-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px}
+.quality-stat{border:1px solid var(--line);border-radius:7px;padding:12px;background:#fbfcfe}
+.quality-stat h3{font-size:12px;margin:0 0 5px;color:var(--muted)}
+.quality-stat strong{font-size:21px;font-variant-numeric:tabular-nums}
+.quality-stat small{display:block;color:var(--muted);font-size:12px;margin-top:4px}
+.quality-tag{display:inline-block;margin-left:6px;border-radius:99px;background:var(--amber-bg);color:var(--amber);padding:2px 8px;font-size:10px;font-weight:800;letter-spacing:.04em}
+.quality-note{font-size:12.5px;color:var(--muted);margin:12px 0 0}
+.quality-note a{color:var(--blue);font-weight:700}
+.learning-action{margin-top:12px;padding:10px 12px;background:var(--green-bg);border-left:3px solid var(--green);font-size:13px}
+.learning-action b{color:var(--green)}
 dialog{border:1px solid var(--line);border-radius:10px;padding:20px;max-width:min(560px,90vw)}
 dialog::backdrop{background:rgba(16,39,95,.45)}
 label{display:block;font-size:13.5px;font-weight:600;margin:10px 0 5px}
@@ -145,6 +155,35 @@ footer.proto{text-align:center;font-size:12px;color:var(--muted);padding:14px 0 
     <span lang="th">แหล่งข้อมูลตัวหารของช่องทางอีเมลไม่ครบสำหรับสัปดาห์นี้ — แสดงเป็น "ไม่ทราบ" จนกว่าเจ้าของข้อมูลยืนยัน (ห้ามใช้จัดอันดับหรือรายงานต่อ BOT ในสถานะนี้)</span>
     <span lang="en">the email-channel denominator is incomplete this week — reported as unknown until the data owner confirms (must not be ranked or BOT-reported in this state)</span>
   </div>
+
+  <section class="card" aria-labelledby="quality-title">
+    <h2 id="quality-title"><span><span lang="th">ทบทวนคุณภาพบริการและการเรียนรู้ของทีม</span><span lang="en">Service quality and team learning</span><span class="quality-tag">SYNTHETIC</span></span><span><span lang="th">แยกจากตัวเลขภาระงาน</span><span lang="en">Separate from workload</span></span></h2>
+    <div class="bd">
+      <p style="margin:0 0 12px;font-size:13px;color:var(--muted)"><span lang="th">ภาพรวมทีม/สาขาตามช่วงเวลาที่เลือก แสดงตัวหารและแหล่งที่มาทุกครั้ง การ์ดนี้เป็นแนวคิดสำหรับตรวจสอบ ข้อมูลและแหล่งระบบเป็นข้อมูลจำลอง</span><span lang="en">Team/branch summary for the selected period. Every measure shows its sample basis and source. This is a validation concept; all values and source feeds are synthetic.</span></p>
+      <div class="quality-grid">
+        <div class="quality-stat">
+          <h3><span lang="th">ความพึงพอใจบริการสาขา</span><span lang="en">Branch service feedback</span></h3>
+          <strong>94.8 / 100</strong>
+          <small><span lang="th">แบบสอบถาม 91 จากคำเชิญ 128 ราย · 71%</span><span lang="en">91 responses from 128 invitations · 71%</span></small>
+          <small><span lang="th">แบบสำรวจทีมบริการ · ส.ค. 2569 · รีเฟรช 14:00</span><span lang="en">Service survey feed · Aug 2026 · refreshed 14:00</span></small>
+        </div>
+        <div class="quality-stat">
+          <h3><span lang="th">ตัวอย่างตรวจคุณภาพบริการ</span><span lang="en">Service-quality sample</span></h3>
+          <strong>12 / 15</strong>
+          <small><span lang="th">ตรวจแล้ว 12 จาก 15 ตัวอย่างที่วางแผนไว้</span><span lang="en">12 of 15 planned samples reviewed</span></small>
+          <small><span lang="th">แหล่ง QA ที่อนุมัติ · ไม่มีผลรายบุคคล</span><span lang="en">Approved QA source · no individual result</span></small>
+        </div>
+        <div class="quality-stat">
+          <h3><span lang="th">การดำเนินการเพื่อเรียนรู้</span><span lang="en">Team learning actions</span></h3>
+          <strong>3 <span style="font-size:13px;color:var(--muted)"><span lang="th">รายการเปิด</span><span lang="en">open</span></span></strong>
+          <small><span lang="th">1 รายการครบกำหนดสัปดาห์นี้ · เจ้าของเป็นทีม</span><span lang="en">1 due this week · team-owned actions</span></small>
+          <small><span lang="th">แหล่งติดตามการเรียนรู้ · อัปเดต 09:00</span><span lang="en">Learning-action tracker · updated 09:00</span></small>
+        </div>
+      </div>
+      <div class="learning-action"><b><span lang="th">หัวข้อเรียนรู้ของทีม:</span><span lang="en">Team learning focus:</span></b> <span lang="th">ทบทวนวิธีอธิบายการตั้งรายการโอนล่วงหน้าให้ชัดเจน · ทีมสาขา · กำหนด 18 ต.ค.</span><span lang="en">Review how to explain scheduled-transfer setup clearly · branch team · due 18 Oct</span></div>
+      <p class="quality-note"><span lang="th">ต้นแบบจำลองรูปแบบการสื่อสารจากแนวทางสาธารณะของธนาคาร ไม่ได้ยืนยัน KPI หรือการเชื่อมต่อ CRM; ห้ามใช้จัดอันดับหรือประเมินค่าตอบแทนบุคคล ข้อมูล QA รายบุคคลและรายละเอียดลูกค้าต้องอยู่ในระบบที่ได้รับอนุญาต</span><span lang="en">The layout reflects the Bank's public service-quality learning practices; it does not confirm a KPI or CRM integration. Do not use it to rank staff or determine pay. Identifiable QA and customer details remain in their authorized systems.</span> <a href="https://www.bangkokbank.com/en/About-Us/Sustainability/Customer-Relationship" target="_blank" rel="noopener"><span lang="th">แนวทางคุณภาพบริการของธนาคาร</span><span lang="en">BBL service-quality approach</span></a> · <a href="https://www.bot.or.th/content/dam/bot/fipcs/documents/FPG/2561/EngPDF/25610034.pdf" target="_blank" rel="noopener"><span lang="th">มาตรฐานการกำกับด้าน Market Conduct</span><span lang="en">BOT Market Conduct standard</span></a></p>
+    </div>
+  </section>
 
   <div class="bulkbar" id="bulkbar" role="status">
     <b id="bulk-n">0</b> <span lang="th">รายการที่เลือก</span><span lang="en">selected</span>
