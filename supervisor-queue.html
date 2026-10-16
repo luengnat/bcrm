@@ -10,7 +10,7 @@
   the supervisor-under-load view specified by FR-206/US-205 but never built.
   Design rules encoded: roll-up triage (not a 200-row dump); no staff
   leaderboard — workload as counts with reason-gated rebalance (SVG 1/2561
-  fair-treatment posture); shift-end auto-fallback banner (ops O-C2);
+  fair-treatment posture); illustrative shift/absence coverage states (ops O-C2);
   honest-unknown metrics; reassign requires reason + audit receipt (§3.7);
   bulk actions limited to bulk-SAFE ones.
 -->
@@ -97,7 +97,7 @@ select,textarea{width:100%;padding:9px 11px;border:1px solid var(--line);border-
 .receipt{display:none;border:1px solid var(--green);background:var(--green-bg);border-radius:8px;padding:12px 16px;margin:0 0 14px;font-size:13.5px}
 .receipt.show{display:block}
 footer.proto{text-align:center;font-size:12px;color:var(--muted);padding:14px 0 30px}
-</style>
+:lang(th){font-size:max(1em,11px)}</style>
 </head>
 <body>
 <a class="skip" href="#triage"><span lang="th">ข้ามไปยังรายการคัดกรอง</span><span lang="en">Skip to the triage list</span></a>
@@ -124,7 +124,7 @@ footer.proto{text-align:center;font-size:12px;color:var(--muted);padding:14px 0 
 
   <div class="shiftbar" role="status">
     <b>⏱ <span lang="th">สิ้นสุดกะกลางคืน 06:00:</span><span lang="en">Night shift ended 06:00:</span></b>
-    <span lang="th">งานที่ยังไม่ถูกรับของ 2 เจ้าหน้าที่เวรดึก ตกกลับคิวทีมอัตโนมัติตามกฎการส่งมอบกะ — ไม่ติดกับตัวบุคคลที่ปิดกะไปแล้ว</span><span lang="en">unaccepted items from two night-shift agents auto-fell back to the team queue per the shift-handover rule — never pinned to individuals who have clocked out</span>
+    <span lang="th">ตัวอย่างจำลอง: เมื่อสิ้นสุดกะ 06:00 ระบบแสดงงานที่ยังไม่ถูกรับเพื่อพิจารณาส่งต่อ ตามแหล่งข้อมูลกะและกฎที่ธนาคารอนุมัติ (ยังไม่ได้ยืนยัน) การเข้าคิวไม่เท่ากับผู้รับตอบรับ</span><span lang="en">Illustrative only: at the modeled 06:00 shift end, unaccepted work is surfaced for review under a Bank-approved roster and fallback rule (not confirmed). Queue receipt is not receiver acceptance.</span>
   </div>
 
   <div class="tiles">
@@ -181,7 +181,13 @@ footer.proto{text-align:center;font-size:12px;color:var(--muted);padding:14px 0 
         </div>
       </div>
       <div class="learning-action"><b><span lang="th">หัวข้อเรียนรู้ของทีม:</span><span lang="en">Team learning focus:</span></b> <span lang="th">ทบทวนวิธีอธิบายการตั้งรายการโอนล่วงหน้าให้ชัดเจน · ทีมสาขา · กำหนด 18 ต.ค.</span><span lang="en">Review how to explain scheduled-transfer setup clearly · branch team · due 18 Oct</span></div>
-      <p class="quality-note"><span lang="th">ต้นแบบจำลองรูปแบบการสื่อสารจากแนวทางสาธารณะของธนาคาร ไม่ได้ยืนยัน KPI หรือการเชื่อมต่อ CRM; ห้ามใช้จัดอันดับหรือประเมินค่าตอบแทนบุคคล ข้อมูล QA รายบุคคลและรายละเอียดลูกค้าต้องอยู่ในระบบที่ได้รับอนุญาต</span><span lang="en">The layout reflects the Bank's public service-quality learning practices; it does not confirm a KPI or CRM integration. Do not use it to rank staff or determine pay. Identifiable QA and customer details remain in their authorized systems.</span> <a href="https://www.bangkokbank.com/en/About-Us/Sustainability/Customer-Relationship" target="_blank" rel="noopener"><span lang="th">แนวทางคุณภาพบริการของธนาคาร</span><span lang="en">BBL service-quality approach</span></a> · <a href="https://www.bot.or.th/content/dam/bot/fipcs/documents/FPG/2561/EngPDF/25610034.pdf" target="_blank" rel="noopener"><span lang="th">มาตรฐานการกำกับด้าน Market Conduct</span><span lang="en">BOT Market Conduct standard</span></a></p>
+      <div class="unknown" style="margin-top:12px" role="note">
+        <b><span lang="th">สัญญาณส่งตรวจจากแหล่งงานกำกับ · จำลอง</span><span lang="en">Source-generated review reference · synthetic</span></b>
+        <span class="quality-tag"><span lang="th">รอตรวจ · ไม่ใช่ข้อสรุป</span><span lang="en">Review requested · no finding</span></span>
+        <div style="margin-top:6px"><span lang="th">คุณภาพการให้สินเชื่ออย่างรับผิดชอบ · SQ-26-014 · แหล่ง: คิวทบทวน Service Quality · ผู้รับผิดชอบ: ทีมตรวจทานที่ได้รับมอบหมาย · กำหนด 20 ต.ค.</span><span lang="en">Responsible-lending quality signal · SQ-26-014 · source: Service Quality review queue · owner: assigned review team · due 20 Oct</span></div>
+        <small><span lang="th">แสดงเฉพาะเมื่อได้รับมอบหมายให้ตรวจทาน รายละเอียดลูกค้า/พนักงานและหลักฐานยังอยู่ในระบบต้นทาง สัญญาณนี้ไม่ใช่ผลประเมิน ค่าตอบแทน คำเตือน หรือบทลงโทษ</span><span lang="en">Shown only when assigned to review. Customer/employee details and evidence stay in the source system. This signal is not a performance result, incentive, warning, or penalty.</span></small>
+      </div>
+      <p class="quality-note"><span lang="th">ต้นแบบจำลองรูปแบบการสื่อสารจากแนวทางสาธารณะของธนาคาร ไม่ได้ยืนยัน KPI หรือการเชื่อมต่อ CRM; ห้ามใช้จัดอันดับหรือประเมินค่าตอบแทนบุคคล ข้อมูล QA รายบุคคลและรายละเอียดลูกค้าต้องอยู่ในระบบที่ได้รับอนุญาต</span><span lang="en">The layout reflects the Bank's public service-quality learning practices; it does not confirm a KPI or CRM integration. Do not use it to rank staff or determine pay. Identifiable QA and customer details remain in their authorized systems.</span> <a href="https://www.bangkokbank.com/en/About-Us/Sustainability/Customer-Relationship" target="_blank" rel="noopener"><span lang="th">แนวทางคุณภาพบริการของธนาคาร</span><span lang="en">BBL service-quality approach</span></a> · <a href="https://www.bot.or.th/content/dam/bot/fipcs/documents/FPG/2561/EngPDF/25610034.pdf" target="_blank" rel="noopener"><span lang="th">มาตรฐานการกำกับด้าน Market Conduct</span><span lang="en">BOT Market Conduct standard</span></a> · <a href="https://www.bot.or.th/content/dam/bot/fipcs/documents/FPG/2568/ThaiPDF/25680030.pdf" target="_blank" rel="noopener"><span lang="th">ประกาศ ธปท. Responsible Lending 3/2568</span><span lang="en">BOT Responsible Lending Notification 3/2568</span></a></p>
     </div>
   </section>
 
@@ -261,7 +267,7 @@ footer.proto{text-align:center;font-size:12px;color:var(--muted);padding:14px 0 
 
   <div class="receipt" id="ra-receipt" role="status" aria-live="polite"></div>
 
-  <footer class="proto"><span lang="th">ต้นแบบเพื่อการตรวจสอบ — ข้อมูลจำลองสัปดาห์ยกเลิก iBanking · อ้างอิง FR-206/US-205 · งานตรวจสอบ T36 · ห้ามใช้เป็นกระดานอันดับพนักงาน</span><span lang="en">Validation prototype — synthetic cutover-week data · traces FR-206/US-205 · usability task T36 · must not be used as a staff leaderboard</span></footer>
+  <footer class="proto"><span lang="th">ต้นแบบเพื่อการตรวจสอบ — ข้อมูลจำลอง · อ้างอิง FR-206, FR-726 / US-205, US-206 · งานตรวจสอบ T36/T41 · กฎกะและแหล่งข้อมูลกำลังรอการยืนยันจากธนาคาร · ห้ามใช้เป็นกระดานอันดับพนักงาน</span><span lang="en">Validation prototype — synthetic data · traces FR-206/FR-726 and US-205/US-206 · usability tasks T36/T41 · shift rules and sources await Bank validation · must not be used as a staff leaderboard</span></footer>
 </main>
 
 <script>

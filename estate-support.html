@@ -3,14 +3,14 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Bereavement support · Bangkok Bank CRM prototype</title>
+<title>Estate and family legacy guidance · Bangkok Bank CRM prototype</title>
 <style>
 :root {
   --navy: #10275f;
   --blue: #174a9a;
   --lotus: #0867e8;
   --ink: #17243c;
-  --muted: #64728a;
+  --muted: #566579;
   --line: #d9e0ea;
   --paper: #f1f4f8;
   --surface: #fff;
@@ -57,7 +57,7 @@ main { max-width: 1370px; margin: 0 auto; padding: 23px 27px 40px; }
 h1 { margin: 0; color: var(--navy); font-size: 27px; line-height: 1.25; letter-spacing: -.35px; }
 .subtitle { margin: 5px 0 0; color: var(--muted); font-size: 13px; }
 .scope-tag { display: inline-flex; align-items: center; gap: 6px; border: 1px solid #e2c77d; border-radius: 5px; padding: 6px 9px; background: var(--amber-soft); color: #74500d; font-size: 11px; font-weight: 800; white-space: nowrap; }
-.scope-tag span:first-child { width: 17px; height: 17px; display: inline-grid; place-items: center; border-radius: 50%; background: #bd8719; color: white; font-size: 11px; }
+.scope-tag span:first-child { width: 17px; height: 17px; display: inline-grid; place-items: center; border-radius: 50%; background: #8a6300; color: white; font-size: 11px; }
 .discovery-note { display: grid; grid-template-columns: 4px 1fr; gap: 12px; margin: 17px 0 15px; border: 1px solid #ead9aa; border-left: 0; border-radius: 7px; background: #fffbf1; box-shadow: var(--shadow); overflow: hidden; }
 .discovery-note::before { content: ""; display: block; background: #c58d1a; }
 .discovery-note div { padding: 11px 13px 12px 0; color: #5d4b27; font-size: 12px; }
@@ -65,7 +65,7 @@ h1 { margin: 0; color: var(--navy); font-size: 27px; line-height: 1.25; letter-s
 .scenario-bar { display: grid; grid-template-columns: repeat(4, minmax(140px, 1fr)); gap: 12px; margin: 15px 0; padding: 14px; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); box-shadow: var(--shadow); }
 .field label { display: block; margin: 0 0 5px; color: #536179; font-size: 11px; font-weight: 750; }
 .field select { width: 100%; min-height: 39px; padding: 7px 30px 7px 9px; border: 1px solid #cbd4e1; border-radius: 5px; background: white; color: var(--ink); font-size: 12px; }
-.field-help { margin: 4px 0 0; color: #778398; font-size: 10px; }
+.field-help { margin: 4px 0 0; color: #566579; font-size: 10px; }
 .workspace { display: grid; grid-template-columns: minmax(0, 1.65fr) minmax(280px, .8fr); gap: 16px; align-items: start; }
 .main-col, .side-col { min-width: 0; }
 .card { border: 1px solid var(--line); border-radius: 8px; background: var(--surface); box-shadow: var(--shadow); overflow: hidden; }
@@ -110,7 +110,7 @@ h1 { margin: 0; color: var(--navy); font-size: 27px; line-height: 1.25; letter-s
 .action-title h2 { margin: 0; color: var(--navy); font-size: 16px; }
 .action-copy { margin: 7px 0 12px; color: #536179; font-size: 11px; }
 .quote { margin: 0; padding: 10px 12px; border-radius: 5px; background: #f3f6fa; color: #31425e; font-size: 12px; }
-.quote small { display: block; margin-top: 5px; color: #79869a; font-size: 9px; }
+.quote small { display: block; margin-top: 5px; color: #566579; font-size: 9px; }
 .handoff-controls { display: grid; grid-template-columns: minmax(190px, 1fr) auto; gap: 12px; align-items: end; }
 .check-label { display: flex; align-items: flex-start; gap: 8px; color: #47566d; font-size: 11px; }
 .check-label input { width: 16px; height: 16px; margin: 1px 0 0; accent-color: var(--blue); }
@@ -121,12 +121,12 @@ h1 { margin: 0; color: var(--navy); font-size: 27px; line-height: 1.25; letter-s
 .handoff-preview h3 { margin: 0 0 8px; color: var(--navy); font-size: 12px; }
 .handoff-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 13px; }
 .handoff-grid div { min-width: 0; }
-.handoff-grid span { display: block; color: #778398; font-size: 9px; }
+.handoff-grid span { display: block; color: #566579; font-size: 9px; }
 .handoff-grid strong { display: block; margin-top: 1px; color: #354762; font-size: 10px; font-weight: 700; }
 .source-index { display: grid; gap: 9px; }
 .source-index a { font-size: 10px; font-weight: 700; }
-.source-index p { margin: 2px 0 0; color: #748196; font-size: 9px; }
-.footer-note { margin: 18px 0 0; color: #8792a2; text-align: center; font-size: 9px; }
+.source-index p { margin: 2px 0 0; color: #566579; font-size: 9px; }
+.footer-note { margin: 18px 0 0; color: #566579; text-align: center; font-size: 9px; }
 .toast { position: fixed; right: 18px; bottom: 18px; z-index: 8; max-width: 390px; padding: 11px 14px; border-radius: 6px; background: var(--navy); color: white; box-shadow: 0 8px 24px #0003; font-size: 11px; }
 [hidden] { display: none !important; }
 @media (max-width: 950px) {
@@ -152,7 +152,7 @@ h1 { margin: 0; color: var(--navy); font-size: 27px; line-height: 1.25; letter-s
   .handoff-controls { grid-template-columns: 1fr; }
   .handoff-controls .btn { width: 100%; }
 }
-</style>
+:lang(th){font-size:max(1em,11px)}.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}</style>
 </head>
 <body class="en">
 <a class="skip-link" href="#main"><span lang="en">Skip to main content</span><span lang="th">ข้ามไปยังเนื้อหาหลัก</span></a>
@@ -173,10 +173,10 @@ h1 { margin: 0; color: var(--navy); font-size: 27px; line-height: 1.25; letter-s
   <a href="#" lang="en">Cases</a><a href="#" lang="th">เคสบริการ</a>
 </nav>
 <main id="main" tabindex="-1">
-  <p class="crumb"><span lang="en">Customer service / Special requests / Bereavement support</span><span lang="th">บริการลูกค้า / คำขอพิเศษ / การช่วยเหลือกรณีเสียชีวิต</span></p>
+  <p class="crumb"><span lang="en">Customer service / Special requests / Estate and family legacy guidance</span><span lang="th">บริการลูกค้า / คำขอพิเศษ / คำแนะนำเรื่องมรดกและการวางแผนสืบทอด</span></p>
   <div class="title-row">
     <div>
-      <h1><span lang="en">Bereavement &amp; estate support</span><span lang="th">การช่วยเหลือกรณีเสียชีวิตและจัดการมรดก</span></h1>
+      <h1><span lang="en">Estate and family legacy guidance</span><span lang="th">คำแนะนำเรื่องมรดกและการวางแผนสืบทอดทรัพย์สินของครอบครัว</span></h1>
       <p class="subtitle"><span lang="en">A source-aware route guide for a sensitive customer request</span><span lang="th">คำแนะนำเส้นทางบริการที่แสดงแหล่งข้อมูลสำหรับคำขอที่ละเอียดอ่อน</span></p>
     </div>
     <span class="scope-tag"><span aria-hidden="true">!</span><span lang="en">Discovery concept · not approved Bank procedure</span><span lang="th">แนวคิดเพื่อค้นคว้า · ยังไม่ใช่ขั้นตอนที่ธนาคารอนุมัติ</span></span>
@@ -207,9 +207,10 @@ h1 { margin: 0; color: var(--navy); font-size: 27px; line-height: 1.25; letter-s
         <option value="shares" data-en="Bangkok Bank shares" data-th="หุ้นธนาคารกรุงเทพ">Bangkok Bank shares</option>
         <option value="bondbook" data-en="Savings bond · bond book" data-th="พันธบัตรออมทรัพย์ · สมุดพันธบัตร">Savings bond · bond book</option>
         <option value="bondscrip" data-en="Savings bond · scrip" data-th="พันธบัตรออมทรัพย์ · ใบพันธบัตร">Savings bond · scrip</option>
-        <option value="deposit" data-en="Deposit account · route not verified" data-th="บัญชีเงินฝาก · ยังไม่ยืนยันเส้นทาง">Deposit account · route not verified</option>
+        <option value="deposit" data-en="Ordinary savings · Japanese-section public guide" data-th="บัญชีออมทรัพย์ทั่วไป · คู่มือสาธารณะส่วนภาษาญี่ปุ่น">Ordinary savings · Japanese-section public guide</option>
+        <option value="legacy" data-en="Family legacy / succession planning" data-th="วางแผนสืบทอดทรัพย์สินของครอบครัว">Family legacy / succession planning</option>
       </select>
-      <p class="field-help"><span lang="en">Choose only when the customer names the product. No profile lookup.</span><span lang="th">เลือกเมื่อ ลูกค้าระบุผลิตภัณฑ์เท่านั้น ห้ามค้นหาประวัติลูกค้า</span></p>
+      <p class="field-help"><span lang="en">Choose only the need the customer states. No profile lookup.</span><span lang="th">เลือกเฉพาะความต้องการที่ลูกค้าแจ้ง ห้ามค้นหาประวัติลูกค้า</span></p>
     </div>
     <div class="field">
       <label for="contentState"><span lang="en">Guide state</span><span lang="th">สถานะคำแนะนำ</span></label>
@@ -240,15 +241,15 @@ h1 { margin: 0; color: var(--navy); font-size: 27px; line-height: 1.25; letter-s
           <div class="request-context">
             <span class="avatar" aria-hidden="true">?</span>
             <div>
-              <h3><span lang="en">A person asks for next steps after a customer's death</span><span lang="th">บุคคลหนึ่งสอบถามขั้นตอนหลังลูกค้าเสียชีวิต</span></h3>
-              <p><span lang="en">No deceased person, relationship, account, or asset is identified in this screen.</span><span lang="th">หน้านี้ไม่ได้ระบุผู้เสียชีวิต ความสัมพันธ์ บัญชี หรือสินทรัพย์ใด ๆ</span></p>
+              <h3 id="request-title-text"></h3>
+              <p id="request-boundary"></p>
             </div>
           </div>
           <div class="no-profile"><span lang="en"><strong>No customer profile linked.</strong> The selected product is a customer-provided topic for guidance only. This prototype has no customer, account, bond, or portfolio search.</span><span lang="th"><strong>ไม่มีการเชื่อมโยงประวัติลูกค้า</strong> ผลิตภัณฑ์ที่เลือกเป็นหัวข้อที่ลูกค้าแจ้งเพื่อรับคำแนะนำเท่านั้น ต้นแบบนี้ไม่มีการค้นหาลูกค้า บัญชี พันธบัตร หรือพอร์ตลงทุน</span></div>
         </div>
       </section>
 
-      <section class="card result public" id="result" aria-labelledby="result-title" aria-live="polite" aria-atomic="true">
+      <section class="card result public" id="result" aria-labelledby="result-title"><p class="sr-only" aria-live="polite" id="sr-announce"></p>
         <div class="card-head"><h2><span lang="en">Guidance and route</span><span lang="th">คำแนะนำและเส้นทางบริการ</span></h2><span class="badge badge-amber" id="stateBadge">Public reference only</span></div>
         <div class="card-body">
           <div class="result-heading"><h2 id="result-title">General estate question</h2></div>
@@ -345,7 +346,9 @@ h1 { margin: 0; color: var(--navy); font-size: 27px; line-height: 1.25; letter-s
 const sources = {
   shares: 'https://www.bangkokbank.com/en/Investor-Relations/Investor-Services',
   bonds: 'https://www.bangkokbank.com/th-TH/Personal/Save-And-Invest/Investment/Secondary-Bonds',
-  bot: 'https://www.bot.or.th/th/our-services/bond-and-debt-securities-services/Debt-Securities-Services.html'
+  bot: 'https://www.bot.or.th/th/our-services/bond-and-debt-securities-services/Debt-Securities-Services.html',
+  jpAccounts: 'https://www.bangkokbank.com/en/Japanese-Section/Accounts',
+  familyLegacy: 'https://www.bangkokbank.com/en/PrivateBank/Family-and-Legacy'
 };
 const byId = (id) => document.getElementById(id);
 const tr = (en, th) => `<span lang="en">${en}</span><span lang="th">${th}</span>`;
@@ -357,6 +360,13 @@ const roleLabel = () => {
   return ['Relationship manager', 'ผู้จัดการความสัมพันธ์ลูกค้า'];
 };
 function routeFor(need) {
+  if (need === 'legacy') return {
+    title: ['Family legacy & succession planning · public Private Bank route', 'การวางแผนสืบทอดทรัพย์สินของครอบครัว · เส้นทางสาธารณะ Private Bank'],
+    summary: ['Bangkok Bank Private Bank publicly describes Family Wealth Advisory and Legacy Transfer & Succession Planning and provides a customer-facing contact route. This is a planning/advisory topic before death, not a deceased-customer estate-administration process. Public sources do not state customer eligibility or an employee referral workflow.', 'Bangkok Bank Private Bank เผยแพร่บริการให้คำปรึกษาความมั่งคั่งครอบครัวและการวางแผนสืบทอดธุรกิจ มรดก และทรัพย์สิน พร้อมช่องทางติดต่อสำหรับลูกค้า นี่เป็นเรื่องการวางแผน/คำปรึกษาก่อนเสียชีวิต ไม่ใช่ขั้นตอนจัดการมรดกของลูกค้าที่เสียชีวิต แหล่งข้อมูลสาธารณะไม่ได้ระบุคุณสมบัติลูกค้าหรือขั้นตอนส่งต่อโดยพนักงาน'],
+    route: ['<ul><li>Show the public Family & Legacy page when a customer asks for family-legacy or succession planning.</li><li>Let the customer use the published Private Bank contact route to discuss service fit.</li><li>Do not infer eligibility, inspect family holdings, or promise an internal warm transfer.</li></ul>', '<ul><li>แสดงหน้า Family & Legacy สาธารณะเมื่อลูกค้าสอบถามเรื่องการวางแผนสืบทอดทรัพย์สินของครอบครัว</li><li>ให้ลูกค้าใช้ช่องทางติดต่อ Private Bank ที่เผยแพร่เพื่อสอบถามความเหมาะสมของบริการ</li><li>ห้ามอนุมานคุณสมบัติ ห้ามตรวจดูสินทรัพย์ของครอบครัว หรือรับปากว่าจะส่งต่อภายในแบบมีผู้รับงาน</li></ul>'],
+    source: ['Bangkok Bank Private Bank Family & Legacy · reviewed 15 Oct 2026 · Public customer route, not staff eligibility/transfer policy', 'Family & Legacy ของ Bangkok Bank Private Bank · ตรวจสอบ 15 ต.ค. 2569 · เส้นทางสาธารณะสำหรับลูกค้า ไม่ใช่นโยบายคุณสมบัติ/การส่งต่องานของพนักงาน'], url: sources.familyLegacy,
+    safety: ['This route is for customer-requested pre-death planning. It does not confirm Private Bank status, customer assets, executor authority, or a post-death servicing route.', 'เส้นทางนี้ใช้กับการวางแผนล่วงหน้าที่ลูกค้าสอบถาม ไม่ได้ยืนยันสถานะ Private Bank สินทรัพย์ของลูกค้า อำนาจผู้จัดการมรดก หรือเส้นทางบริการหลังการเสียชีวิต']
+  };
   if (need === 'shares') return {
     title: ['Bangkok Bank shares · public investor guidance', 'หุ้นธนาคารกรุงเทพ · ข้อมูลสาธารณะสำหรับผู้ลงทุน'],
     summary: ['Bangkok Bank’s public Investor Services page says a legal heir may claim shares with a court order proving heir status, the deceased person’s death certificate, and Citizen ID. It directs ownership transfer to TSD. This page does not confirm that the deceased person held shares or define an employee workflow.', 'หน้า Investor Services ของธนาคารกรุงเทพระบุข้อมูลสาธารณะว่าทายาทโดยชอบธรรมสามารถยื่นขอสิทธิในหุ้นโดยใช้คำสั่งศาลที่ยืนยันสถานะทายาท ใบมรณบัตร และบัตรประจำตัวประชาชน และให้ติดต่อ TSD เพื่อโอนกรรมสิทธิ์ หน้านี้ไม่ได้ยืนยันว่าผู้เสียชีวิตถือหุ้นหรือกำหนดขั้นตอนสำหรับพนักงาน'],
@@ -379,11 +389,11 @@ function routeFor(need) {
     safety: ['This route is specific to the identified scrip-bond scenario. The CRM does not verify executor status, receive documents, or reveal holdings.', 'เส้นทางนี้ใช้เฉพาะกรณีใบพันธบัตรที่ระบุเท่านั้น CRM ไม่ตรวจสอบสถานะผู้จัดการมรดก ไม่รับเอกสาร และไม่เปิดเผยการถือครอง']
   };
   if (need === 'deposit') return {
-    title: ['Deposit account · no verified route in this fixture', 'บัญชีเงินฝาก · ยังไม่มีเส้นทางที่ยืนยันในข้อมูลจำลองนี้'],
-    summary: ['This discovery fixture has no verified Bangkok Bank deposit-account estate procedure. The sources reviewed for this concept do not establish one. Do not infer a route, required documents, time, or whether an account exists.', 'ข้อมูลจำลองเพื่อค้นคว้านี้ยังไม่มีขั้นตอนจัดการมรดกบัญชีเงินฝากของธนาคารกรุงเทพที่ยืนยันแล้ว แหล่งข้อมูลที่ตรวจสอบสำหรับแนวคิดนี้ไม่ได้กำหนดขั้นตอนดังกล่าว ห้ามคาดเดาเส้นทาง เอกสาร ระยะเวลา หรือการมีอยู่ของบัญชี'],
-    route: ['<ul><li>Do not search for the account or infer that it exists.</li><li>Use only the Bank’s current, approved general support procedure.</li><li>If no approved route is available to the staff member, do not create an estate case in this CRM fixture.</li></ul>', '<ul><li>ห้ามค้นหาบัญชีหรือคาดเดาว่ามีบัญชีอยู่</li><li>ใช้เฉพาะขั้นตอนช่วยเหลือทั่วไปที่ธนาคารอนุมัติและเป็นปัจจุบัน</li><li>หากพนักงานไม่มีเส้นทางที่ธนาคารอนุมัติ ห้ามสร้างเคสมรดกในข้อมูลจำลอง CRM นี้</li></ul>'],
-    source: ['No verified deposit-estate procedure configured · Bank owner confirmation required', 'ยังไม่ได้กำหนดขั้นตอนจัดการมรดกบัญชีเงินฝากที่ยืนยันแล้ว · ต้องให้เจ้าของกระบวนการของธนาคารยืนยัน'], url: null,
-    safety: ['No product-specific instruction is available here. The customer’s question must not trigger a profile or balance search.', 'ไม่มีคำแนะนำเฉพาะผลิตภัณฑ์ในหน้านี้ คำถามของลูกค้าต้องไม่ทำให้เกิดการค้นหาประวัติหรือยอดเงิน']
+    title: ['Ordinary savings account · Japanese-section public reference', 'บัญชีออมทรัพย์ทั่วไป · ข้อมูลอ้างอิงสาธารณะส่วนภาษาญี่ปุ่น'],
+    summary: ['Bangkok Bank’s Japanese-section customer page describes an ordinary-savings estate process at the account-opening branch and lists documents. It is not a validated Thai/English staff workflow. The same page says the Japan Desk cannot answer account-specific balance questions because its access is strictly limited.', 'หน้าลูกค้าส่วนภาษาญี่ปุ่นของธนาคารกรุงเทพอธิบายขั้นตอนบัญชีออมทรัพย์ทั่วไปที่สาขาเปิดบัญชีและระบุเอกสาร แต่ยังไม่ใช่ขั้นตอนพนักงานภาษาไทย/อังกฤษที่ผ่านการยืนยัน หน้าเดียวกันระบุว่า Japan Desk ไม่สามารถตอบคำถามยอดเงินในบัญชีเฉพาะรายได้ เนื่องจากจำกัดการเข้าถึงอย่างเข้มงวด'],
+    route: ['<ul><li>Show this source only when the customer identifies an ordinary savings-account question and the language/context is relevant.</li><li>Do not copy its document list into CRM guidance or ask the customer to upload documents here.</li><li>Use a Bank-approved Thai/English staff route for next steps; if none is configured, offer the approved general support process.</li></ul>', '<ul><li>แสดงแหล่งข้อมูลนี้เมื่อลูกค้าระบุว่าถามเรื่องบัญชีออมทรัพย์ทั่วไปและภาษา/บริบทเกี่ยวข้องเท่านั้น</li><li>ห้ามคัดลอกรายการเอกสารเป็นคำแนะนำใน CRM หรือขอให้ลูกค้าอัปโหลดเอกสารที่นี่</li><li>ใช้เส้นทางพนักงานภาษาไทย/อังกฤษที่ธนาคารอนุมัติ หากยังไม่ได้กำหนด ให้เสนอขั้นตอนช่วยเหลือทั่วไปที่อนุมัติ</li></ul>'],
+    source: ['Bangkok Bank Accounts · Japanese-section page · reviewed 15 Oct 2026 · Public reference, not a staff entitlement', 'บัญชีเงินฝากธนาคารกรุงเทพ · หน้า Japanese section · ตรวจสอบ 15 ต.ค. 2569 · ข้อมูลสาธารณะ ไม่ใช่สิทธิ์พนักงาน'], url: sources.jpAccounts,
+    safety: ['This source does not authorize an employee or the Japan Desk to confirm account existence, balance, or estate status. Do not generalize it to other deposit products.', 'แหล่งข้อมูลนี้ไม่ได้ให้อำนาจพนักงานหรือ Japan Desk ยืนยันการมีบัญชี ยอดเงิน หรือสถานะมรดก ห้ามนำไปใช้กับผลิตภัณฑ์เงินฝากอื่น']
   };
   return {
     title: ['General estate question · no asset lookup', 'สอบถามเรื่องมรดกทั่วไป · ห้ามค้นหาสินทรัพย์'],
@@ -399,6 +409,14 @@ function render() {
   const authority = byId('authority').value;
   const role = byId('role').value;
   const route = routeFor(need);
+  const requestTitle = need === 'legacy'
+    ? ['A customer asks about planning a family legacy before death', 'ลูกค้าสอบถามเรื่องการวางแผนสืบทอดทรัพย์สินของครอบครัวล่วงหน้า']
+    : ['A person asks for next steps after a customer’s death', 'บุคคลหนึ่งสอบถามขั้นตอนหลังลูกค้าเสียชีวิต'];
+  const requestBoundary = need === 'legacy'
+    ? ['No family assets, Private Bank eligibility, or portfolio is identified or queried.', 'ไม่มีการระบุหรือสอบถามสินทรัพย์ของครอบครัว คุณสมบัติ Private Bank หรือพอร์ตลงทุน']
+    : ['No deceased person, relationship, account, or asset is identified in this screen.', 'หน้านี้ไม่ได้ระบุผู้เสียชีวิต ความสัมพันธ์ บัญชี หรือสินทรัพย์ใด ๆ'];
+  byId('request-title-text').innerHTML = tr(requestTitle[0], requestTitle[1]);
+  byId('request-boundary').innerHTML = tr(requestBoundary[0], requestBoundary[1]);
   const result = byId('result');
   let title = route.title;
   let summary = route.summary;
@@ -444,7 +462,7 @@ function render() {
 
   result.className = `card result ${tone}`;
   byId('stateBadge').innerHTML = tr(badge[0], badge[1]);
-  byId('result-title').innerHTML = tr(title[0], title[1]);
+  byId('result-title').innerHTML = tr(title[0], title[1]);byId('sr-announce').innerHTML = tr(title[0], title[1]);
   byId('result-summary').innerHTML = tr(summary[0], summary[1]);
   byId('route-copy').innerHTML = routeCopy[0].startsWith('<ul>') ? trBlock(routeCopy[0], routeCopy[1]) : tr(routeCopy[0], routeCopy[1]);
   byId('source-meta').innerHTML = tr(sourceMeta[0], sourceMeta[1]);

@@ -10,7 +10,7 @@
   --blue: #174a9a;
   --lotus: #0867e8;
   --ink: #17243c;
-  --muted: #64728a;
+  --muted: #566579;
   --line: #d9e0ea;
   --paper: #f1f4f8;
   --surface: #fff;
@@ -166,7 +166,7 @@ h1 { margin: 0; color: var(--navy); font-size: 27px; line-height: 1.25; letter-s
 .source-item a:hover { text-decoration: underline; }
 .source-item small { display: block; margin-top: 2px; color: var(--muted); font-size: 10px; }
 .source-foot { margin: 12px 0 0; border-top: 1px solid #e7ebf0; padding-top: 9px; color: var(--muted); font-size: 10px; }
-.demo-stamp { margin: 20px 0 0; color: #8792a2; text-align: center; font-size: 10px; }
+.demo-stamp { margin: 20px 0 0; color: #566579; text-align: center; font-size: 10px; }
 
 dialog { width: min(460px, calc(100% - 24px)); padding: 0; border: 1px solid var(--line); border-radius: 10px; color: var(--ink); box-shadow: 0 16px 60px rgba(8, 22, 50, .28); }
 dialog::backdrop { background: rgba(13, 28, 58, .42); }
@@ -217,9 +217,12 @@ dialog::backdrop { background: rgba(13, 28, 58, .42); }
 @media (max-width: 390px) {
   .timeline { grid-template-columns: 1fr; }
 }
+:lang(th){font-size:max(1em,11px)}.skip-link{position:absolute;top:-48px;left:12px;z-index:50;padding:8px 12px;background:#fff;color:#102849;font-weight:700;border-radius:0 0 6px 6px;box-shadow:0 2px 8px rgba(16,40,73,.18)}.skip-link:focus{top:8px}.ro-chip{display:inline-block;margin-left:8px;padding:3px 9px;border-radius:12px;background:#fff5d9;color:#674915;font-size:10px;font-weight:700}
+.save-receipt{margin:10px 0 0;padding:10px 12px;border:1px solid #a8d7c1;border-radius:6px;background:#eef7f1;color:#15543e;font-size:12px;font-weight:600}
 </style>
 </head>
 <body>
+  <a class="skip-link" href="#main"><span lang="en">Skip to main content</span><span lang="th">ข้ามไปยังเนื้อหาหลัก</span></a>
 <header class="topbar">
   <a class="brand" href="case-workspace.html" aria-label="Bangkok Bank CRM home">
     <img src="assets/bbl-lotus.png" alt="">
@@ -233,7 +236,7 @@ dialog::backdrop { background: rgba(13, 28, 58, .42); }
   </form>
   <span class="top-spacer"></span>
   <button class="lang" id="lang" type="button" aria-label="Switch to English">EN</button>
-  <div class="staff"><span lang="th">สมชาย ใจดี</span><span lang="en">Somchai Jaidi</span><small><span lang="th">บริการสาขา · สีลม</span><span lang="en">Branch Service · Silom</span></small></div>
+  <div class="staff"><span lang="th">สมชาย ใจดี</span><span lang="en">Somchai Jaidi</span><small id="staff-line"><span lang="th">บริการสาขา · สีลม</span><span lang="en">Branch Service · Silom</span></small></div>
 </header>
 <nav class="nav" aria-label="Main navigation">
   <a href="#"><span lang="th">งานของฉัน</span><span lang="en">My work</span></a>
@@ -245,7 +248,7 @@ dialog::backdrop { background: rgba(13, 28, 58, .42); }
   <a href="#"><span lang="th">รายงาน</span><span lang="en">Reports</span></a>
 </nav>
 
-<main>
+<main id="main">
   <p class="crumb"><span lang="th">บริการลูกค้า <span aria-hidden="true">›</span> คำแนะนำบริการ <span aria-hidden="true">›</span> ดิจิทัลแบงก์กิ้ง</span><span lang="en">Customer service <span aria-hidden="true">›</span> Service guidance <span aria-hidden="true">›</span> Digital banking</span></p>
   <div class="title-row">
     <div>
@@ -257,10 +260,10 @@ dialog::backdrop { background: rgba(13, 28, 58, .42); }
 
   <section class="scenario-bar" aria-label="Prototype scenario controls">
     <div class="control-group">
-      <span class="control-label"><span lang="th">มุมมองพนักงาน</span><span lang="en">Employee view</span></span>
+      <span class="control-label"><span lang="th">มุมมองพนักงาน</span><span lang="en">Employee view</span></span><span class="ro-chip"><span lang="th">อ้างอิงอย่างเดียว · ไม่มีข้อมูลลูกค้า</span><span lang="en">Review-only · no customer data</span></span>
       <div class="seg" role="group" aria-label="Employee role">
-        <button type="button" data-role="teller" aria-pressed="false"><span lang="th">พนักงานสาขา</span><span lang="en">Teller</span></button>
-        <button type="button" data-role="agent" aria-pressed="true"><span lang="th">คอนแทคเซ็นเตอร์</span><span lang="en">Contact center</span></button>
+        <button type="button" data-role="teller" aria-pressed="true"><span lang="th">พนักงานสาขา</span><span lang="en">Teller</span></button>
+        <button type="button" data-role="agent" aria-pressed="false"><span lang="th">คอนแทคเซ็นเตอร์</span><span lang="en">Contact center</span></button>
         <button type="button" data-role="rm" aria-pressed="false"><span lang="th">RM</span><span lang="en">RM</span></button>
       </div>
     </div>
@@ -463,14 +466,15 @@ dialog::backdrop { background: rgba(13, 28, 58, .42); }
     <div class="dialog-actions"><button class="btn" id="cancel-dialog" type="button"><span lang="th">ยกเลิก</span><span lang="en">Cancel</span></button><button class="btn primary" type="submit"><span lang="th">บันทึกร่าง</span><span lang="en">Save draft</span></button></div>
   </form>
 </dialog>
+<p id="handoff-receipt" class="save-receipt" role="status" tabindex="-1" hidden></p>
 <div id="toast" role="status" aria-live="polite"></div>
 
 <script>
-const state = { lang: "th", role: "agent", context: "osConflict", phase: "before" };
+const state = { lang: "th", role: "teller", context: "osConflict", phase: "before" };
 const serviceRoutes = {
   transfers: { th:["โอน เติมเงิน และชำระบิล","Bangkok Bank Mobile Banking","ตรวจสอบว่าลูกค้าใช้งานแอปได้และมีสิทธิ์ใช้บริการที่ต้องการ"], en:["Transfers, top-ups and bill pay","Bangkok Bank Mobile Banking","Confirm that the customer can use the app and is eligible for the requested service."] },
   accountActivity: { th:["ดูสรุปบัญชีและประวัติรายการ","Bangkok Bank Mobile Banking","การดูข้อมูลรายบัญชียังต้องผ่านการยืนยันตัวตนของลูกค้า"], en:["Account summaries and transaction history","Bangkok Bank Mobile Banking","Customer-specific information still requires the Bank's verification process."] },
-  scheduledTransfer: { th:["ตั้งโอนเงินล่วงหน้า","Bangkok Bank Mobile Banking · เมนูโอนเงิน / ตั้งรายการล่วงหน้า","ธนาคารระบุว่าตั้งโอนรายครั้ง รายสัปดาห์ หรือรายเดือนได้ล่วงหน้าไม่เกิน 1 ปี ให้ลูกค้าตรวจรายการ iBanking เดิมในเมนูรายการโอนที่ตั้งล่วงหน้า แล้วตั้งรายการใหม่ด้วยตนเองหากยังจำเป็นและเข้าเงื่อนไข CRM ไม่เห็น ไม่ย้าย หรือเปลี่ยนรายการของลูกค้า"], en:["Schedule a transfer","Bangkok Bank Mobile Banking · Transfer / Create a schedule","The Bank publishes one-time, weekly, or monthly transfers up to one year ahead. Have the customer review existing iBanking items in the future-dated transfer list, then set up any needed eligible item themselves in Mobile Banking. CRM cannot see, migrate, or change an individual item."] },
+  scheduledTransfer: { th:["ตั้งโอนเงินล่วงหน้า","Bangkok Bank Mobile Banking · เมนูโอนเงิน / ตั้งรายการล่วงหน้า","คู่มือ Mobile Banking ระบุว่าตั้งโอนได้รายครั้ง รายสัปดาห์ หรือรายเดือน ล่วงหน้าไม่เกิน 1 ปี (สูงสุด 12 รายการต่อบัญชี และวงเงินบริการ 2 ล้านบาท/วัน/คน แต่วงเงินจริงของลูกค้าอาจต่ำกว่าตามที่ธนาคารกำหนดในแอป) คู่มือ iBanking เดิมระบุรอบรายไตรมาสด้วย แต่คู่มือ Mobile Banking ที่ตรวจสอบไม่ระบุรอบนี้ จึงยังไม่มีทางเลือกที่เทียบเท่าซึ่งประกาศไว้ ให้ลูกค้าสอบถามสาขาหรือ 1333 CRM ไม่เห็น ไม่ย้าย หรือเปลี่ยนรายการของลูกค้า"], en:["Schedule a transfer","Bangkok Bank Mobile Banking · Transfer / Create a schedule","The Mobile Banking guide lists one-time, weekly, or monthly transfers up to one year ahead, with a maximum of 12 schedules per account and a THB 2 million/day/person service ceiling. The customer's Bank-set limit may be lower and must be checked in the app. Legacy iBanking help also lists quarterly recurrence, but the reviewed Mobile Banking guide does not; no like-for-like quarterly option is published. Refer customers to a branch or 1333 for confirmation. CRM cannot inspect, migrate, or change an individual item."] },
   scheduledBill: { th:["ตั้งจ่ายบิลหรือเติมเงินล่วงหน้า","Bangkok Bank Mobile Banking · เมนูจ่ายบิล / เติมเงิน","ธนาคารระบุว่าตั้งจ่ายรายครั้ง รายสัปดาห์ หรือรายเดือนได้ตามบริการและผู้ให้บริการที่รองรับ ให้ลูกค้าตรวจรายการ iBanking เดิมแยกต่างหาก และตั้งรายการใหม่ด้วยตนเองหากยังจำเป็นและเข้าเงื่อนไข Direct Debit ที่ลงทะเบียนไว้ยังดำเนินต่อ"], en:["Schedule a bill payment or top-up","Bangkok Bank Mobile Banking · Pay bills / Top up","The Bank publishes one-time, weekly, or monthly payments for supported services/providers. Have the customer review existing iBanking items separately and set up any needed eligible item themselves in Mobile Banking. Registered Direct Debit continues."] },
   directDebit: { th:["บริการ Direct Debit","Bangkok Bank Mobile Banking","รายการ Direct Debit ที่ลงทะเบียนผ่าน iBanking ยังดำเนินต่อ; อย่าขอให้ลูกค้าตั้งรายการซ้ำ"], en:["Direct Debit service","Bangkok Bank Mobile Banking","Direct Debit instructions registered through iBanking continue; do not ask the customer to recreate them."] },
   international: { th:["โอนเงินระหว่างประเทศ","Bangkok Bank Mobile Banking","ผู้รับเงินที่ลงทะเบียนสำหรับการโอนระหว่างประเทศเป็นข้อยกเว้นที่ย้ายข้อมูลให้อัตโนมัติ"], en:["International money transfer","Bangkok Bank Mobile Banking","Registered international-transfer beneficiaries are the stated automatic-transfer exception."] },
@@ -585,6 +589,8 @@ function applyLanguage() {
 function renderRole() {
   const role = content.roles[state.role];
   $("#role-copy").textContent = role[state.lang];
+  const staffLine = { teller: ["บริการสาขา · สีลม", "Branch Service · Silom"], agent: ["มุมมองคอนแทคเซ็นเตอร์ · สาธิต", "Contact center view · demo"], rm: ["มุมมอง RM · สาธิต", "RM view · demo"] }[state.role];
+  $("#staff-line").innerHTML = `<span lang="th">${staffLine[0]}</span><span lang="en">${staffLine[1]}</span>`;
   $("#permission-pill").textContent = role.badge;
   $("#source-action").textContent = state.lang === "en" ? role.sourceEn : role.sourceTh;
 }
@@ -732,10 +738,12 @@ $("#cancel-dialog").addEventListener("click", () => dialog.close());
 $("#handoff-form").addEventListener("submit", (event) => {
   event.preventDefault();
   dialog.close();
-  const toast = $("#toast");
-  toast.textContent = state.lang === "en" ? "Prototype: follow-up draft recorded with the selected owner and date." : "ต้นแบบ: บันทึกร่างการติดตามพร้อมทีมและวันที่ที่เลือกแล้ว";
-  toast.classList.add("show");
-  window.setTimeout(() => toast.classList.remove("show"), 3200);
+  const r = $("#handoff-receipt");
+  r.hidden = false;
+  r.innerHTML = state.lang === "en"
+    ? "Follow-up draft · SAV-2026-0142 (demo) · owner and date recorded · awaiting team acceptance. No channel access changed."
+    : "ร่างการติดตาม · SAV-2026-0142 (สาธิต) · บันทึกทีมและวันที่แล้ว · รอการตอบรับ ไม่มีการเปลี่ยนสิทธิ์ช่องทาง";
+  r.focus();
 });
 applyLanguage();
 </script>

@@ -8,7 +8,7 @@
   PROTOTYPE ONLY — synthetic data, placeholder brand (NFR-05).
   Build-queue #5 from the adversarial review (persona-days verdict: "the
   single missing screen that would most improve the worst-served persona's
-  day"). Traces: FR-403 (DSAR milestones 15d verify / >=15d cure / ~30d),
+  day"). Traces: FR-403 (DSAR milestones 15d review / >=10d correction / ~30d),
   FR-404 (machine-readable export, auditable completion), FR-408 (72h breach
   clock from recorded awareness), legal hold, restricted-queue boundary
   (privacy records excluded from general customer search). Clock component
@@ -73,7 +73,7 @@ h1{font-size:21px;margin:6px 0 2px}
 .btn[disabled]{opacity:.45;cursor:not-allowed}
 .log{font-size:12.5px;color:var(--muted);margin-top:8px;font-style:italic}
 footer.proto{text-align:center;font-size:12px;color:var(--muted);padding:14px 0 30px}
-</style>
+:lang(th){font-size:max(1em,11px)}</style>
 </head>
 <body>
 <a class="skip" href="#queue"><span lang="th">ข้ามไปยังคิว</span><span lang="en">Skip to the queue</span></a>
@@ -133,7 +133,7 @@ footer.proto{text-align:center;font-size:12px;color:var(--muted);padding:14px 0 
       <div class="detail">
         <div class="kv">
           <span class="k"><span lang="th">ผู้ขอ</span><span lang="en">Requester</span></span><span><span lang="th">ตัวแทนโดยชอบ (ทนาย) — </span><span lang="en">authorized representative (counsel) — </span><span lang="th">รอตรวจเอกสารมอบอำนาจ</span><span lang="en">power-of-attorney under review</span></span>
-          <span class="k"><span lang="th">สิ่งที่ต้องส่งคืนผู้ขอ</span><span lang="en">Cure return</span></span><span><span lang="th">หากไม่ครบ: คืนพร้อมระยะเวลาแก้ไข ≥15 วัน — นาฬิกาใหม่เริ่มเมื่อได้ข้อมูลครบ</span><span lang="en">if incomplete: return with a ≥15-day cure window — a new clock starts on receipt</span></span>
+          <span class="k"><span lang="th">สิ่งที่ต้องส่งคืนผู้ขอ</span><span lang="en">Cure return</span></span><span><span lang="th">หากไม่ครบ: แจ้งแก้ไขเป็นหนังสือ/อิเล็กทรอนิกส์ ให้เวลาอย่างน้อย 10 วัน; หากไม่แก้ ให้บันทึกคำขอละทิ้ง/แจ้งผู้ขอ</span><span lang="en">if incomplete: send a written/electronic notice with at least 10 days to correct; if uncorrected, record abandonment and notify the requester</span></span>
           <span class="k"><span lang="th">ชุดตอบกลับ</span><span lang="en">Response pack</span></span><span><span lang="th">ระบบที่ตรวจแล้ว / รายการที่คืน / ข้อยกเว้น+เหตุผล / ผู้อนุมัติ / วันที่ — ส่งออกอ่านเครื่องได้ (FR-404)</span><span lang="en">systems checked / items returned / exceptions+reasons / approver / dates — machine-readable export (FR-404)</span></span>
         </div>
         <button class="btn primary" data-act="verify"><span lang="th">บันทึกผลตรวจอำนาจ/ความครบ</span><span lang="en">Record authority/completeness outcome</span></button>

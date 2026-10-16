@@ -138,9 +138,10 @@ main { max-width: 1240px; margin: 0 auto; padding: 20px 20px 48px; }
 .dup { background: oklch(96% 0.02 250); border: 1px solid var(--info); border-radius: var(--radius); padding: 10px 14px; font-size: var(--text-sm); margin-bottom: 16px; display: flex; gap: 10px; align-items: flex-start; }
 .dup .dot { margin-top: 5px; }
 footer.proto { text-align: center; font-size: var(--text-xs); color: var(--ink-2); padding: 18px 0 28px; }
-</style>
+:lang(th){font-size:max(1em,11px)}.skip-link{position:absolute;top:-48px;left:12px;z-index:50;padding:8px 12px;background:#fff;color:#102849;font-weight:700;border-radius:0 0 6px 6px;box-shadow:0 2px 8px rgba(16,40,73,.18)}.skip-link:focus{top:8px}</style>
 </head>
 <body>
+  <a class="skip-link" href="#main"><span lang="en">Skip to main content</span><span lang="th">ข้ามไปยังเนื้อหาหลัก</span></a>
 <header class="topbar">
   <span class="brand"><img class="lotus" src="assets/bbl-lotus.png" alt=""> Bangkok Bank <span style="font-weight:400;opacity:.8">CRM</span></span>
   <span class="env">PROTOTYPE</span>
@@ -162,7 +163,7 @@ footer.proto { text-align: center; font-size: var(--text-xs); color: var(--ink-2
   <a href="#"><span lang="th">รายงาน</span><span lang="en">Reports</span></a>
 </nav>
 
-<main>
+<main id="main">
   <section class="casehead">
     <h1>
       <span class="caseid">CASE-2026-004817</span>
