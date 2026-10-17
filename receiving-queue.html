@@ -205,6 +205,8 @@
               <div class="field"><span class="field-label"><span lang="en">Verification context</span><span lang="th">บริบทการยืนยันตัวตน</span></span><span class="field-value"><span lang="en">Complaint intake recorded; disclosure scope must be checked before contact</span><span lang="th">บันทึกการรับข้อร้องเรียนแล้ว ต้องตรวจสอบขอบเขตการเปิดเผยก่อนติดต่อลูกค้า</span></span></div>
               <div class="field"><span class="field-label"><span lang="en">Customer reference</span><span lang="th">ข้อมูลอ้างอิงลูกค้า</span></span><span class="field-value muted"><span lang="en">Masked in queue preview</span><span lang="th">ปกปิดในหน้าคิว</span></span></div>
             </div>
+
+        <div class="accountability" id="returnDetail" hidden><span class="dot" aria-hidden="true"></span><span><strong><span lang="en">Return reason (recorded)</span><span lang="th">เหตุผลการส่งกลับ (บันทึกแล้ว)</span></strong><span id="returnDetailText"></span><span lang="en"> Correction stays with the same request ID — the sender edits and re-sends; no new target is set.</span><span lang="th"> การแก้ไขใช้หมายเลขคำขอเดิม — ผู้ส่งแก้ไขแล้วส่งใหม่ โดยไม่ตั้งเป้าหมายใหม่</span></span></div>
           </div>
           <p class="bottom-note" style="margin-top:9px"><strong><span lang="en">Access boundary:</span><span lang="th">ขอบเขตสิทธิ์:</span></strong> <span lang="en">Only the permitted summary is shown here. A live system must recheck the receiver's role, assignment, purpose, and case-field entitlement before showing protected details or accepting work.</span><span lang="th">หน้านี้แสดงเฉพาะสรุปที่ได้รับอนุญาต ระบบจริงต้องตรวจสอบบทบาท งานที่ได้รับมอบหมาย วัตถุประสงค์ และสิทธิ์ในข้อมูลเคสของผู้รับก่อนแสดงข้อมูลที่จำกัดหรือรับงาน</span></p>
 
@@ -305,7 +307,7 @@
       $('returnForm').addEventListener('submit',event=>{
         event.preventDefault();
         if(!$('returnReason').value||$('returnNote').value.trim().length<15){$('returnError').hidden=false;$('returnNote').focus();return;}
-        returned=true;dialog.close();updateState();announce('returned');
+        returned=true;var rr=$('returnReason');returnDetailText.textContent=(rr.options[rr.selectedIndex]?rr.options[rr.selectedIndex].text:'')+' — '+$('returnNote').value.trim();$('returnDetail').hidden=false;dialog.close();updateState();announce('returned');
       });
       dialog.addEventListener('click',event=>{if(event.target===dialog)dialog.close()});
       updateState();

@@ -12,7 +12,8 @@
   leaderboard — workload as counts with reason-gated rebalance (SVG 1/2561
   fair-treatment posture); illustrative shift/absence coverage states (ops O-C2);
   honest-unknown metrics; reassign requires reason + audit receipt (§3.7);
-  bulk actions limited to bulk-SAFE ones.
+  group actions show underlying counts, recheck per case, and block duplicates
+  or destination-incompatible selections.
 -->
 <style>
 :root{
@@ -72,6 +73,14 @@ tr.sel td{background:var(--paper)}
 .load .bar.over i{background:var(--red)}
 .bulkbar{display:none;gap:10px;align-items:center;background:#eaf0fb;border:1px solid var(--info);border-radius:8px;padding:10px 14px;margin:0 0 14px;font-size:13.5px}
 .bulkbar.show{display:flex}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.select-cell{min-width:62px}
+.select-note{display:block;max-width:84px;margin-top:3px;color:var(--amber);font-size:10px;line-height:1.25}
+.group-note{padding:10px 14px;border-bottom:1px solid var(--line);background:#f8faff;color:var(--muted);font-size:12.5px}
+.scope-preview{margin:12px 0;padding:11px 13px;border:1px solid var(--line);border-radius:7px;background:#f8faff;font-size:13px}
+.scope-preview p{margin:0 0 6px}
+.scope-preview ul{margin:5px 0 8px;padding-left:20px}
+.scope-preview small{display:block;color:var(--muted);font-size:11.5px}
 .btn{font:inherit;font-size:13.5px;border-radius:6px;padding:8px 16px;cursor:pointer;border:1px solid var(--line);background:#fff;color:var(--ink)}
 .btn.primary{background:var(--blue);border-color:var(--blue);color:#fff;font-weight:700}
 .btn.primary:hover{background:var(--navy)}
@@ -120,7 +129,7 @@ footer.proto{text-align:center;font-size:12px;color:var(--muted);padding:14px 0 
 
 <main>
   <h1><span lang="th">คิวทีมภายใต้ภาระสูง — คัดกรองแบบกลุ่ม ไม่ใช่รายแถว 200 รายการ</span><span lang="en">Team queue under load — grouped triage, not a 200-row dump</span></h1>
-  <p class="crumb"><span lang="th">15 ธ.ค. 2026 · 09:10 · เกณฑ์ปกติ 60–80 รายการ/วัน · วันนี้ 214 รายการ (iBanking หยุดวันที่ 16 ธ.ค.)</span><span lang="en">15 Dec 2026 · 09:10 · normal 60–80 items/day · today 214 items (iBanking ends 16 Dec)</span></p>
+  <p class="crumb"><span lang="th">15 ธ.ค. 2026 · 09:10 · เกณฑ์ปกติ 60–80 รายการ/วัน · วันนี้ 214 รายการ (iBanking หยุดวันที่ 15 ธ.ค.)</span><span lang="en">15 Dec 2026 · 09:10 · normal 60–80 items/day · today 214 items (iBanking ends 15 Dec)</span></p>
 
   <div class="shiftbar" role="status">
     <b>⏱ <span lang="th">สิ้นสุดกะกลางคืน 06:00:</span><span lang="en">Night shift ended 06:00:</span></b>
@@ -192,42 +201,43 @@ footer.proto{text-align:center;font-size:12px;color:var(--muted);padding:14px 0 
   </section>
 
   <div class="bulkbar" id="bulkbar" role="status">
-    <b id="bulk-n">0</b> <span lang="th">รายการที่เลือก</span><span lang="en">selected</span>
+    <span><b id="bulk-groups">0</b> <span lang="th">กลุ่ม</span><span lang="en">groups</span> · <b id="bulk-items">0</b> <span lang="th">รายการในกลุ่ม</span><span lang="en">work items in those groups</span></span>
     <button class="btn primary" id="bulk-reassign" type="button"><span lang="th">มอบหมายใหม่ (ต้องระบุเหตุผล)</span><span lang="en">Reassign (reason required)</span></button>
     <button class="btn" id="bulk-clear" type="button"><span lang="th">ยกเลิกการเลือก</span><span lang="en">Clear selection</span></button>
   </div>
 
   <div class="card" id="triage">
     <h2><span lang="th">รายการคัดกรอง — กลุ่มตามสาเหตุที่ต้องทำวันนี้ (แสดงตัวแทนกลุ่ม ไม่ใช่ทั้ง 214)</span><span lang="en">Triage — grouped by today's exception (cluster representatives, not all 214)</span></h2>
+    <div class="group-note"><span lang="th">เลือกแถวเพื่อเลือกทุกรายการในกลุ่มนั้น จำนวนรายการคือขอบเขตที่เลือก ส่วนรหัสเคสเป็นเพียงตัวอย่าง กลุ่มรายการซ้ำเลือกมอบหมายไม่ได้จนกว่าจะตรวจซ้ำเสร็จ</span><span lang="en">Selecting a row selects every work item in that group. The item count is the selected scope; the case ID is an example only. Duplicate groups stay unavailable until deduplication is complete.</span></div>
     <div class="bd" style="padding:0;overflow-x:auto">
       <table>
         <thead><tr>
-          <th><input type="checkbox" id="sel-all" aria-label="<span>Select all</span>"></th>
+          <th class="select-cell"><input type="checkbox" id="sel-all" aria-labelledby="select-all-label"><span class="sr-only" id="select-all-label"><span lang="th">เลือกทุกกลุ่มที่ทำรายการได้</span><span lang="en">Select all eligible groups</span></span></th>
           <th><span lang="th">กลุ่ม / สาเหตุ</span><span lang="en">Cluster / why</span></th>
-          <th><span lang="th">จำนวน</span><span lang="en">Count</span></th>
-          <th><span lang="th">ตัวแทนเคส</span><span lang="en">Representative</span></th>
+          <th><span lang="th">จำนวนรายการ</span><span lang="en">Item count</span></th>
+          <th><span lang="th">เคสตัวอย่าง</span><span lang="en">Example case</span></th>
           <th><span lang="th">เจ้าของ</span><span lang="en">Owner</span></th>
           <th><span lang="th">ครบกำหนด</span><span lang="en">Due</span></th>
         </tr></thead>
         <tbody id="rows">
-          <tr><td><input type="checkbox" class="row-sel"></td>
+          <tr><td class="select-cell"><input type="checkbox" id="group-1" class="row-sel" data-count="11" data-kind="customer-update" aria-labelledby="group-label-1"><span class="sr-only" id="group-label-1"><span lang="th">เลือกทั้ง 11 รายการครบกำหนดแจ้งลูกค้าวันนี้ แสดงโดย CASE-2026-04912</span><span lang="en">Select all 11 customer-update items due today, represented by CASE-2026-04912</span></span></td>
             <td><span class="why due"><span lang="th">แจ้งลูกค้าครบกำหนดวันนี้</span><span lang="en">customer update due today</span></span></td>
             <td class="owner">11</td><td>CASE-2026-04912</td><td><span lang="th">มาลี ศ.</span><span lang="en">Mali S.</span></td><td><span lang="th">วันนี้ 15:00</span><span lang="en">Today 15:00</span></td></tr>
-          <tr><td><input type="checkbox" class="row-sel"></td>
+          <tr><td class="select-cell"><input type="checkbox" id="group-2" class="row-sel" data-count="6" data-kind="customer-update" aria-labelledby="group-label-2"><span class="sr-only" id="group-label-2"><span lang="th">เลือกทั้ง 6 รายการครบกำหนดแจ้งลูกค้าวันนี้ แสดงโดย CASE-2026-04930</span><span lang="en">Select all 6 customer-update items due today, represented by CASE-2026-04930</span></span></td>
             <td><span class="why due"><span lang="th">แจ้งลูกค้าครบกำหนดวันนี้</span><span lang="en">customer update due today</span></span></td>
             <td class="owner">6</td><td>CASE-2026-04930</td><td><span lang="th">กันต์ ว.</span><span lang="en">Kan W.</span></td><td><span lang="th">วันนี้ 16:30</span><span lang="en">Today 16:30</span></td></tr>
-          <tr><td><input type="checkbox" class="row-sel"></td>
+          <tr><td class="select-cell"><input type="checkbox" id="group-3" class="row-sel" data-count="3" data-kind="handoff" aria-labelledby="group-label-3"><span class="sr-only" id="group-label-3"><span lang="th">เลือกทั้ง 3 รายการส่งต่อที่ยังไม่มีผู้รับ แสดงโดย SR-2026-1187</span><span lang="en">Select all 3 unaccepted handoff items, represented by SR-2026-1187</span></span></td>
             <td><span class="why unacc"><span lang="th">ส่งต่อไม่มีผู้รับ &gt;60 นาที</span><span lang="en">unaccepted handoff &gt;60 min</span></span></td>
             <td class="owner">3</td><td>SR-2026-1187</td><td><span lang="th">ทีมศูนย์ฯ (กะดึก) → คิวดิจิทัล</span><span lang="en">CC night team → digital queue</span></td><td><span lang="th">เกิน 72 นาที</span><span lang="en">72 min over</span></td></tr>
-          <tr><td><input type="checkbox" class="row-sel"></td>
+          <tr><td class="select-cell"><input type="checkbox" id="group-4" class="row-sel" data-count="6" data-kind="handoff" aria-labelledby="group-label-4"><span class="sr-only" id="group-label-4"><span lang="th">เลือกทั้ง 6 รายการส่งต่อที่ยังไม่มีผู้รับ แสดงโดย SR-2026-1203</span><span lang="en">Select all 6 unaccepted handoff items, represented by SR-2026-1203</span></span></td>
             <td><span class="why unacc"><span lang="th">ส่งต่อไม่มีผู้รับ</span><span lang="en">unaccepted handoff</span></span></td>
             <td class="owner">6</td><td>SR-2026-1203</td><td><span lang="th">สาขา 034 → ทีมบัตร</span><span lang="en">Branch 034 → card team</span></td><td><span lang="th">เกิน 25 นาที</span><span lang="en">25 min over</span></td></tr>
-          <tr><td><input type="checkbox" class="row-sel"></td>
+          <tr><td class="select-cell"><input type="checkbox" id="group-5" class="row-sel" data-count="2" data-kind="case" aria-labelledby="group-label-5"><span class="sr-only" id="group-label-5"><span lang="th">เลือกทั้ง 2 รายการที่เกินกำหนด 15 วันทำการ แสดงโดย CASE-2026-04777</span><span lang="en">Select both work items past the 15-business-day commitment, represented by CASE-2026-04777</span></span></td>
             <td><span class="why aging"><span lang="th">เกินกำหนด 15 วันทำการ</span><span lang="en">past 15-business-day commitment</span></span></td>
             <td class="owner">2</td><td>CASE-2026-04777</td><td><span lang="th">ปิยะ ค.</span><span lang="en">Piya K.</span></td><td><span lang="th">เกิน 1 วันทำการ</span><span lang="en">1 business day over</span></td></tr>
-          <tr><td><input type="checkbox" class="row-sel"></td>
+          <tr><td class="select-cell"><input type="checkbox" id="group-6" class="row-sel" data-count="14" aria-labelledby="group-label-6" aria-describedby="dedupe-note" disabled><span class="sr-only" id="group-label-6"><span lang="th">กลุ่มรายการซ้ำ 14 รายการ แสดงโดย CASE-2026-04955 ยังเลือกไม่ได้จนกว่าจะตรวจซ้ำ</span><span lang="en">14-item duplicate group represented by CASE-2026-04955; unavailable until deduplication</span></span><span class="select-note" id="dedupe-note"><span lang="th">ตรวจรายการซ้ำก่อน</span><span lang="en">Dedupe first</span></span></td>
             <td><span class="why aging"><span lang="th">งานย้ายจาก iBanking ที่ถูกทำซ้ำ 2 ช่องทาง</span><span lang="en">duplicated iBanking-migration items</span></span></td>
-            <td class="owner">14</td><td>CASE-2026-04955</td><td><span lang="th">— ตรวจซ้ำก่อนมอบหมาย</span><span lang="en">— dedupe before assignment</span></td><td>—</td></tr>
+            <td class="owner">14</td><td>CASE-2026-04955</td><td><span lang="th">ยังไม่ได้มอบหมาย</span><span lang="en">Unassigned</span></td><td>—</td></tr>
         </tbody>
       </table>
     </div>
@@ -249,12 +259,18 @@ footer.proto{text-align:center;font-size:12px;color:var(--muted);padding:14px 0 
     <form method="dialog" id="ra-form" novalidate>
       <h2 id="ra-title" style="font-size:16px;margin:0 0 4px"><span lang="th">มอบหมายใหม่</span><span lang="en">Reassign</span></h2>
       <p style="font-size:12.5px;color:var(--muted);margin:0 0 8px"><span lang="th">ทุกรายการจะบันทึกผู้สั่ง เหตุผล เวลา และเจ้าของใหม่ (ตรวจสอบย้อนหลังได้) — เจ้าของเดิมของลูกค้ายังปรากฏในเคส</span><span lang="en">Every item records who, why, when, and the new owner (auditable) — the original customer-update owner remains visible in the case</span></p>
+      <div class="scope-preview" aria-labelledby="scope-title">
+        <p><b id="scope-title"><span lang="th">ขอบเขตที่เลือก</span><span lang="en">Selected scope</span></b> · <strong id="ra-scope-count"></strong></p>
+        <ul id="ra-scope-list"></ul>
+        <small><span lang="th">จำนวนนี้รวมทุกรายการในกลุ่มที่เลือก ไม่ใช่เฉพาะเคสตัวอย่าง ระบบจริงต้องตรวจสิทธิ์และสถานะของแต่ละรายการอีกครั้งก่อนบันทึก และแสดงรายการที่ข้ามในผลลัพธ์</span><span lang="en">Counts include every work item in each selected group, not just the example cases. In production, recheck each item's access and status before saving and show any skipped items in the result.</span></small>
+      </div>
       <label for="ra-to"><span lang="th">มอบหมายให้</span><span lang="en">Assign to</span></label>
       <select id="ra-to">
-        <option value="sukhee"><span lang="th">สุขี ม. (12 · รับเพิ่มได้)</span><span lang="en">Sukhee M. (12 · has capacity)</span></option>
-        <option value="natt"><span lang="th">ณัฐ ร. (22)</span><span lang="en">Natt R. (22)</span></option>
-        <option value="digital-q"><span lang="th">คิวทีมดิจิทัล (สำหรับงานที่ค้างรับ)</span><span lang="en">Digital team queue (for unaccepted items)</span></option>
+        <option value="sukhee" data-th="สุขี ม. (12 · รับเพิ่มได้)" data-en="Sukhee M. (12 · has capacity)">สุขี ม. (12 · รับเพิ่มได้)</option>
+        <option value="natt" data-th="ณัฐ ร. (22)" data-en="Natt R. (22)">ณัฐ ร. (22)</option>
+        <option value="digital-q" data-th="คิวทีมดิจิทัล (เฉพาะงานส่งต่อที่ยังไม่มีผู้รับ)" data-en="Digital team queue (unaccepted handoffs only)" disabled>คิวทีมดิจิทัล (เฉพาะงานส่งต่อที่ยังไม่มีผู้รับ)</option>
       </select>
+      <small style="display:block;color:var(--muted);font-size:11.5px;margin-top:4px"><span lang="th">คิวทีมดิจิทัลเลือกได้เมื่อทุกกลุ่มที่เลือกเป็นงานส่งต่อที่ยังไม่มีผู้รับ</span><span lang="en">The digital team queue is available only when every selected group is an unaccepted handoff.</span></small>
       <label for="ra-why"><span lang="th">เหตุผล <span style="color:var(--red)">*</span></span><span lang="en">Reason <span style="color:var(--red)">*</span></span></label>
       <textarea id="ra-why" minlength="10"></textarea>
       <p class="err" id="ra-err"></p>
@@ -277,17 +293,28 @@ function applyLang(en){
   document.documentElement.lang = en ? 'en' : 'th';
   const b = $('#lang'); b.textContent = en ? 'ไทย' : 'EN';
   b.setAttribute('aria-label', en ? 'สลับเป็นภาษาไทย' : 'Switch to English');
+  $$('#ra-to option[data-th][data-en]').forEach(option => {
+    option.textContent = option.dataset[en ? 'en' : 'th'];
+  });
 }
 $('#lang').addEventListener('click', () => applyLang(document.body.classList.toggle('en')));
 
 function refreshBulk(){
-  const n = $$('.row-sel:checked').length;
-  $('#bulk-n').textContent = n;
-  $('#bulkbar').classList.toggle('show', n > 0);
+  const eligible = [...$$('.row-sel:not(:disabled)')];
+  const selected = eligible.filter(c => c.checked);
+  const cases = selected.reduce((sum, c) => sum + Number(c.dataset.count || 0), 0);
+  $('#bulk-groups').textContent = selected.length;
+  $('#bulk-items').textContent = cases;
+  $('#bulkbar').classList.toggle('show', selected.length > 0);
+  $('#sel-all').checked = eligible.length > 0 && selected.length === eligible.length;
+  $('#sel-all').indeterminate = selected.length > 0 && selected.length < eligible.length;
+  const digitalQueue = $('#ra-to option[value="digital-q"]');
+  digitalQueue.disabled = selected.length === 0 || !selected.every(c => c.dataset.kind === 'handoff');
+  if (digitalQueue.disabled && $('#ra-to').value === 'digital-q') $('#ra-to').value = 'sukhee';
 }
 $$('.row-sel').forEach(c => c.addEventListener('change', refreshBulk));
 $('#sel-all').addEventListener('change', ()=>{
-  $$('.row-sel').forEach(c => c.checked = $('#sel-all').checked);
+  $$('.row-sel:not(:disabled)').forEach(c => c.checked = $('#sel-all').checked);
   refreshBulk();
 });
 $('#bulk-clear').addEventListener('click', ()=>{
@@ -296,6 +323,23 @@ $('#bulk-clear').addEventListener('click', ()=>{
 });
 $('#bulk-reassign').addEventListener('click', ()=>{
   $('#ra-err').classList.remove('show'); $('#ra-why').value = '';
+  const selected = [...$$('.row-sel:checked')];
+  const total = selected.reduce((sum, c) => sum + Number(c.dataset.count || 0), 0);
+  const isEn = document.body.classList.contains('en');
+  $('#ra-scope-count').textContent = isEn
+    ? `${selected.length} groups · ${total} work items`
+    : `${selected.length} กลุ่ม · ${total} รายการ`;
+  const scopeList = $('#ra-scope-list');
+  scopeList.replaceChildren();
+  selected.forEach(c => {
+    const row = c.closest('tr');
+    const reason = row.cells[1].innerText.trim();
+    const count = Number(c.dataset.count || 0);
+    const example = row.cells[3].textContent.trim();
+    const item = document.createElement('li');
+    item.textContent = `${count} ${isEn ? 'work items' : 'รายการ'} · ${reason} · ${isEn ? 'example' : 'ตัวอย่าง'} ${example}`;
+    scopeList.append(item);
+  });
   $('#reassign-dialog').showModal();
 });
 $('#ra-form').addEventListener('submit', (ev)=>{
@@ -307,14 +351,17 @@ $('#ra-form').addEventListener('submit', (ev)=>{
     $('#ra-why').focus(); return;
   }
   $('#reassign-dialog').close();
-  const n = $$('.row-sel:checked').length;
-  const to = $('#ra-to'), name = to.options[to.selectedIndex].text.split(' (')[0];
+  const selected = [...$$('.row-sel:checked')];
+  const n = selected.length;
+  const caseCount = selected.reduce((sum, c) => sum + Number(c.dataset.count || 0), 0);
+  const to = $('#ra-to'), isEn = document.body.classList.contains('en');
+  const name = to.options[to.selectedIndex].dataset[isEn ? 'en' : 'th'].split(' (')[0];
   const r = $('#ra-receipt');
-  r.innerHTML = '<b><span lang="th">มอบหมายใหม่แล้ว</span><span lang="en">Reassigned</span></b> — ' + n +
-    ' <span lang="th">กลุ่ม → </span><span lang="en">cluster(s) → </span>' + name +
+  r.innerHTML = '<b><span lang="th">จำลองการมอบหมายใหม่แล้ว</span><span lang="en">Reassignment simulated</span></b> — ' + n +
+    ' <span lang="th">กลุ่ม · </span><span lang="en">groups · </span>' + caseCount + ' <span lang="th">รายการ → </span><span lang="en">work items → </span>' + name +
     ' · <span lang="th">ผู้สั่ง: สมศักดิ์ ท. · เหตุผลบันทึกแล้ว · เจ้าของเดิมแสดงในเคส · การแจ้งลูกค้าคงกำหนดเดิม</span><span lang="en">by Somsak T. · reason recorded · original owner visible in case · customer-update commitment unchanged</span>';
   r.classList.add('show');
-  $$('.row-sel:checked').forEach(c => { c.checked = false; c.closest('tr').classList.add('sel'); });
+  selected.forEach(c => { c.checked = false; c.closest('tr').classList.add('sel'); });
   $('#sel-all').checked = false; refreshBulk();
 });
 </script>
